@@ -1,4 +1,3 @@
-
 import { 
   LayoutDashboard, 
   Calendar, 
@@ -12,86 +11,66 @@ import {
   CreditCard,
   UserCheck,
   Activity,
-  Shield
+  Download
 } from "lucide-react";
+
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import AdminBookings from "@/components/admin/AdminBookings";
-import AdminMessages from "@/components/admin/AdminMessages";
-import AdminPackages from "@/components/admin/AdminPackages";
-import AdminServices from "@/components/admin/AdminServices";
-import AdminGallery from "@/components/admin/AdminGallery";
-import AdminTexts from "@/components/admin/AdminTexts";
-import AdminPayments from "@/components/admin/AdminPayments";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AdminCustomers from "@/components/admin/AdminCustomers";
-import AdminSettings from "@/components/admin/AdminSettings";
+import AdminPackages from "@/components/admin/AdminPackages";
+import AdminGallery from "@/components/admin/AdminGallery";
+import AdminServices from "@/components/admin/AdminServices";
+import AdminMessages from "@/components/admin/AdminMessages";
+import AdminPayments from "@/components/admin/AdminPayments";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
+import AdminTexts from "@/components/admin/AdminTexts";
 import AdminSystemMonitor from "@/components/admin/AdminSystemMonitor";
-import AdminBulkOperations from "@/components/admin/AdminBulkOperations";
+import AdminSettings from "@/components/admin/AdminSettings";
+import AdminCustomerExport from "@/components/admin/AdminCustomerExport";
 
 export const adminTabs = [
   {
     id: "dashboard",
-    label: "Dashboard",
+    label: "Dashboard", 
     label_ar: "لوحة التحكم",
     icon: LayoutDashboard,
     component: AdminDashboard
   },
   {
-    id: "analytics",
-    label: "Analytics",
-    label_ar: "التحليلات",
-    icon: BarChart3,
-    component: AdminAnalytics
-  },
-  {
     id: "bookings",
     label: "Bookings",
-    label_ar: "الحجوزات",
+    label_ar: "الحجوزات", 
     icon: Calendar,
     component: AdminBookings
-  },
-  {
-    id: "customers",
-    label: "Customers",
-    label_ar: "العملاء",
-    icon: Users,
-    component: AdminCustomers
-  },
-  {
-    id: "payments",
-    label: "Payments",
-    label_ar: "المدفوعات",
-    icon: CreditCard,
-    component: AdminPayments
   },
   {
     id: "users",
     label: "Users",
     label_ar: "المستخدمين",
-    icon: UserCheck,
+    icon: Users,
     component: AdminUsers
   },
   {
-    id: "messages",
-    label: "Messages",
-    label_ar: "الرسائل",
-    icon: MessageSquare,
-    component: AdminMessages
+    id: "customers",
+    label: "Customers",
+    label_ar: "العملاء",
+    icon: UserCheck,
+    component: AdminCustomers
   },
   {
-    id: "packages",
+    id: "export",
+    label: "Export Data",
+    label_ar: "تصدير البيانات",
+    icon: Download,
+    component: AdminCustomerExport
+  },
+  {
+    id: "packages", 
     label: "Packages",
     label_ar: "الباقات",
     icon: Package,
     component: AdminPackages
-  },
-  {
-    id: "services",
-    label: "Services",
-    label_ar: "الخدمات",
-    icon: Settings,
-    component: AdminServices
   },
   {
     id: "gallery",
@@ -101,23 +80,44 @@ export const adminTabs = [
     component: AdminGallery
   },
   {
+    id: "services",
+    label: "Services", 
+    label_ar: "الخدمات",
+    icon: Activity,
+    component: AdminServices
+  },
+  {
+    id: "messages",
+    label: "Messages",
+    label_ar: "الرسائل",
+    icon: MessageSquare,
+    component: AdminMessages
+  },
+  {
+    id: "payments",
+    label: "Payments",
+    label_ar: "المدفوعات", 
+    icon: CreditCard,
+    component: AdminPayments
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    label_ar: "التحليلات",
+    icon: BarChart3,
+    component: AdminAnalytics
+  },
+  {
     id: "texts",
-    label: "Texts",
-    label_ar: "النصوص",
+    label: "Content",
+    label_ar: "المحتوى",
     icon: Type,
     component: AdminTexts
   },
   {
-    id: "bulk",
-    label: "Bulk Operations",
-    label_ar: "العمليات الجماعية",
-    icon: Package,
-    component: AdminBulkOperations
-  },
-  {
-    id: "monitor",
-    label: "System Monitor",
-    label_ar: "مراقبة النظام",
+    id: "system",
+    label: "System",
+    label_ar: "النظام",
     icon: Activity,
     component: AdminSystemMonitor
   },
@@ -125,7 +125,7 @@ export const adminTabs = [
     id: "settings",
     label: "Settings",
     label_ar: "الإعدادات",
-    icon: Shield,
+    icon: Settings,
     component: AdminSettings
   }
 ];
