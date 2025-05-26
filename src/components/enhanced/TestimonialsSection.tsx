@@ -3,6 +3,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Star, Quote } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { motion } from "framer-motion";
 
 const TestimonialsSection = () => {
   const { language } = useLanguage();
@@ -83,98 +91,168 @@ const TestimonialsSection = () => {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-blue-300/20 to-purple-300/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-48 h-48 bg-gradient-to-br from-indigo-300/20 to-pink-300/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
+      </div>
+
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            {language === 'ar' ? 'ماذا يقول عملاؤنا' : 'What Our Customers Say'}
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <div className="flex justify-center mb-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-xl opacity-30 animate-pulse"></div>
+              <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-6 rounded-2xl shadow-2xl border-2 border-white/30">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
+                  <Quote className="h-12 w-12 text-white" />
+                </motion.div>
+              </div>
+            </div>
+          </div>
+
+          <h2 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
+            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              {language === 'ar' ? 'ماذا يقول' : 'What Our'}
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 bg-clip-text text-transparent">
+              {language === 'ar' ? 'عملاؤنا' : 'Customers Say'}
+            </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          
+          <p className="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto font-medium leading-relaxed">
             {language === 'ar' 
               ? 'تجارب حقيقية من عملائنا الكرام حول خدماتنا وجودة رحلاتهم معنا'
               : 'Real experiences from our valued customers about our services and the quality of their trips with us'
             }
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <Card key={testimonial.id} className="hover:shadow-2xl transition-all duration-500 border-0 bg-white relative group">
-              <CardContent className="p-8">
-                {/* Quote Icon */}
-                <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-30 transition-opacity">
-                  <Quote className="h-8 w-8 text-blue-600" />
-                </div>
+        {/* Testimonials Carousel */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative"
+        >
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={testimonial.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="h-full"
+                  >
+                    <Card className="h-full hover:shadow-2xl transition-all duration-500 border-0 bg-white/80 backdrop-blur-sm relative group overflow-hidden">
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-purple-600/5 to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      
+                      <CardContent className="p-8 relative">
+                        {/* Quote Icon */}
+                        <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-30 transition-opacity">
+                          <Quote className="h-8 w-8 text-blue-600" />
+                        </div>
 
-                {/* Rating */}
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
+                        {/* Rating */}
+                        <div className="flex mb-4">
+                          {[...Array(testimonial.rating)].map((_, i) => (
+                            <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                          ))}
+                        </div>
 
-                {/* Testimonial Text */}
-                <p className="text-gray-700 mb-6 leading-relaxed italic">
-                  "{language === 'ar' ? testimonial.textAr : testimonial.textEn}"
-                </p>
+                        {/* Testimonial Text */}
+                        <p className="text-gray-700 mb-6 leading-relaxed italic text-lg">
+                          "{language === 'ar' ? testimonial.textAr : testimonial.textEn}"
+                        </p>
 
-                {/* Customer Info */}
-                <div className="flex items-center">
-                  <Avatar className="h-12 w-12 mr-4">
-                    <AvatarImage src={testimonial.image} alt={language === 'ar' ? testimonial.nameAr : testimonial.nameEn} />
-                    <AvatarFallback>
-                      {language === 'ar' 
-                        ? testimonial.nameAr.split(' ').map(n => n[0]).join('')
-                        : testimonial.nameEn.split(' ').map(n => n[0]).join('')
-                      }
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      {language === 'ar' ? testimonial.nameAr : testimonial.nameEn}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {language === 'ar' ? testimonial.locationAr : testimonial.locationEn}
-                    </div>
-                    <div className="text-xs text-blue-600 font-medium">
-                      {testimonial.tripType}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                        {/* Customer Info */}
+                        <div className="flex items-center">
+                          <Avatar className="h-14 w-14 mr-4 ring-2 ring-blue-100 group-hover:ring-blue-200 transition-all duration-300">
+                            <AvatarImage src={testimonial.image} alt={language === 'ar' ? testimonial.nameAr : testimonial.nameEn} />
+                            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold">
+                              {language === 'ar' 
+                                ? testimonial.nameAr.split(' ').map(n => n[0]).join('')
+                                : testimonial.nameEn.split(' ').map(n => n[0]).join('')
+                              }
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="font-bold text-gray-900 text-lg">
+                              {language === 'ar' ? testimonial.nameAr : testimonial.nameEn}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {language === 'ar' ? testimonial.locationAr : testimonial.locationEn}
+                            </div>
+                            <div className="text-xs text-blue-600 font-semibold bg-blue-50 px-2 py-1 rounded-full mt-1 inline-block">
+                              {testimonial.tripType}
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            {/* Custom styled navigation buttons */}
+            <CarouselPrevious className="absolute -left-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white shadow-2xl border-2 border-blue-100 hover:border-blue-300 text-blue-600 hover:text-blue-700 h-12 w-12 transition-all duration-300 hover:scale-110" />
+            <CarouselNext className="absolute -right-6 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white shadow-2xl border-2 border-blue-100 hover:border-blue-300 text-blue-600 hover:text-blue-700 h-12 w-12 transition-all duration-300 hover:scale-110" />
+          </Carousel>
+        </motion.div>
 
         {/* Trust Indicators */}
-        <div className="mt-16 text-center">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center opacity-60">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-700">4.9/5</div>
-              <div className="text-sm text-gray-500">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-20 text-center"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center">
+            <div className="text-center group">
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">4.9/5</div>
+              <div className="text-sm text-gray-600 font-medium">
                 {language === 'ar' ? 'تقييم العملاء' : 'Customer Rating'}
               </div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-700">98%</div>
-              <div className="text-sm text-gray-500">
+            <div className="text-center group">
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">98%</div>
+              <div className="text-sm text-gray-600 font-medium">
                 {language === 'ar' ? 'نسبة الرضا' : 'Satisfaction Rate'}
               </div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-700">500K+</div>
-              <div className="text-sm text-gray-500">
+            <div className="text-center group">
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">500K+</div>
+              <div className="text-sm text-gray-600 font-medium">
                 {language === 'ar' ? 'عميل سعيد' : 'Happy Customers'}
               </div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-700">15+</div>
-              <div className="text-sm text-gray-500">
+            <div className="text-center group">
+              <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">15+</div>
+              <div className="text-sm text-gray-600 font-medium">
                 {language === 'ar' ? 'سنة خبرة' : 'Years Experience'}
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
