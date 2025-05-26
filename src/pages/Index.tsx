@@ -17,6 +17,7 @@ import LiveChat from "@/components/LiveChat";
 import RealTimeFlightData from "@/components/RealTimeFlightData";
 import RealTimeHotelData from "@/components/RealTimeHotelData";
 import AdvancedAIChat from "@/components/AdvancedAIChat";
+import CurrencySection from "@/components/CurrencySection";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bot } from "lucide-react";
@@ -30,6 +31,9 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       <Hero />
+      
+      {/* Currency Section */}
+      <CurrencySection />
       
       {/* AI Assistant Toggle */}
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-purple-600">
