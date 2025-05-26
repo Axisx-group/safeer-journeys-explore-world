@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +30,7 @@ import AdminGallery from "@/components/admin/AdminGallery";
 import AdminTexts from "@/components/admin/AdminTexts";
 import AdminPayments from "@/components/admin/AdminPayments";
 import AdminUsers from "@/components/admin/AdminUsers";
+import AdminCustomers from "@/components/admin/AdminCustomers";
 import AdminSettings from "@/components/admin/AdminSettings";
 import { useLanguage } from "@/contexts/LanguageContext";
 import AdminAnalytics from "@/components/admin/AdminAnalytics";
@@ -62,6 +62,13 @@ const AdminPage = () => {
       label_ar: "الحجوزات",
       icon: Calendar,
       component: AdminBookings
+    },
+    {
+      id: "customers",
+      label: "Customers",
+      label_ar: "العملاء",
+      icon: Users,
+      component: AdminCustomers
     },
     {
       id: "payments",
@@ -172,8 +179,8 @@ const AdminPage = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Navigation Tabs */}
           <div className="bg-white rounded-lg shadow-sm p-2">
-            <TabsList className="grid w-full grid-cols-6 gap-1">
-              {tabs.slice(0, 12).map((tab) => {
+            <TabsList className="grid w-full grid-cols-7 gap-1">
+              {tabs.slice(0, 14).map((tab) => {
                 const IconComponent = tab.icon;
                 return (
                   <TabsTrigger
