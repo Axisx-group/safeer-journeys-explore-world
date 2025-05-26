@@ -7,6 +7,7 @@ export const useFlightOperations = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const [dataSource, setDataSource] = useState<string>('');
 
   const handleSearch = async (searchParams: {
     departure_city: string;
@@ -22,7 +23,7 @@ export const useFlightOperations = () => {
     try {
       console.log('Searching with params:', searchParams);
       
-      // First try to fetch fresh data from API
+      // First try to fetch fresh data from Skyscanner/Booking.com APIs
       await fetchFromAPI(searchParams);
       
       // Then fetch from database
@@ -63,7 +64,7 @@ export const useFlightOperations = () => {
   }) => {
     try {
       setIsFetching(true);
-      console.log('Fetching from API with params:', searchParams);
+      console.log('Fetching from Skyscanner/Booking.com APIs with params:', searchParams);
       
       const { data, error } = await supabase.functions.invoke('fetch-flights', {
         body: { 
@@ -75,6 +76,7 @@ export const useFlightOperations = () => {
         console.error('API fetch error:', error);
       } else {
         console.log('API response:', data);
+        setDataSource(data?.source || 'unknown');
       }
     } catch (error) {
       console.error('Error calling API:', error);
@@ -110,6 +112,7 @@ export const useFlightOperations = () => {
     flights,
     isLoading,
     isFetching,
+    dataSource,
     handleSearch,
     handleFetchNewData,
     setFlights
