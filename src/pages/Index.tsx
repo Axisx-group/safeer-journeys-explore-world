@@ -15,7 +15,6 @@ import EnhancedGallery from "@/components/advanced/EnhancedGallery";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import LiveChat from "@/components/LiveChat";
-import RealTimeFlightData from "@/components/RealTimeFlightData";
 import RealTimeHotelData from "@/components/RealTimeHotelData";
 import AdvancedAIChat from "@/components/AdvancedAIChat";
 import { useState } from "react";
@@ -110,7 +109,6 @@ const Index = () => {
 
       {/* Main Services Sections */}
       <div className="space-y-0">
-        <RealTimeFlightData />
         <RealTimeHotelData />
       </div>
 
