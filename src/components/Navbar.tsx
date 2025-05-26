@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Plane } from "lucide-react";
+import { Menu, X, Plane, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import LanguageToggle from "./LanguageToggle";
 import CurrencyDropdown from "./CurrencyDropdown";
@@ -112,14 +112,17 @@ const Navbar = () => {
                 </div>
               </div>
               
-              {/* Enhanced Book Now Button */}
-              <Link to="/booking" className="hidden md:block">
+              {/* Enhanced Login Button */}
+              <Link to="/auth" className="hidden md:block">
                 <Button 
                   size="lg" 
                   className="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white font-bold px-8 py-3 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden group"
                 >
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                  <span className="relative z-10">{isArabic ? 'احجز الآن' : 'Book Now'}</span>
+                  <div className="relative z-10 flex items-center gap-2">
+                    <LogIn className="h-5 w-5" />
+                    <span>{isArabic ? 'تسجيل الدخول' : 'Login'}</span>
+                  </div>
                   <div className="absolute inset-0 rounded-full border-2 border-white/30"></div>
                 </Button>
               </Link>
@@ -171,13 +174,16 @@ const Navbar = () => {
                 </Link>
               ))}
               
-              <Link to="/booking" onClick={() => setIsMenuOpen(false)} className="block pt-6">
+              <Link to="/auth" onClick={() => setIsMenuOpen(false)} className="block pt-6">
                 <Button 
                   size="lg" 
                   className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white font-bold py-5 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 relative overflow-hidden group"
                 >
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                  <span className="relative z-10 text-lg">{isArabic ? 'احجز الآن' : 'Book Now'}</span>
+                  <div className="relative z-10 flex items-center justify-center gap-2">
+                    <LogIn className="h-6 w-6" />
+                    <span className="text-lg">{isArabic ? 'تسجيل الدخول' : 'Login'}</span>
+                  </div>
                   <div className="absolute inset-0 rounded-2xl border-2 border-white/30"></div>
                 </Button>
               </Link>
