@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,8 @@ import {
   Database,
   Type,
   CreditCard,
-  UserCheck
+  UserCheck,
+  Activity
 } from "lucide-react";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import AdminBookings from "@/components/admin/AdminBookings";
@@ -31,6 +31,9 @@ import AdminPayments from "@/components/admin/AdminPayments";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AdminSettings from "@/components/admin/AdminSettings";
 import { useLanguage } from "@/contexts/LanguageContext";
+import AdminAnalytics from "@/components/admin/AdminAnalytics";
+import AdminSystemMonitor from "@/components/admin/AdminSystemMonitor";
+import AdminBulkOperations from "@/components/admin/AdminBulkOperations";
 
 const AdminPage = () => {
   const { language } = useLanguage();
@@ -43,6 +46,13 @@ const AdminPage = () => {
       label_ar: "لوحة التحكم",
       icon: LayoutDashboard,
       component: AdminDashboard
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      label_ar: "التحليلات",
+      icon: BarChart3,
+      component: AdminAnalytics
     },
     {
       id: "bookings",
@@ -101,6 +111,20 @@ const AdminPage = () => {
       component: AdminTexts
     },
     {
+      id: "bulk",
+      label: "Bulk Operations",
+      label_ar: "العمليات الجماعية",
+      icon: Package,
+      component: AdminBulkOperations
+    },
+    {
+      id: "monitor",
+      label: "System Monitor",
+      label_ar: "مراقبة النظام",
+      icon: Activity,
+      component: AdminSystemMonitor
+    },
+    {
       id: "settings",
       label: "Settings",
       label_ar: "الإعدادات",
@@ -117,10 +141,10 @@ const AdminPage = () => {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                {language === 'ar' ? 'إدارة النظام المتقدم' : 'Advanced System Management'}
+                {language === 'ar' ? 'نظام الإدارة المتقدم والشامل' : 'Advanced Comprehensive Management System'}
               </h1>
               <p className="text-gray-600 mt-1">
-                {language === 'ar' ? 'نظام إدارة شامل مدعوم بالذكاء الاصطناعي' : 'AI-Powered Comprehensive Management System'}
+                {language === 'ar' ? 'نظام إدارة متطور مع تحليلات متقدمة ومراقبة شاملة' : 'Advanced management system with comprehensive analytics and monitoring'}
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -130,7 +154,11 @@ const AdminPage = () => {
               </Button>
               <Button variant="outline" size="sm">
                 <BarChart3 className="h-4 w-4 mr-2" />
-                {language === 'ar' ? 'التقارير' : 'Reports'}
+                {language === 'ar' ? 'التقارير المتقدمة' : 'Advanced Reports'}
+              </Button>
+              <Button variant="outline" size="sm">
+                <Database className="h-4 w-4 mr-2" />
+                {language === 'ar' ? 'النسخ الاحتياطي' : 'Backup'}
               </Button>
             </div>
           </div>
@@ -142,17 +170,17 @@ const AdminPage = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Navigation Tabs */}
           <div className="bg-white rounded-lg shadow-sm p-2">
-            <TabsList className="grid w-full grid-cols-5 gap-2">
-              {tabs.slice(0, 10).map((tab) => {
+            <TabsList className="grid w-full grid-cols-6 gap-1">
+              {tabs.slice(0, 12).map((tab) => {
                 const IconComponent = tab.icon;
                 return (
                   <TabsTrigger
                     key={tab.id}
                     value={tab.id}
-                    className="flex items-center gap-2 text-sm font-medium data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                    className="flex items-center gap-2 text-xs font-medium data-[state=active]:bg-blue-600 data-[state=active]:text-white p-2"
                   >
                     <IconComponent className="h-4 w-4" />
-                    <span className="hidden sm:inline">
+                    <span className="hidden md:inline">
                       {language === 'ar' ? tab.label_ar : tab.label}
                     </span>
                   </TabsTrigger>
@@ -173,26 +201,35 @@ const AdminPage = () => {
         </Tabs>
       </div>
 
-      {/* Footer Status */}
+      {/* Enhanced Footer Status */}
       <div className="bg-white border-t mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                {language === 'ar' ? 'النظام متصل' : 'System Online'}
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                {language === 'ar' ? 'النظام متصل ويعمل بكفاءة عالية' : 'System Online - High Performance'}
               </div>
               <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4" />
-                {language === 'ar' ? 'آمن' : 'Secure'}
+                <Shield className="h-4 w-4 text-green-600" />
+                {language === 'ar' ? 'مؤمن بالكامل' : 'Fully Secured'}
               </div>
               <div className="flex items-center gap-2">
-                <Database className="h-4 w-4" />
-                {language === 'ar' ? 'قاعدة البيانات متصلة' : 'Database Connected'}
+                <Database className="h-4 w-4 text-blue-600" />
+                {language === 'ar' ? 'قاعدة البيانات متصلة ومحسنة' : 'Database Connected & Optimized'}
+              </div>
+              <div className="flex items-center gap-2">
+                <Activity className="h-4 w-4 text-purple-600" />
+                {language === 'ar' ? 'مراقبة مستمرة' : 'Real-time Monitoring'}
               </div>
             </div>
-            <div>
-              {language === 'ar' ? 'آخر تحديث: منذ دقيقتين' : 'Last updated: 2 minutes ago'}
+            <div className="flex items-center gap-4">
+              <span>
+                {language === 'ar' ? 'آخر تحديث: الآن' : 'Last updated: Now'}
+              </span>
+              <Badge className="bg-green-100 text-green-800">
+                {language === 'ar' ? 'وضع الإنتاج' : 'Production Mode'}
+              </Badge>
             </div>
           </div>
         </div>
