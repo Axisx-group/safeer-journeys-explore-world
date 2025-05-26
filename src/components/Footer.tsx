@@ -80,16 +80,16 @@ const Footer = () => {
             <div className="space-y-3">
               <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
                 <Phone className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">+966 11 234 5678</span>
+                <span className="text-gray-300">0033766555514</span>
               </div>
               <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
                 <Mail className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">info@urtrvl.com</span>
+                <span className="text-gray-300">Info@urtrvl.com</span>
               </div>
               <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
                 <MapPin className="h-5 w-5 text-blue-400" />
                 <span className="text-gray-300">
-                  {language === 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}
+                  {language === 'ar' ? 'باريس، فرنسا' : 'Paris, France'}
                 </span>
               </div>
             </div>
