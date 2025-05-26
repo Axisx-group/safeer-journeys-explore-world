@@ -37,6 +37,18 @@ const UnifiedSearchSection = () => {
     });
   };
 
+  const handleFlightsChange = (checked: boolean | "indeterminate") => {
+    setIncludeFlights(checked === true);
+  };
+
+  const handleHotelsChange = (checked: boolean | "indeterminate") => {
+    setIncludeHotels(checked === true);
+  };
+
+  const handleCarsChange = (checked: boolean | "indeterminate") => {
+    setIncludeCars(checked === true);
+  };
+
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
       <div className="max-w-6xl mx-auto">
@@ -88,7 +100,7 @@ const UnifiedSearchSection = () => {
                     <Checkbox 
                       id="flights" 
                       checked={includeFlights} 
-                      onCheckedChange={setIncludeFlights}
+                      onCheckedChange={handleFlightsChange}
                     />
                     <label htmlFor="flights" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
                       <Plane className="h-4 w-4 text-blue-600" />
@@ -99,7 +111,7 @@ const UnifiedSearchSection = () => {
                     <Checkbox 
                       id="hotels" 
                       checked={includeHotels} 
-                      onCheckedChange={setIncludeHotels}
+                      onCheckedChange={handleHotelsChange}
                     />
                     <label htmlFor="hotels" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
                       <Hotel className="h-4 w-4 text-purple-600" />
@@ -110,7 +122,7 @@ const UnifiedSearchSection = () => {
                     <Checkbox 
                       id="cars" 
                       checked={includeCars} 
-                      onCheckedChange={setIncludeCars}
+                      onCheckedChange={handleCarsChange}
                     />
                     <label htmlFor="cars" className="flex items-center gap-2 text-sm font-medium cursor-pointer">
                       <Car className="h-4 w-4 text-indigo-600" />
