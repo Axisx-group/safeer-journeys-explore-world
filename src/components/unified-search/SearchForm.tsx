@@ -1,8 +1,10 @@
 
 import { Input } from "@/components/ui/input";
-import { Calendar, MapPin, Users, Plane, Hotel } from "lucide-react";
+import { Calendar, MapPin, Plane, Hotel } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
 import CitySearchInput from "@/components/flights/CitySearchInput";
+import PassengerSelector from "./PassengerSelector";
 
 interface SearchFormProps {
   searchParams: {
@@ -10,7 +12,11 @@ interface SearchFormProps {
     to: string;
     checkIn: string;
     checkOut: string;
-    guests: number;
+    passengers: {
+      adults: number;
+      children: number;
+      infants: number;
+    };
     rooms: number;
   };
   onParamsChange: (params: any) => void;
@@ -21,6 +27,7 @@ interface SearchFormProps {
 const SearchForm = ({ searchParams, onParamsChange, includeFlights, includeHotels }: SearchFormProps) => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
+  const [isPassengerSelectorOpen, setIsPassengerSelectorOpen] = useState(false);
 
   return (
     <>
@@ -75,6 +82,7 @@ const SearchForm = ({ searchParams, onParamsChange, includeFlights, includeHotel
               value={searchParams.checkIn}
               onChange={(e) => onParamsChange(prev => ({ ...prev, checkIn: e.target.value }))}
               className={`h-14 ${isArabic ? 'pr-12' : 'pl-12'} border-2 border-gray-200 focus:border-green-500 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 bg-white/80`} 
+              min={new Date().toISOString().split('T')[0]}
             />
           </div>
         </div>
@@ -92,30 +100,25 @@ const SearchForm = ({ searchParams, onParamsChange, includeFlights, includeHotel
               value={searchParams.checkOut}
               onChange={(e) => onParamsChange(prev => ({ ...prev, checkOut: e.target.value }))}
               className={`h-14 ${isArabic ? 'pr-12' : 'pl-12'} border-2 border-gray-200 focus:border-red-500 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 bg-white/80`} 
+              min={searchParams.checkIn || new Date().toISOString().split('T')[0]}
             />
           </div>
         </div>
       </div>
 
-      {/* Additional Options */}
+      {/* Enhanced Passenger and Room Selection */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        {/* Guests/Passengers */}
+        {/* Passengers with Age Categories */}
         <div className="space-y-3">
           <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-            <Users className="h-4 w-4 text-orange-600" />
-            {isArabic ? (includeFlights ? 'المسافرون' : 'النزلاء') : (includeFlights ? 'Passengers' : 'Guests')}
+            {isArabic ? 'المسافرون' : 'Passengers'}
           </label>
-          <div className="relative group">
-            <Users className={`absolute top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-orange-600 transition-colors ${isArabic ? 'right-4' : 'left-4'}`} />
-            <Input 
-              type="number"
-              min="1"
-              max="10"
-              value={searchParams.guests}
-              onChange={(e) => onParamsChange(prev => ({ ...prev, guests: parseInt(e.target.value) || 1 }))}
-              className={`h-14 ${isArabic ? 'pr-12' : 'pl-12'} border-2 border-gray-200 focus:border-orange-500 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 bg-white/80`} 
-            />
-          </div>
+          <PassengerSelector
+            passengers={searchParams.passengers}
+            onPassengersChange={(passengers) => onParamsChange(prev => ({ ...prev, passengers }))}
+            isOpen={isPassengerSelectorOpen}
+            onToggle={() => setIsPassengerSelectorOpen(!isPassengerSelectorOpen)}
+          />
         </div>
 
         {/* Rooms (if hotels selected) */}
@@ -130,7 +133,7 @@ const SearchForm = ({ searchParams, onParamsChange, includeFlights, includeHotel
               <Input 
                 type="number"
                 min="1"
-                max="5"
+                max="10"
                 value={searchParams.rooms}
                 onChange={(e) => onParamsChange(prev => ({ ...prev, rooms: parseInt(e.target.value) || 1 }))}
                 className={`h-14 ${isArabic ? 'pr-12' : 'pl-12'} border-2 border-gray-200 focus:border-purple-500 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 bg-white/80`} 

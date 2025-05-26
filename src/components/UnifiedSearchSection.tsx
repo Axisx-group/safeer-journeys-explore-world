@@ -20,7 +20,11 @@ const UnifiedSearchSection = () => {
     to: '',
     checkIn: '',
     checkOut: '',
-    guests: 2,
+    passengers: {
+      adults: 2,
+      children: 0,
+      infants: 0
+    },
     rooms: 1
   });
 
@@ -28,12 +32,16 @@ const UnifiedSearchSection = () => {
   const isArabic = language === 'ar';
 
   const handleSearch = () => {
-    console.log('Unified search:', { 
+    console.log('Enhanced unified search:', { 
       searchParams, 
       includeFlights, 
       includeHotels, 
       includeCars 
     });
+    
+    // Here you would integrate with your booking API
+    // For now, we'll show a success message
+    alert(isArabic ? 'جاري البحث عن أفضل العروض...' : 'Searching for the best deals...');
   };
 
   const handleFlightsChange = (checked: boolean | "indeterminate") => {
@@ -105,7 +113,7 @@ const UnifiedSearchSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   <Search className={`h-6 w-6 ${isArabic ? 'ml-3' : 'mr-3'} relative z-10`} />
                   <span className="relative z-10">
-                    {isArabic ? 'ابحث الآن' : 'Search Now'}
+                    {isArabic ? 'ابحث عن أفضل العروض' : 'Find Best Deals'}
                   </span>
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                 </Button>
