@@ -15,7 +15,7 @@ const RealTimeFlightData = () => {
   
   const [searchParams, setSearchParams] = useState({
     departure_city: 'الرياض',
-    arrival_city: 'جدة',
+    arrival_city: 'مدريد',
     departure_date: '2025-06-01',
   });
 
@@ -112,17 +112,126 @@ const RealTimeFlightData = () => {
     }, 1000);
   };
 
-  const saudiCities = [
-    'الرياض',
-    'جدة', 
-    'الدمام',
-    'مكة',
-    'المدينة',
-    'الطائف',
-    'أبها',
-    'تبوك',
-    'القصيم',
-    'حائل'
+  const worldCities = [
+    // European Cities (Focus)
+    { ar: 'مدريد', en: 'Madrid', code: 'MAD' },
+    { ar: 'برشلونة', en: 'Barcelona', code: 'BCN' },
+    { ar: 'إشبيلية', en: 'Seville', code: 'SVQ' },
+    { ar: 'إسطنبول', en: 'Istanbul', code: 'IST' },
+    { ar: 'روما', en: 'Rome', code: 'ROM' },
+    { ar: 'باريس', en: 'Paris', code: 'PAR' },
+    { ar: 'لندن', en: 'London', code: 'LON' },
+    { ar: 'برلين', en: 'Berlin', code: 'BER' },
+    { ar: 'أمستردام', en: 'Amsterdam', code: 'AMS' },
+    { ar: 'فيينا', en: 'Vienna', code: 'VIE' },
+    { ar: 'براغ', en: 'Prague', code: 'PRG' },
+    { ar: 'بودابست', en: 'Budapest', code: 'BUD' },
+    { ar: 'وارسو', en: 'Warsaw', code: 'WAW' },
+    { ar: 'زيورخ', en: 'Zurich', code: 'ZUR' },
+    { ar: 'جنيف', en: 'Geneva', code: 'GVA' },
+    { ar: 'ميلان', en: 'Milan', code: 'MIL' },
+    { ar: 'فلورنسا', en: 'Florence', code: 'FLR' },
+    { ar: 'البندقية', en: 'Venice', code: 'VCE' },
+    { ar: 'أثينا', en: 'Athens', code: 'ATH' },
+    { ar: 'لشبونة', en: 'Lisbon', code: 'LIS' },
+    { ar: 'بورتو', en: 'Porto', code: 'OPO' },
+    { ar: 'ستوكهولم', en: 'Stockholm', code: 'STO' },
+    { ar: 'كوبنهاغن', en: 'Copenhagen', code: 'CPH' },
+    { ar: 'أوسلو', en: 'Oslo', code: 'OSL' },
+    { ar: 'هلسنكي', en: 'Helsinki', code: 'HEL' },
+    { ar: 'بروكسل', en: 'Brussels', code: 'BRU' },
+    { ar: 'دبلن', en: 'Dublin', code: 'DUB' },
+    { ar: 'إدنبرة', en: 'Edinburgh', code: 'EDI' },
+    { ar: 'مانشستر', en: 'Manchester', code: 'MAN' },
+    { ar: 'ليون', en: 'Lyon', code: 'LYS' },
+    { ar: 'نيس', en: 'Nice', code: 'NCE' },
+    { ar: 'مرسيليا', en: 'Marseille', code: 'MRS' },
+    { ar: 'مونيخ', en: 'Munich', code: 'MUC' },
+    { ar: 'فرانكفورت', en: 'Frankfurt', code: 'FRA' },
+    { ar: 'هامبورغ', en: 'Hamburg', code: 'HAM' },
+    
+    // Middle East & Saudi Cities
+    { ar: 'الرياض', en: 'Riyadh', code: 'RUH' },
+    { ar: 'جدة', en: 'Jeddah', code: 'JED' },
+    { ar: 'الدمام', en: 'Dammam', code: 'DMM' },
+    { ar: 'مكة', en: 'Mecca', code: 'JED' },
+    { ar: 'المدينة', en: 'Medina', code: 'MED' },
+    { ar: 'الطائف', en: 'Taif', code: 'TIF' },
+    { ar: 'أبها', en: 'Abha', code: 'AHB' },
+    { ar: 'تبوك', en: 'Tabuk', code: 'TUU' },
+    { ar: 'القصيم', en: 'Qassim', code: 'ELQ' },
+    { ar: 'حائل', en: 'Hail', code: 'HAS' },
+    { ar: 'دبي', en: 'Dubai', code: 'DXB' },
+    { ar: 'أبو ظبي', en: 'Abu Dhabi', code: 'AUH' },
+    { ar: 'الدوحة', en: 'Doha', code: 'DOH' },
+    { ar: 'الكويت', en: 'Kuwait', code: 'KWI' },
+    { ar: 'المنامة', en: 'Manama', code: 'BAH' },
+    { ar: 'مسقط', en: 'Muscat', code: 'MCT' },
+    { ar: 'بيروت', en: 'Beirut', code: 'BEY' },
+    { ar: 'عمان', en: 'Amman', code: 'AMM' },
+    { ar: 'القاهرة', en: 'Cairo', code: 'CAI' },
+    { ar: 'الإسكندرية', en: 'Alexandria', code: 'ALY' },
+    { ar: 'أنقرة', en: 'Ankara', code: 'ESB' },
+    { ar: 'إزمير', en: 'Izmir', code: 'ADB' },
+    { ar: 'أنطاليا', en: 'Antalya', code: 'AYT' },
+    
+    // North America
+    { ar: 'نيويورك', en: 'New York', code: 'NYC' },
+    { ar: 'لوس أنجلوس', en: 'Los Angeles', code: 'LAX' },
+    { ar: 'شيكاغو', en: 'Chicago', code: 'CHI' },
+    { ar: 'ميامي', en: 'Miami', code: 'MIA' },
+    { ar: 'لاس فيغاس', en: 'Las Vegas', code: 'LAS' },
+    { ar: 'سان فرانسيسكو', en: 'San Francisco', code: 'SFO' },
+    { ar: 'تورونتو', en: 'Toronto', code: 'YYZ' },
+    { ar: 'فانكوفر', en: 'Vancouver', code: 'YVR' },
+    { ar: 'مونتريال', en: 'Montreal', code: 'YUL' },
+    
+    // Asia
+    { ar: 'طوكيو', en: 'Tokyo', code: 'NRT' },
+    { ar: 'أوساكا', en: 'Osaka', code: 'KIX' },
+    { ar: 'سيول', en: 'Seoul', code: 'ICN' },
+    { ar: 'بكين', en: 'Beijing', code: 'PEK' },
+    { ar: 'شنغهاي', en: 'Shanghai', code: 'PVG' },
+    { ar: 'هونغ كونغ', en: 'Hong Kong', code: 'HKG' },
+    { ar: 'سنغافورة', en: 'Singapore', code: 'SIN' },
+    { ar: 'كوالالمبور', en: 'Kuala Lumpur', code: 'KUL' },
+    { ar: 'بانكوك', en: 'Bangkok', code: 'BKK' },
+    { ar: 'جاكرتا', en: 'Jakarta', code: 'CGK' },
+    { ar: 'مانيلا', en: 'Manila', code: 'MNL' },
+    { ar: 'مومباي', en: 'Mumbai', code: 'BOM' },
+    { ar: 'دلهي', en: 'Delhi', code: 'DEL' },
+    { ar: 'بنغالور', en: 'Bangalore', code: 'BLR' },
+    { ar: 'كراتشي', en: 'Karachi', code: 'KHI' },
+    { ar: 'إسلام آباد', en: 'Islamabad', code: 'ISB' },
+    { ar: 'لاهور', en: 'Lahore', code: 'LHE' },
+    
+    // Australia & Oceania
+    { ar: 'سيدني', en: 'Sydney', code: 'SYD' },
+    { ar: 'ملبورن', en: 'Melbourne', code: 'MEL' },
+    { ar: 'بريسبان', en: 'Brisbane', code: 'BNE' },
+    { ar: 'بيرث', en: 'Perth', code: 'PER' },
+    { ar: 'أوكلاند', en: 'Auckland', code: 'AKL' },
+    
+    // Africa
+    { ar: 'كيب تاون', en: 'Cape Town', code: 'CPT' },
+    { ar: 'جوهانسبرغ', en: 'Johannesburg', code: 'JNB' },
+    { ar: 'الدار البيضاء', en: 'Casablanca', code: 'CMN' },
+    { ar: 'الرباط', en: 'Rabat', code: 'RBA' },
+    { ar: 'مراكش', en: 'Marrakech', code: 'RAK' },
+    { ar: 'تونس', en: 'Tunis', code: 'TUN' },
+    { ar: 'الجزائر', en: 'Algiers', code: 'ALG' },
+    { ar: 'لاغوس', en: 'Lagos', code: 'LOS' },
+    { ar: 'نيروبي', en: 'Nairobi', code: 'NBO' },
+    { ar: 'أديس أبابا', en: 'Addis Ababa', code: 'ADD' },
+    
+    // South America
+    { ar: 'ساو باولو', en: 'São Paulo', code: 'SAO' },
+    { ar: 'ريو دي جانيرو', en: 'Rio de Janeiro', code: 'GIG' },
+    { ar: 'بوينس آيريس', en: 'Buenos Aires', code: 'EZE' },
+    { ar: 'ليما', en: 'Lima', code: 'LIM' },
+    { ar: 'بوغوتا', en: 'Bogotá', code: 'BOG' },
+    { ar: 'كاراكاس', en: 'Caracas', code: 'CCS' },
+    { ar: 'سانتياغو', en: 'Santiago', code: 'SCL' }
   ];
 
   return (
@@ -133,7 +242,7 @@ const RealTimeFlightData = () => {
             {isArabic ? 'الرحلات المتاحة' : 'Available Flights'}
           </h2>
           <p className="text-xl text-gray-600">
-            {isArabic ? 'اكتشف أفضل الرحلات بأسعار مناسبة' : 'Discover the best flights at great prices'}
+            {isArabic ? 'اكتشف أفضل الرحلات إلى جميع أنحاء العالم بأسعار مناسبة' : 'Discover the best flights to all around the world at great prices'}
           </p>
         </div>
 
@@ -146,10 +255,12 @@ const RealTimeFlightData = () => {
               <select
                 value={searchParams.departure_city}
                 onChange={(e) => setSearchParams(prev => ({ ...prev, departure_city: e.target.value }))}
-                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               >
-                {saudiCities.map(city => (
-                  <option key={city} value={city}>{city}</option>
+                {worldCities.map(city => (
+                  <option key={city.code} value={city.ar}>
+                    {isArabic ? city.ar : city.en}
+                  </option>
                 ))}
               </select>
             </div>
@@ -161,10 +272,12 @@ const RealTimeFlightData = () => {
               <select
                 value={searchParams.arrival_city}
                 onChange={(e) => setSearchParams(prev => ({ ...prev, arrival_city: e.target.value }))}
-                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               >
-                {saudiCities.map(city => (
-                  <option key={city} value={city}>{city}</option>
+                {worldCities.map(city => (
+                  <option key={city.code} value={city.ar}>
+                    {isArabic ? city.ar : city.en}
+                  </option>
                 ))}
               </select>
             </div>
