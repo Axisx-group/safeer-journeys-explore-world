@@ -9,15 +9,6 @@ const AdminSetup = () => {
   useEffect(() => {
     const setupAdminAccount = async () => {
       try {
-        // Check if admin account already exists
-        const { data: existingUser } = await supabase.auth.admin.listUsers();
-        const adminExists = existingUser?.users?.some(user => user.email === 'admin@urtrvl.com');
-
-        if (adminExists) {
-          console.log('Admin account already exists');
-          return;
-        }
-
         // Create admin account
         const { data, error } = await supabase.auth.signUp({
           email: 'admin@urtrvl.com',
@@ -32,6 +23,11 @@ const AdminSetup = () => {
         });
 
         if (error) {
+          // If user already exists, that's fine - we don't need to show an error
+          if (error.message.includes('User already registered')) {
+            console.log('Admin account already exists');
+            return;
+          }
           console.error('Error creating admin account:', error);
           return;
         }
