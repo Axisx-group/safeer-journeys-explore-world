@@ -17,7 +17,7 @@ const RealTimeHotelData = () => {
   const isArabic = language === 'ar';
   
   const [searchParams, setSearchParams] = useState({
-    city: 'مدريد',
+    city: 'مدريد', // Default to Madrid (European city)
     check_in_date: '2025-06-15',
     check_out_date: '2025-06-18',
     currency: 'EUR',
@@ -42,7 +42,6 @@ const RealTimeHotelData = () => {
       const result = await fetchNewHotels();
       console.log('Fetch result:', result);
       
-      // Wait a moment and then refetch from database
       setTimeout(() => {
         console.log('Refetching from database...');
         refetch();
@@ -70,11 +69,11 @@ const RealTimeHotelData = () => {
   });
 
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <HotelHeader />
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           <HotelSearchForm
             searchParams={searchParams}
             onSearchParamsChange={setSearchParams}
@@ -84,21 +83,9 @@ const RealTimeHotelData = () => {
             isFetching={isFetching}
           />
 
-          <div className="flex justify-center">
-            <Button 
-              variant="outline" 
-              onClick={handleFetchNewData} 
-              disabled={isFetching}
-              className="flex items-center gap-2 bg-white hover:bg-gray-50"
-            >
-              <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
-              {isArabic ? "جلب المزيد من الفنادق" : "Fetch More Hotels"}
-            </Button>
-          </div>
-
           {error && (
-            <div className="text-center p-4 bg-red-50 rounded-lg">
-              <p className="text-red-600">
+            <div className="text-center p-4 bg-red-50 rounded-lg border border-red-200">
+              <p className="text-red-600 font-medium">
                 {isArabic ? "خطأ في جلب البيانات" : "Error fetching data"}
               </p>
               <p className="text-sm text-red-500 mt-1">{error.message}</p>
@@ -106,8 +93,8 @@ const RealTimeHotelData = () => {
           )}
 
           {fetchError && (
-            <div className="text-center p-4 bg-yellow-50 rounded-lg">
-              <p className="text-yellow-600">
+            <div className="text-center p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+              <p className="text-yellow-600 font-medium">
                 {isArabic ? "خطأ في جلب البيانات الجديدة" : "Error fetching new data"}
               </p>
               <p className="text-sm text-yellow-500 mt-1">{fetchError.message}</p>

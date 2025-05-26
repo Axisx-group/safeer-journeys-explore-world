@@ -32,13 +32,11 @@ const Index = () => {
       <Navbar />
       <Hero />
       
-      {/* AI Assistant Toggle */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
-        {/* Background decorative elements */}
+      {/* AI Assistant Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
           <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full animate-pulse delay-500"></div>
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative">
@@ -66,8 +64,8 @@ const Index = () => {
             </h2>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto">
               {language === 'ar' 
-                ? 'أخبرنا عن نفسيتك وتفضيلاتك وسنجد لك الوجهة المثالية'
-                : 'Tell us about your mood and preferences, and we\'ll find your perfect destination'
+                ? 'أخبرنا عن تفضيلاتك وسنجد لك أفضل الوجهات الأوروبية'
+                : 'Tell us your preferences and we\'ll find the best European destinations for you'
               }
             </p>
             
@@ -77,12 +75,11 @@ const Index = () => {
             >
               <Button 
                 size="lg" 
-                className="bg-white text-blue-600 hover:bg-gray-100 px-12 py-4 text-lg font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 relative overflow-hidden group"
+                className="bg-white text-blue-600 hover:bg-gray-100 px-12 py-4 text-lg font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300"
                 onClick={() => setShowAIAssistant(!showAIAssistant)}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
-                <Bot className="h-6 w-6 mr-3 relative z-10" />
-                <span className="relative z-10">
+                <Bot className="h-6 w-6 mr-3" />
+                <span>
                   {showAIAssistant 
                     ? (language === 'ar' ? 'إخفاء المساعد' : 'Hide Assistant')
                     : (language === 'ar' ? 'ابدأ المحادثة' : 'Start Conversation')
@@ -107,28 +104,42 @@ const Index = () => {
         </motion.section>
       )}
 
-      {/* Real-time Flight Data */}
-      <RealTimeFlightData />
+      {/* Main Services Sections */}
+      <div className="space-y-0">
+        <RealTimeFlightData />
+        <RealTimeHotelData />
+      </div>
 
-      {/* Real-time Hotel Data */}
-      <RealTimeHotelData />
+      {/* Advanced Features */}
+      <div className="space-y-0 bg-gray-50">
+        <AdvancedSearchSection />
+        <SmartRecommendationEngine />
+      </div>
 
-      <AdvancedSearchSection />
-      <SmartRecommendationEngine />
-      <InteractiveServicesGrid />
-      <RealDataPackages />
-      <TravelStatsSection />
-      <TestimonialsSection />
-      <EnhancedGallery />
-      <BlogSection />
-      <NewsletterSection />
-      <FeaturesSection />
+      {/* Services and Content */}
+      <div className="space-y-0">
+        <InteractiveServicesGrid />
+        <RealDataPackages />
+        <TravelStatsSection />
+      </div>
+
+      {/* Social Proof and Content */}
+      <div className="space-y-0 bg-gray-50">
+        <TestimonialsSection />
+        <EnhancedGallery />
+        <BlogSection />
+      </div>
+
+      {/* Footer Sections */}
+      <div className="space-y-0">
+        <NewsletterSection />
+        <FeaturesSection />
+      </div>
+
       <Footer />
       
-      {/* Live Support Chat */}
+      {/* Support Components */}
       <LiveChat />
-      
-      {/* Advanced AI Chat */}
       <AdvancedAIChat />
     </div>
   );
