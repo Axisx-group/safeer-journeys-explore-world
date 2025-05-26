@@ -396,7 +396,7 @@ const AITravelAssistant = () => {
     );
   }
 
-  // Show mood questions (initial flow)
+  // Show mood questions (initial flow) - Auto-start with first question
   const currentQuestion = moodQuestions[currentStep];
   const IconComponent = currentQuestion.icon;
 
