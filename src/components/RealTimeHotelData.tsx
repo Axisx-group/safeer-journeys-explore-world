@@ -25,6 +25,8 @@ const RealTimeHotelData = () => {
     limit: 20
   });
 
+  console.log('Current search params:', searchParams);
+
   const { data: hotelResponse, isLoading, refetch, error } = useHotels(searchParams);
   const { refetch: fetchNewHotels, isLoading: isFetching, error: fetchError } = useHotelSearch(searchParams);
 
