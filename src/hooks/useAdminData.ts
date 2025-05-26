@@ -120,7 +120,7 @@ export const useAdminData = () => {
         passengers: booking.passengers || 1,
         total_price: booking.total_price || 0,
         status: (booking.status as AdminBooking['status']) || 'pending',
-        created_at: booking.created_at
+        created_at: booking.created_at || new Date().toISOString()
       })) || [];
 
       setBookings(formattedBookings);
