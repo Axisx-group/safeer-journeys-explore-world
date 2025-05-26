@@ -1,8 +1,11 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Hero = () => {
+  const { t, language } = useLanguage();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -18,23 +21,23 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
-          اكتشف العالم مع
+          {t('heroTitle')}
           <span className="block bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-            Ur Travel
+            {t('brandName')}
           </span>
         </h1>
         
         <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-          احجز رحلتك المثالية مع أفضل العروض على الفنادق والطيران والسيارات
+          {t('heroSubtitle')}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${language === 'ar' ? 'space-x-reverse' : ''}`}>
           <Button 
             size="lg" 
             className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-8 py-3 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
-            ابدأ رحلتك الآن
-            <ArrowRight className="mr-2 h-5 w-5" />
+            {t('startJourney')}
+            <ArrowRight className={`h-5 w-5 ${language === 'ar' ? 'mr-2' : 'ml-2'}`} />
           </Button>
           
           <Button 
@@ -42,7 +45,7 @@ const Hero = () => {
             size="lg"
             className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-8 py-3 text-lg font-semibold backdrop-blur-sm bg-white/10"
           >
-            اكتشف العروض
+            {t('discoverOffers')}
           </Button>
         </div>
 
@@ -50,19 +53,19 @@ const Hero = () => {
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <div className="text-3xl font-bold text-yellow-400">1000+</div>
-            <div className="text-blue-100">فندق</div>
+            <div className="text-blue-100">{t('hotels_count')}</div>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <div className="text-3xl font-bold text-yellow-400">500+</div>
-            <div className="text-blue-100">وجهة</div>
+            <div className="text-blue-100">{t('destinations_count')}</div>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <div className="text-3xl font-bold text-yellow-400">50K+</div>
-            <div className="text-blue-100">عميل سعيد</div>
+            <div className="text-blue-100">{t('happy_clients')}</div>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <div className="text-3xl font-bold text-yellow-400">24/7</div>
-            <div className="text-blue-100">دعم العملاء</div>
+            <div className="text-blue-100">{t('support')}</div>
           </div>
         </div>
       </div>

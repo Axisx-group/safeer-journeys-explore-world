@@ -1,15 +1,18 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Star, Heart, Globe } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const FeaturesSection = () => {
+  const { t, language } = useLanguage();
+
   const features = [
-    "أفضل الأسعار مضمونة",
-    "إلغاء مجاني للحجوزات",
-    "دعم عملاء متميز",
-    "حجز فوري ومؤكد",
-    "عروض حصرية يومية",
-    "نقاط مكافآت للعملاء"
+    t('bestPrices'),
+    t('freeCancellation'),
+    t('excellentSupport'),
+    t('instantBooking'),
+    t('dailyOffers'),
+    t('rewardPoints')
   ];
 
   return (
@@ -19,17 +22,17 @@ const FeaturesSection = () => {
           {/* Content */}
           <div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              لماذا تختار 
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> Ur Travel</span>؟
+              {t('whyChoose')}
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"> {t('brandName')}</span>؟
             </h2>
             
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              نحن ملتزمون بتقديم أفضل تجربة سفر ممكنة مع خدمات متميزة وأسعار تنافسية
+              {t('whyChooseDesc')}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {features.map((feature, index) => (
-                <div key={index} className="flex items-center space-x-3 space-x-reverse">
+                <div key={index} className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
                   <CheckCircle className="h-6 w-6 text-green-500 flex-shrink-0" />
                   <span className="text-gray-700 font-medium">{feature}</span>
                 </div>
@@ -38,25 +41,25 @@ const FeaturesSection = () => {
 
             <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200">
               <div className="text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <Star className="h-6 w-6 text-yellow-500 mr-1" />
+                <div className={`flex items-center justify-center mb-2 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
+                  <Star className={`h-6 w-6 text-yellow-500 ${language === 'ar' ? 'ml-1' : 'mr-1'}`} />
                   <span className="text-2xl font-bold text-gray-900">4.9</span>
                 </div>
-                <p className="text-sm text-gray-600">تقييم العملاء</p>
+                <p className="text-sm text-gray-600">{t('customerRating')}</p>
               </div>
               <div className="text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <Heart className="h-6 w-6 text-red-500 mr-1" />
+                <div className={`flex items-center justify-center mb-2 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
+                  <Heart className={`h-6 w-6 text-red-500 ${language === 'ar' ? 'ml-1' : 'mr-1'}`} />
                   <span className="text-2xl font-bold text-gray-900">98%</span>
                 </div>
-                <p className="text-sm text-gray-600">رضا العملاء</p>
+                <p className="text-sm text-gray-600">{t('satisfaction')}</p>
               </div>
               <div className="text-center">
-                <div className="flex items-center justify-center mb-2">
-                  <Globe className="h-6 w-6 text-blue-500 mr-1" />
+                <div className={`flex items-center justify-center mb-2 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
+                  <Globe className={`h-6 w-6 text-blue-500 ${language === 'ar' ? 'ml-1' : 'mr-1'}`} />
                   <span className="text-2xl font-bold text-gray-900">150+</span>
                 </div>
-                <p className="text-sm text-gray-600">دولة</p>
+                <p className="text-sm text-gray-600">{t('countries')}</p>
               </div>
             </div>
           </div>
@@ -76,14 +79,14 @@ const FeaturesSection = () => {
             <Card className="absolute -top-4 -right-4 bg-white shadow-xl border-0 w-32 h-32">
               <CardContent className="p-4 text-center h-full flex flex-col justify-center">
                 <div className="text-2xl font-bold text-blue-600">50K+</div>
-                <div className="text-sm text-gray-600">رحلة سعيدة</div>
+                <div className="text-sm text-gray-600">{t('happyTrips')}</div>
               </CardContent>
             </Card>
             
             <Card className="absolute -bottom-4 -left-4 bg-white shadow-xl border-0 w-32 h-32">
               <CardContent className="p-4 text-center h-full flex flex-col justify-center">
                 <div className="text-2xl font-bold text-green-600">24/7</div>
-                <div className="text-sm text-gray-600">دعم مستمر</div>
+                <div className="text-sm text-gray-600">{t('continuousSupport')}</div>
               </CardContent>
             </Card>
           </div>

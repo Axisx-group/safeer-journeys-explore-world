@@ -1,43 +1,46 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Hotel, Plane, Car, Map, Shield, Clock } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ServicesSection = () => {
+  const { t } = useLanguage();
+
   const services = [
     {
       icon: Hotel,
-      title: "حجز الفنادق",
-      description: "اختر من بين آلاف الفنادق المميزة حول العالم بأفضل الأسعار",
+      title: t('hotelBooking'),
+      description: t('hotelDesc'),
       color: "from-blue-500 to-blue-600"
     },
     {
       icon: Plane,
-      title: "حجز الطيران", 
-      description: "احجز تذاكر الطيران بأسعار تنافسية مع أفضل شركات الطيران",
+      title: t('flightBooking'), 
+      description: t('flightDesc'),
       color: "from-indigo-500 to-indigo-600"
     },
     {
       icon: Car,
-      title: "تأجير السيارات",
-      description: "استأجر السيارة المناسبة لرحلتك من أفضل شركات التأجير",
+      title: t('carRental'),
+      description: t('carDesc'),
       color: "from-purple-500 to-purple-600"
     },
     {
       icon: Map,
-      title: "الجولات السياحية",
-      description: "اكتشف أجمل الأماكن السياحية مع جولاتنا المنظمة",
+      title: t('tours'),
+      description: t('toursDesc'),
       color: "from-green-500 to-green-600"
     },
     {
       icon: Shield,
-      title: "ضمان الأمان",
-      description: "نضمن لك رحلة آمنة ومريحة مع أفضل خدمات الحماية",
+      title: t('security'),
+      description: t('securityDesc'),
       color: "from-yellow-500 to-yellow-600"
     },
     {
       icon: Clock,
-      title: "دعم 24/7",
-      description: "فريق دعم العملاء متاح على مدار الساعة لمساعدتك",
+      title: t('support247'),
+      description: t('supportDesc'),
       color: "from-red-500 to-red-600"
     }
   ];
@@ -47,10 +50,10 @@ const ServicesSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            خدماتنا المميزة
+            {t('servicesTitle')}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            نقدم لك مجموعة شاملة من خدمات السفر والسياحة لضمان رحلة مثالية ولا تُنسى
+            {t('servicesSubtitle')}
           </p>
         </div>
 
