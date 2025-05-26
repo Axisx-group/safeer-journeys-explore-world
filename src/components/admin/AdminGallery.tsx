@@ -16,7 +16,7 @@ const AdminGallery = () => {
       title: "ساجرادا فاميليا برشلونة",
       destination: "برشلونة",
       category: "معمار",
-      imageUrl: "https://images.unsplash.com/photo-1513519245088-0e12902e35ca",
+      imageUrl: "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       isFeatured: true,
       views: 1250
     },
@@ -25,7 +25,7 @@ const AdminGallery = () => {
       title: "عرض الفلامنكو",
       destination: "إشبيلية",
       category: "ثقافة",
-      imageUrl: "https://images.unsplash.com/photo-1558642084-fd07fae5282e",
+      imageUrl: "https://images.unsplash.com/photo-1558642084-fd07fae5282e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       isFeatured: false,
       views: 890
     },
@@ -34,7 +34,7 @@ const AdminGallery = () => {
       title: "الحلقوم التركي",
       destination: "إسطنبول",
       category: "طعام",
-      imageUrl: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      imageUrl: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       isFeatured: false,
       views: 567
     },
@@ -43,7 +43,7 @@ const AdminGallery = () => {
       title: "المنتدى الروماني",
       destination: "روما",
       category: "تاريخ",
-      imageUrl: "https://images.unsplash.com/photo-1552832230-c0197dd311b5",
+      imageUrl: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       isFeatured: true,
       views: 1456
     },
@@ -52,7 +52,7 @@ const AdminGallery = () => {
       title: "باريس ليلاً",
       destination: "باريس",
       category: "مناظر طبيعية",
-      imageUrl: "https://images.unsplash.com/photo-1502602898536-47ad22581b52",
+      imageUrl: "https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       isFeatured: false,
       views: 2134
     }
@@ -94,6 +94,10 @@ const AdminGallery = () => {
                     src={item.imageUrl} 
                     alt={item.title}
                     className="w-full h-48 object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                    }}
                   />
                   {item.isFeatured && (
                     <Badge className="absolute top-2 right-2 bg-yellow-100 text-yellow-800">

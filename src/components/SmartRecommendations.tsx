@@ -29,7 +29,7 @@ const SmartRecommendations = () => {
         price: '450€',
         duration: '4 أيام',
         type: 'رحلة ثقافية',
-        image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400',
+        image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 96,
         reasons: ['عاصمة فنية رائعة', 'طقس مثالي', 'تراث ثقافي غني']
       },
@@ -39,7 +39,7 @@ const SmartRecommendations = () => {
         price: '520€',
         duration: '5 أيام',
         type: 'رحلة شاطئية وثقافية',
-        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400',
+        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 95,
         reasons: ['شواطئ رائعة', 'فن الغاودي', 'مأكولات متميزة']
       },
@@ -49,7 +49,7 @@ const SmartRecommendations = () => {
         price: '380€',
         duration: '3 أيام',
         type: 'رحلة تاريخية',
-        image: 'https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400',
+        image: 'https://images.unsplash.com/photo-1558642084-fd07fae5282e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 94,
         reasons: ['تراث أندلسي', 'عمارة إسلامية', 'جو رومانسي']
       },
@@ -59,7 +59,7 @@ const SmartRecommendations = () => {
         price: '420€',
         duration: '4 أيام',
         type: 'رحلة تاريخية وثقافية',
-        image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=400',
+        image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 93,
         reasons: ['ملتقى الحضارات', 'مساجد تاريخية', 'تجربة فريدة']
       },
@@ -69,7 +69,7 @@ const SmartRecommendations = () => {
         price: '480€',
         duration: '4 أيام',
         type: 'رحلة تاريخية',
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400',
+        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 92,
         reasons: ['عاصمة التاريخ', 'آثار رومانية', 'فن النهضة']
       },
@@ -79,7 +79,7 @@ const SmartRecommendations = () => {
         price: '550€',
         duration: '5 أيام',
         type: 'رحلة رومانسية',
-        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400',
+        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 91,
         reasons: ['مدينة النور', 'فن وثقافة', 'رومانسية خالدة']
       }
@@ -90,7 +90,7 @@ const SmartRecommendations = () => {
         price: '€450',
         duration: '4 days',
         type: 'Cultural Trip',
-        image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400',
+        image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 96,
         reasons: ['Amazing Art Capital', 'Perfect Weather', 'Rich Cultural Heritage']
       },
@@ -100,7 +100,7 @@ const SmartRecommendations = () => {
         price: '€520',
         duration: '5 days',
         type: 'Beach & Culture',
-        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400',
+        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 95,
         reasons: ['Beautiful Beaches', 'Gaudí Architecture', 'Outstanding Cuisine']
       },
@@ -110,7 +110,7 @@ const SmartRecommendations = () => {
         price: '€380',
         duration: '3 days',
         type: 'Historical Trip',
-        image: 'https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400',
+        image: 'https://images.unsplash.com/photo-1558642084-fd07fae5282e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 94,
         reasons: ['Andalusian Heritage', 'Islamic Architecture', 'Romantic Atmosphere']
       },
@@ -120,7 +120,7 @@ const SmartRecommendations = () => {
         price: '€420',
         duration: '4 days',
         type: 'Historical & Cultural',
-        image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=400',
+        image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 93,
         reasons: ['Meeting of Civilizations', 'Historic Mosques', 'Unique Experience']
       },
@@ -130,7 +130,7 @@ const SmartRecommendations = () => {
         price: '€480',
         duration: '4 days',
         type: 'Historical Trip',
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400',
+        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 92,
         reasons: ['Capital of History', 'Roman Ruins', 'Renaissance Art']
       },
@@ -140,7 +140,7 @@ const SmartRecommendations = () => {
         price: '€550',
         duration: '5 days',
         type: 'Romantic Trip',
-        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400',
+        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         aiScore: 91,
         reasons: ['City of Light', 'Art & Culture', 'Timeless Romance']
       }
@@ -220,6 +220,10 @@ const SmartRecommendations = () => {
                   src={rec.image} 
                   alt={rec.destination}
                   className="w-full h-48 object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                  }}
                 />
                 <div className="absolute top-4 right-4">
                   <div className="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
