@@ -79,7 +79,15 @@ export const useHotelSearch = () => {
     queryKey: ['hotel-search'],
     queryFn: async () => {
       // This will call the edge function to fetch fresh data from Booking.com
-      const { data, error } = await supabase.functions.invoke('fetch-hotels');
+      const { data, error } = await supabase.functions.invoke('fetch-hotels', {
+        body: { 
+          searchParams: {
+            city: 'الرياض',
+            check_in_date: '2024-03-15',
+            check_out_date: '2024-03-17'
+          }
+        }
+      });
       
       if (error) throw error;
       return data;

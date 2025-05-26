@@ -71,7 +71,15 @@ export const useFlightSearch = () => {
     queryKey: ['flight-search'],
     queryFn: async () => {
       // This will call the edge function to fetch fresh data from Skyscanner
-      const { data, error } = await supabase.functions.invoke('fetch-flights');
+      const { data, error } = await supabase.functions.invoke('fetch-flights', {
+        body: { 
+          searchParams: {
+            departure_city: 'الرياض',
+            arrival_city: 'جدة',
+            departure_date: '2024-03-15'
+          }
+        }
+      });
       
       if (error) throw error;
       return data;
