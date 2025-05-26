@@ -23,6 +23,7 @@ export const useAdminSettings = () => {
 
   const loadSettings = async () => {
     try {
+      setLoading(true);
       // Since site_settings table doesn't exist, use fallback data
       setSettings({
         site_name: "ur trvl",
@@ -39,6 +40,8 @@ export const useAdminSettings = () => {
       });
     } catch (error) {
       console.error('Error loading settings:', error);
+    } finally {
+      setLoading(false);
     }
   };
 

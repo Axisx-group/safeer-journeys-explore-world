@@ -24,6 +24,7 @@ export const useAdminBookings = () => {
 
   const loadBookings = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('bookings')
         .select('*')
@@ -64,6 +65,8 @@ export const useAdminBookings = () => {
           created_at: "2024-01-15"
         }
       ]);
+    } finally {
+      setLoading(false);
     }
   };
 

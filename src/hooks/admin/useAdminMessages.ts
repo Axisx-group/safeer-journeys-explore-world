@@ -21,6 +21,7 @@ export const useAdminMessages = () => {
 
   const loadMessages = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('contact_messages')
         .select('*')
@@ -65,6 +66,8 @@ export const useAdminMessages = () => {
           created_at: "2024-01-24T14:15:00Z"
         }
       ]);
+    } finally {
+      setLoading(false);
     }
   };
 
