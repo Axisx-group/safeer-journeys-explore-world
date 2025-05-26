@@ -15,6 +15,7 @@ import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import LiveChat from "@/components/LiveChat";
 import RealTimeFlightData from "@/components/RealTimeFlightData";
+import RealTimeHotelData from "@/components/RealTimeHotelData";
 import AdvancedAIChat from "@/components/AdvancedAIChat";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,9 @@ const Index = () => {
 
       {/* Real-time Flight Data */}
       <RealTimeFlightData />
+
+      {/* Real-time Hotel Data */}
+      <RealTimeHotelData />
 
       <AdvancedSearchSection />
       <SmartRecommendationEngine />
