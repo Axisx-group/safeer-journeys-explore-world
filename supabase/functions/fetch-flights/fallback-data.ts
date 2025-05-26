@@ -53,10 +53,10 @@ export function generateFallbackFlights(searchParams: SearchParams): FlightData[
     const randomDestination = europeanDestinations[Math.floor(Math.random() * europeanDestinations.length)];
     const finalDestination = arrival_city ? arrivalInfo : randomDestination;
     
-    // Base prices in EUR for different routes
-    const basePrice = 150 + Math.floor(Math.random() * 400); // 150-550 EUR
-    const priceVariation = Math.floor(Math.random() * 100) - 50; // -50 to +50 EUR
-    const finalPrice = Math.max(120, basePrice + priceVariation);
+    // Base prices in EUR for different routes - more realistic European prices
+    const basePrice = 120 + Math.floor(Math.random() * 300); // 120-420 EUR
+    const priceVariation = Math.floor(Math.random() * 80) - 40; // -40 to +40 EUR
+    const finalPrice = Math.max(95, basePrice + priceVariation); // Minimum 95 EUR
 
     const departureHour = 6 + Math.floor(Math.random() * 16); // 6 AM to 10 PM
     const departureMinute = Math.floor(Math.random() * 60);

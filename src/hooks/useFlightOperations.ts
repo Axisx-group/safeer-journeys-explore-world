@@ -86,10 +86,10 @@ export const useFlightOperations = () => {
   };
 
   const handleFetchNewData = async () => {
-    // Updated default params to show European destination
+    // Updated default params to show European destination with EUR currency
     const defaultParams = {
       departure_city: 'الرياض',
-      arrival_city: 'مدريد', // European destination
+      arrival_city: 'باريس', // Changed to Paris as default
       departure_date: '2025-06-01',
     };
 

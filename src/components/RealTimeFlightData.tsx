@@ -15,7 +15,7 @@ const RealTimeFlightData = () => {
   
   const [searchParams, setSearchParams] = useState({
     departure_city: 'الرياض',
-    arrival_city: 'مدريد',
+    arrival_city: 'باريس', // Changed default to Paris
     departure_date: '2025-06-01',
   });
 
@@ -53,7 +53,7 @@ const RealTimeFlightData = () => {
             {isArabic ? 'رحلات إلى أوروبا' : 'Flights to Europe'}
           </h2>
           <p className="text-xl text-gray-600 mb-4">
-            {isArabic ? 'اكتشف أفضل الرحلات من السعودية إلى أوروبا بأسعار تنافسية' : 'Discover the best flights from Saudi Arabia to Europe at competitive prices'}
+            {isArabic ? 'اكتشف أفضل الرحلات من السعودية إلى أوروبا بأسعار تنافسية باليورو' : 'Discover the best flights from Saudi Arabia to Europe at competitive EUR prices'}
           </p>
           
           {/* مؤشر الحجز المباشر */}
@@ -62,7 +62,7 @@ const RealTimeFlightData = () => {
               {isArabic ? '✈️ رحلات مباشرة إلى أوروبا' : '✈️ Direct flights to Europe'}
             </span>
             <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
-              {isArabic ? 'شركات الطيران الأوروبية الاقتصادية' : 'European Budget Airlines'}
+              {isArabic ? 'أسعار باليورو - شركات الطيران الأوروبية' : 'EUR Prices - European Airlines'}
             </span>
           </div>
         </div>
