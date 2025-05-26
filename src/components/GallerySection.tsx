@@ -76,6 +76,10 @@ const GallerySection = () => {
                   src={destination.image}
                   alt={t('language') === 'ar' ? destination.title : destination.titleEn}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`;
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-white">

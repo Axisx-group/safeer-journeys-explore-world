@@ -24,7 +24,14 @@ export const useGallery = () => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data as GalleryItem[];
+      
+      // Process data to ensure working image URLs
+      const processedData = data?.map(item => ({
+        ...item,
+        image_url: item.image_url || `https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`
+      })) || [];
+      
+      return processedData as GalleryItem[];
     },
   });
 };
@@ -40,7 +47,14 @@ export const useFeaturedGallery = () => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data as GalleryItem[];
+      
+      // Process data to ensure working image URLs
+      const processedData = data?.map(item => ({
+        ...item,
+        image_url: item.image_url || `https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`
+      })) || [];
+      
+      return processedData as GalleryItem[];
     },
   });
 };

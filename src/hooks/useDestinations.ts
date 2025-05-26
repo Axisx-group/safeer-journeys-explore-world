@@ -37,7 +37,16 @@ export const useDestinations = () => {
         .order('popularity_score', { ascending: false });
       
       if (error) throw error;
-      return data as Destination[];
+      
+      // Fallback images if data is missing or has broken URLs
+      const processedData = data?.map(dest => ({
+        ...dest,
+        image_urls: dest.image_urls && dest.image_urls.length > 0 
+          ? dest.image_urls 
+          : [`https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`]
+      })) || [];
+      
+      return processedData as Destination[];
     },
   });
 };
@@ -55,7 +64,16 @@ export const useDestinationsByMood = (moodTags: string[]) => {
         .order('popularity_score', { ascending: false });
       
       if (error) throw error;
-      return data as Destination[];
+      
+      // Fallback images if data is missing or has broken URLs
+      const processedData = data?.map(dest => ({
+        ...dest,
+        image_urls: dest.image_urls && dest.image_urls.length > 0 
+          ? dest.image_urls 
+          : [`https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`]
+      })) || [];
+      
+      return processedData as Destination[];
     },
     enabled: moodTags.length > 0,
   });
