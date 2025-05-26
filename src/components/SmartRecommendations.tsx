@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Calendar, Sparkles, TrendingUp } from "lucide-react";
+import { MapPin, Calendar, Sparkles, TrendingUp, Eye } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 interface Recommendation {
   id: string;
@@ -20,6 +20,7 @@ const SmartRecommendations = () => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { language } = useLanguage();
+  const navigate = useNavigate();
 
   const generateSmartRecommendations = () => {
     const destinations = language === 'ar' ? [
@@ -265,9 +266,22 @@ const SmartRecommendations = () => {
                   </div>
                 </div>
 
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-                  {language === 'ar' ? 'احجز الآن' : 'Book Now'}
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => navigate('/booking')}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    {language === 'ar' ? 'المزيد' : 'More Info'}
+                  </Button>
+                  <Button 
+                    className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    onClick={() => navigate('/booking')}
+                  >
+                    {language === 'ar' ? 'احجز الآن' : 'Book Now'}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}

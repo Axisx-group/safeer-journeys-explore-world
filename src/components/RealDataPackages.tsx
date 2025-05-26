@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Calendar, Users, Star } from "lucide-react";
+import { MapPin, Calendar, Users, Star, Eye } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFeaturedPackages } from "@/hooks/usePackages";
 import { useNavigate } from "react-router-dom";
@@ -67,6 +67,10 @@ const RealDataPackages = () => {
                   src={pkg.image_url}
                   alt={language === 'ar' ? pkg.title_ar : pkg.title}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                  }}
                 />
                 <div className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   {pkg.is_featured && (
@@ -105,12 +109,22 @@ const RealDataPackages = () => {
                   </span>
                 </div>
 
-                <Button 
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                  onClick={() => navigate('/booking')}
-                >
-                  {language === 'ar' ? 'احجز الآن' : 'Book Now'}
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => navigate(`/package/${pkg.id}`)}
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    {language === 'ar' ? 'التفاصيل' : 'Details'}
+                  </Button>
+                  <Button 
+                    className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                    onClick={() => navigate('/booking')}
+                  >
+                    {language === 'ar' ? 'احجز الآن' : 'Book Now'}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
