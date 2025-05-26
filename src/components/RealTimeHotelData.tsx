@@ -25,12 +25,22 @@ const RealTimeHotelData = () => {
     limit: 20
   });
 
-  const { data: hotelResponse, isLoading, refetch } = useHotels(searchParams);
-  const { refetch: fetchNewHotels, isLoading: isFetching } = useHotelSearch(searchParams);
+  const { data: hotelResponse, isLoading, refetch, error } = useHotels(searchParams);
+  const { refetch: fetchNewHotels, isLoading: isFetching, error: fetchError } = useHotelSearch(searchParams);
 
+  // Automatically fetch hotels on component mount if none exist
   useEffect(() => {
-    handleFetchNewData();
-  }, []);
+    const checkAndFetchHotels = async () => {
+      if (!hotelResponse || hotelResponse.hotels.length === 0) {
+        console.log('No hotels found, fetching new data...');
+        await handleFetchNewData();
+      }
+    };
+    
+    if (!isLoading) {
+      checkAndFetchHotels();
+    }
+  }, [isLoading, hotelResponse]);
 
   const handleSearch = () => {
     console.log('Searching hotels with params:', searchParams);
@@ -41,10 +51,14 @@ const RealTimeHotelData = () => {
   const handleFetchNewData = async () => {
     try {
       console.log('Fetching new hotel data...');
-      await fetchNewHotels();
+      const result = await fetchNewHotels();
+      console.log('Fetch result:', result);
+      
+      // Wait a moment and then refetch from database
       setTimeout(() => {
+        console.log('Refetching from database...');
         refetch();
-      }, 1000);
+      }, 2000);
     } catch (error) {
       console.error('Error fetching hotels:', error);
     }
@@ -58,10 +72,14 @@ const RealTimeHotelData = () => {
   const hotels = hotelResponse?.hotels || [];
   const totalPages = Math.ceil((hotelResponse?.total || 0) / searchParams.limit);
 
-  console.log('Hotels data:', hotels);
-  console.log('Hotel response:', hotelResponse);
-  console.log('Is loading:', isLoading);
-  console.log('Is fetching:', isFetching);
+  console.log('Current component state:', {
+    hotels: hotels.length,
+    hotelResponse,
+    isLoading,
+    isFetching,
+    error,
+    fetchError
+  });
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
@@ -98,6 +116,24 @@ const RealTimeHotelData = () => {
               {isArabic ? "جلب المزيد من الفنادق" : "Fetch More Hotels"}
             </Button>
           </div>
+
+          {error && (
+            <div className="text-center p-4 bg-red-50 rounded-lg">
+              <p className="text-red-600">
+                {isArabic ? "خطأ في جلب البيانات" : "Error fetching data"}
+              </p>
+              <p className="text-sm text-red-500 mt-1">{error.message}</p>
+            </div>
+          )}
+
+          {fetchError && (
+            <div className="text-center p-4 bg-yellow-50 rounded-lg">
+              <p className="text-yellow-600">
+                {isArabic ? "خطأ في جلب البيانات الجديدة" : "Error fetching new data"}
+              </p>
+              <p className="text-sm text-yellow-500 mt-1">{fetchError.message}</p>
+            </div>
+          )}
 
           {isLoading || isFetching ? (
             <LoadingState />

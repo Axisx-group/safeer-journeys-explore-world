@@ -53,9 +53,11 @@ export const useHotels = (searchParams?: {
   return useQuery({
     queryKey: ['hotels', searchParams],
     queryFn: async () => {
+      console.log('Fetching hotels with search params:', searchParams);
+      
       let query = supabase
         .from('hotels')
-        .select('*')
+        .select('*', { count: 'exact' })
         .order('guest_rating', { ascending: false });
 
       if (searchParams?.city) {
@@ -87,13 +89,20 @@ export const useHotels = (searchParams?: {
 
       const { data, error, count } = await query;
       
-      if (error) throw error;
+      console.log('Hotels query result:', { data, error, count });
+      
+      if (error) {
+        console.error('Error fetching hotels:', error);
+        throw error;
+      }
+      
       return {
         hotels: data as Hotel[],
         total: count || 0,
         page: page,
         limit: limit,
-        hasMore: (data?.length || 0) === limit
+        hasMore: (data?.length || 0) === limit,
+        source: 'database'
       } as HotelSearchResponse;
     },
   });
@@ -109,6 +118,8 @@ export const useHotelSearch = (searchParams?: {
   return useQuery({
     queryKey: ['hotel-search', searchParams],
     queryFn: async () => {
+      console.log('Calling fetch-hotels function with params:', searchParams);
+      
       const { data, error } = await supabase.functions.invoke('fetch-hotels', {
         body: { 
           searchParams: {
@@ -121,7 +132,13 @@ export const useHotelSearch = (searchParams?: {
         }
       });
       
-      if (error) throw error;
+      console.log('fetch-hotels function result:', { data, error });
+      
+      if (error) {
+        console.error('Error calling fetch-hotels function:', error);
+        throw error;
+      }
+      
       return data;
     },
     enabled: false,
