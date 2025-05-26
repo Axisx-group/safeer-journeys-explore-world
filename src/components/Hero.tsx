@@ -23,7 +23,7 @@ const Hero = () => {
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
           {t('heroTitle')}
           <span className="block bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-            {t('brandName')}
+            ur trvl
           </span>
         </h1>
         

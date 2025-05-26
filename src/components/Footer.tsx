@@ -15,7 +15,7 @@ const Footer = () => {
               <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-2 rounded-lg">
                 <Plane className="h-6 w-6 text-white" />
               </div>
-              <span className="text-2xl font-bold">{t('brandName')}</span>
+              <span className="text-2xl font-bold">ur trvl</span>
             </div>
             <p className="text-gray-300 leading-relaxed">
               {language === 'ar' 
