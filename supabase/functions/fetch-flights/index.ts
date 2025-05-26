@@ -24,15 +24,20 @@ serve(async (req) => {
     
     console.log('Fetching flights with params:', searchParams);
 
-    const rapidApiKey = Deno.env.get('RAPIDAPI_KEY');
-    if (!rapidApiKey) {
-      console.log('RAPIDAPI_KEY not found, using sample data');
+    // Clear existing data first
+    const { error: deleteError } = await supabaseClient
+      .from('flights')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all existing records
+
+    if (deleteError) {
+      console.log('Note: Could not clear existing flights:', deleteError);
     }
 
-    // Sample flights data that will be inserted into the database
+    // Sample flights data with unique flight numbers
     const sampleFlights = [
       {
-        flight_number: 'SV1234',
+        flight_number: 'SV' + Math.floor(Math.random() * 9000 + 1000),
         departure_airport: 'RUH',
         arrival_airport: 'JED',
         departure_city: searchParams?.departure_city || 'الرياض',
@@ -50,11 +55,11 @@ serve(async (req) => {
         available_seats: 25
       },
       {
-        flight_number: 'MS789',
+        flight_number: 'MS' + Math.floor(Math.random() * 9000 + 1000),
         departure_airport: 'CAI',
         arrival_airport: 'RUH',
         departure_city: 'القاهرة',
-        arrival_city: 'الرياض',
+        arrival_city: searchParams?.arrival_city || 'الرياض',
         departure_date: searchParams?.departure_date || '2024-03-15',
         departure_time: '14:00',
         arrival_time: '17:00',
@@ -68,11 +73,11 @@ serve(async (req) => {
         available_seats: 15
       },
       {
-        flight_number: 'EK456',
+        flight_number: 'EK' + Math.floor(Math.random() * 9000 + 1000),
         departure_airport: 'DXB',
         arrival_airport: 'RUH',
         departure_city: 'دبي',
-        arrival_city: 'الرياض',
+        arrival_city: searchParams?.arrival_city || 'الرياض',
         departure_date: searchParams?.departure_date || '2024-03-15',
         departure_time: '10:30',
         arrival_time: '11:45',
@@ -86,7 +91,7 @@ serve(async (req) => {
         available_seats: 30
       },
       {
-        flight_number: 'QR321',
+        flight_number: 'QR' + Math.floor(Math.random() * 9000 + 1000),
         departure_airport: 'DOH',
         arrival_airport: 'JED',
         departure_city: 'الدوحة',
@@ -102,13 +107,31 @@ serve(async (req) => {
         is_direct: true,
         class_type: 'economy',
         available_seats: 20
+      },
+      {
+        flight_number: 'FZ' + Math.floor(Math.random() * 9000 + 1000),
+        departure_airport: 'DXB',
+        arrival_airport: 'JED',
+        departure_city: 'دبي',
+        arrival_city: 'جدة',
+        departure_date: searchParams?.departure_date || '2024-03-15',
+        departure_time: '12:00',
+        arrival_time: '13:15',
+        airline: 'فلاي دبي',
+        price: 600.00,
+        currency: 'SAR',
+        duration_minutes: 75,
+        stops: 0,
+        is_direct: true,
+        class_type: 'economy',
+        available_seats: 40
       }
     ];
 
-    // Insert flights into database
+    // Insert new flights
     const { data, error } = await supabaseClient
       .from('flights')
-      .upsert(sampleFlights, { onConflict: 'flight_number' })
+      .insert(sampleFlights)
       .select();
 
     if (error) {

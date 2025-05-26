@@ -24,12 +24,17 @@ serve(async (req) => {
     
     console.log('Fetching hotels with params:', searchParams);
 
-    const rapidApiKey = Deno.env.get('RAPIDAPI_KEY');
-    if (!rapidApiKey) {
-      console.log('RAPIDAPI_KEY not found, using sample data');
+    // Clear existing data first
+    const { error: deleteError } = await supabaseClient
+      .from('hotels')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all existing records
+
+    if (deleteError) {
+      console.log('Note: Could not clear existing hotels:', deleteError);
     }
 
-    // Sample hotels data that will be inserted into the database
+    // Sample hotels data with unique identifiers
     const sampleHotels = [
       {
         name: 'فندق الريتز كارلتون الرياض',
@@ -118,13 +123,35 @@ serve(async (req) => {
         gym: true,
         spa: true,
         restaurant: true
+      },
+      {
+        name: 'فندق فورسيزونز القاهرة',
+        city: 'القاهرة',
+        country: 'مصر',
+        address: 'النيل، القاهرة',
+        star_rating: 5,
+        guest_rating: 4.6,
+        price_per_night: 550.00,
+        currency: 'SAR',
+        check_in_date: searchParams?.check_in_date || '2024-03-15',
+        check_out_date: searchParams?.check_out_date || '2024-03-17',
+        room_type: 'غرفة بإطلالة النيل',
+        amenities: ['واي فاي مجاني', 'مسبح', 'سبا', 'مطاعم فاخرة'],
+        description: 'فندق فاخر على ضفاف النيل في قلب القاهرة',
+        image_urls: ['https://images.unsplash.com/photo-1564501049412-61c2a3083791'],
+        free_wifi: true,
+        free_parking: true,
+        pool: true,
+        gym: true,
+        spa: true,
+        restaurant: true
       }
     ];
 
-    // Insert hotels into database
+    // Insert new hotels
     const { data, error } = await supabaseClient
       .from('hotels')
-      .upsert(sampleHotels, { onConflict: 'name' })
+      .insert(sampleHotels)
       .select();
 
     if (error) {
