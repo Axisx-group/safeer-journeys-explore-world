@@ -1,6 +1,7 @@
 
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import UnifiedSearchSection from "@/components/UnifiedSearchSection";
 import AdvancedSearchSection from "@/components/advanced/AdvancedSearchSection";
 import SmartRecommendationEngine from "@/components/advanced/SmartRecommendationEngine";
 import AITravelAssistant from "@/components/ai/AITravelAssistant";
@@ -31,6 +32,9 @@ const Index = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       <Hero />
+      
+      {/* Unified Search Section */}
+      <UnifiedSearchSection />
       
       {/* AI Assistant Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
