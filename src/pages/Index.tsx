@@ -3,12 +3,12 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SearchSection from "@/components/SearchSection";
 import ServicesSection from "@/components/ServicesSection";
-import SmartRecommendations from "@/components/SmartRecommendations";
-import DynamicPricing from "@/components/DynamicPricing";
+import SimpleSmartRecommendations from "@/components/SimpleSmartRecommendations";
+import SimpleDynamicPricing from "@/components/SimpleDynamicPricing";
 import GallerySection from "@/components/GallerySection";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
-import AIAssistant from "@/components/AIAssistant";
+import SimpleAIAssistant from "@/components/SimpleAIAssistant";
 
 const Index = () => {
   return (
@@ -16,13 +16,13 @@ const Index = () => {
       <Navbar />
       <Hero />
       <SearchSection />
-      <SmartRecommendations />
-      <DynamicPricing />
+      <SimpleSmartRecommendations />
+      <SimpleDynamicPricing />
       <ServicesSection />
       <GallerySection />
       <FeaturesSection />
       <Footer />
-      <AIAssistant />
+      <SimpleAIAssistant />
     </div>
   );
 };

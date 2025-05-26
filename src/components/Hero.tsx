@@ -65,7 +65,7 @@ const Hero = () => {
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
             <div className="text-3xl font-bold text-yellow-400">24/7</div>
-            <div className="text-blue-100">{t('support')}</div>
+            <div className="text-blue-100">{t('customer_support')}</div>
           </div>
         </div>
       </div>
