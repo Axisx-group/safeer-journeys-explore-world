@@ -2,10 +2,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SearchSection from "@/components/SearchSection";
-import ServicesSection from "@/components/ServicesSection";
-import SimpleSmartRecommendations from "@/components/SimpleSmartRecommendations";
+import RealDataServicesSection from "@/components/RealDataServicesSection";
+import RealDataPackages from "@/components/RealDataPackages";
 import SimpleDynamicPricing from "@/components/SimpleDynamicPricing";
-import GallerySection from "@/components/GallerySection";
+import RealDataGallery from "@/components/RealDataGallery";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import SimpleAIAssistant from "@/components/SimpleAIAssistant";
@@ -16,10 +16,10 @@ const Index = () => {
       <Navbar />
       <Hero />
       <SearchSection />
-      <SimpleSmartRecommendations />
+      <RealDataPackages />
       <SimpleDynamicPricing />
-      <ServicesSection />
-      <GallerySection />
+      <RealDataServicesSection />
+      <RealDataGallery />
       <FeaturesSection />
       <Footer />
       <SimpleAIAssistant />

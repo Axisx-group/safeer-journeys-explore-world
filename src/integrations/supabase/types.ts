@@ -9,7 +9,213 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          created_at: string | null
+          departure_date: string
+          destination: string
+          email: string
+          hotel_preference: string | null
+          id: string
+          name: string
+          passengers: number
+          phone: string
+          return_date: string
+          special_requests: string | null
+          status: string | null
+          total_price: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          departure_date: string
+          destination: string
+          email: string
+          hotel_preference?: string | null
+          id?: string
+          name: string
+          passengers?: number
+          phone: string
+          return_date: string
+          special_requests?: string | null
+          status?: string | null
+          total_price?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          departure_date?: string
+          destination?: string
+          email?: string
+          hotel_preference?: string | null
+          id?: string
+          name?: string
+          passengers?: number
+          phone?: string
+          return_date?: string
+          special_requests?: string | null
+          status?: string | null
+          total_price?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          status: string | null
+          subject: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          status?: string | null
+          subject: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          status?: string | null
+          subject?: string
+        }
+        Relationships: []
+      }
+      gallery: {
+        Row: {
+          category: string
+          created_at: string | null
+          destination: string
+          id: string
+          image_url: string
+          is_featured: boolean | null
+          title: string
+          title_ar: string
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          destination: string
+          id?: string
+          image_url: string
+          is_featured?: boolean | null
+          title: string
+          title_ar: string
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          destination?: string
+          id?: string
+          image_url?: string
+          is_featured?: boolean | null
+          title?: string
+          title_ar?: string
+        }
+        Relationships: []
+      }
+      packages: {
+        Row: {
+          created_at: string | null
+          description: string
+          description_ar: string
+          destination: string
+          duration_days: number
+          highlights: Json | null
+          highlights_ar: Json | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          is_featured: boolean | null
+          price: number
+          title: string
+          title_ar: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          description_ar: string
+          destination: string
+          duration_days: number
+          highlights?: Json | null
+          highlights_ar?: Json | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          price: number
+          title: string
+          title_ar: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          description_ar?: string
+          destination?: string
+          duration_days?: number
+          highlights?: Json | null
+          highlights_ar?: Json | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          price?: number
+          title?: string
+          title_ar?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          created_at: string | null
+          description: string
+          description_ar: string
+          icon: string
+          id: string
+          is_active: boolean | null
+          price_from: number | null
+          title: string
+          title_ar: string
+        }
+        Insert: {
+          created_at?: string | null
+          description: string
+          description_ar: string
+          icon: string
+          id?: string
+          is_active?: boolean | null
+          price_from?: number | null
+          title: string
+          title_ar: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string
+          description_ar?: string
+          icon?: string
+          id?: string
+          is_active?: boolean | null
+          price_from?: number | null
+          title?: string
+          title_ar?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
