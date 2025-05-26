@@ -14,7 +14,6 @@ import EnhancedGallery from "@/components/advanced/EnhancedGallery";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import LiveChat from "@/components/LiveChat";
-import RealTimeHotelData from "@/components/RealTimeHotelData";
 import AdvancedAIChat from "@/components/AdvancedAIChat";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -105,11 +104,6 @@ const Index = () => {
           <AITravelAssistant />
         </motion.section>
       )}
-
-      {/* Main Services Sections */}
-      <div className="space-y-0">
-        <RealTimeHotelData />
-      </div>
 
       {/* Advanced Features */}
       <div className="space-y-0 bg-gray-50">
