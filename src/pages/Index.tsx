@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import UnifiedSearchSection from "@/components/UnifiedSearchSection";
@@ -15,6 +14,7 @@ import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import LiveChat from "@/components/LiveChat";
 import AdvancedAIChat from "@/components/AdvancedAIChat";
+import SmartChatInterface from "@/components/ai/SmartChatInterface";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bot, Sparkles } from "lucide-react";
@@ -135,6 +135,7 @@ const Index = () => {
       {/* Support Components */}
       <LiveChat />
       <AdvancedAIChat />
+      <SmartChatInterface />
     </div>
   );
 };
