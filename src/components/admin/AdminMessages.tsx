@@ -31,8 +31,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Search, Reply, Eye, Archive, Send, Loader2 } from "lucide-react";
+import { Search, Reply, Eye, Archive, Send, Loader2, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminData } from "@/hooks/useAdminData";
 
 const AdminMessages = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,39 +43,12 @@ const AdminMessages = () => {
   const [loadingStates, setLoadingStates] = useState<{[key: string]: boolean}>({});
   const { toast } = useToast();
   
-  // بيانات تجريبية للرسائل
-  const [messages, setMessages] = useState([
-    {
-      id: "1",
-      name: "سارة أحمد",
-      email: "sara@example.com",
-      phone: "+966501234567",
-      subject: "استفسار عن رحلة إسطنبول",
-      message: "مرحباً، أود الاستفسار عن العروض المتاحة لرحلة إسطنبول لشهر مارس القادم للعائلة...",
-      status: "new",
-      createdAt: "2024-01-25T10:30:00Z"
-    },
-    {
-      id: "2",
-      name: "محمد سعد",
-      email: "mohamed@example.com",
-      phone: "+966507654321",
-      subject: "طلب تعديل الحجز",
-      message: "أحتاج إلى تعديل تاريخ السفر في حجزي رقم #12345 من 15 فبراير إلى 20 فبراير...",
-      status: "replied",
-      createdAt: "2024-01-24T14:15:00Z"
-    },
-    {
-      id: "3",
-      name: "نورا حسن",
-      email: "nora@example.com",
-      phone: "+966502345678",
-      subject: "شكر وامتنان",
-      message: "أشكركم على الخدمة الممتازة في رحلة مدريد. كان كل شيء منظم بشكل رائع...",
-      status: "resolved",
-      createdAt: "2024-01-23T09:20:00Z"
-    }
-  ]);
+  const { 
+    messages, 
+    loading, 
+    updateMessageStatus, 
+    refetchData 
+  } = useAdminData();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -120,28 +94,15 @@ const AdminMessages = () => {
     setLoadingStates(prev => ({ ...prev, [messageId]: true }));
     
     try {
-      // محاكاة API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.id === messageId 
-            ? { ...msg, status: 'archived' }
-            : msg
-        )
-      );
-      
-      toast({
-        title: "تم الأرشفة بنجاح",
-        description: "تم أرشفة الرسالة بنجاح",
-      });
+      const success = await updateMessageStatus(messageId, 'archived');
+      if (success) {
+        toast({
+          title: "تم الأرشفة بنجاح",
+          description: "تم أرشفة الرسالة بنجاح",
+        });
+      }
     } catch (error) {
       console.error('خطأ في أرشفة الرسالة:', error);
-      toast({
-        title: "خطأ في الأرشفة",
-        description: "حدث خطأ أثناء أرشفة الرسالة",
-        variant: "destructive",
-      });
     } finally {
       setLoadingStates(prev => ({ ...prev, [messageId]: false }));
     }
@@ -165,46 +126,56 @@ const AdminMessages = () => {
     setLoadingStates(prev => ({ ...prev, reply: true }));
     
     try {
-      // محاكاة API call لإرسال الرد
+      // محاكاة إرسال البريد الإلكتروني
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.id === selectedMessage.id 
-            ? { ...msg, status: 'replied' }
-            : msg
-        )
-      );
-      
-      toast({
-        title: "تم إرسال الرد بنجاح",
-        description: `تم إرسال الرد إلى ${selectedMessage.email}`,
-      });
-      
-      setReplyText("");
-      setIsDialogOpen(false);
-      setSelectedMessage(null);
+      const success = await updateMessageStatus(selectedMessage.id, 'replied');
+      if (success) {
+        toast({
+          title: "تم إرسال الرد بنجاح",
+          description: `تم إرسال الرد إلى ${selectedMessage.email}`,
+        });
+        
+        setReplyText("");
+        setIsDialogOpen(false);
+        setSelectedMessage(null);
+      }
     } catch (error) {
       console.error('خطأ في إرسال الرد:', error);
-      toast({
-        title: "خطأ في إرسال الرد",
-        description: "حدث خطأ أثناء إرسال الرد",
-        variant: "destructive",
-      });
     } finally {
       setLoadingStates(prev => ({ ...prev, reply: false }));
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="mr-2">جاري تحميل الرسائل...</span>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <Card className="shadow-lg border-0 bg-gradient-to-r from-white to-blue-50">
         <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
-          <CardTitle className="flex items-center gap-3 text-xl">
-            <div className="p-2 bg-white/20 rounded-lg">
-              <Search className="h-5 w-5" />
+          <CardTitle className="flex items-center justify-between text-xl">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-white/20 rounded-lg">
+                <Search className="h-5 w-5" />
+              </div>
+              إدارة الرسائل والاستفسارات ({messages.length})
             </div>
-            إدارة الرسائل والاستفسارات
+            <Button 
+              onClick={refetchData}
+              variant="outline"
+              size="sm"
+              className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              تحديث
+            </Button>
           </CardTitle>
           <div className="flex items-center space-x-2 space-x-reverse pt-4">
             <div className="relative">
@@ -250,7 +221,7 @@ const AdminMessages = () => {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className="text-gray-700">{formatDate(message.createdAt)}</TableCell>
+                    <TableCell className="text-gray-700">{formatDate(message.created_at)}</TableCell>
                     <TableCell>{getStatusBadge(message.status)}</TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2 space-x-reverse">
@@ -294,7 +265,7 @@ const AdminMessages = () => {
                                   )}
                                   <div>
                                     <label className="text-sm font-medium text-gray-600">التاريخ:</label>
-                                    <p className="font-semibold text-gray-900">{formatDate(selectedMessage.createdAt)}</p>
+                                    <p className="font-semibold text-gray-900">{formatDate(selectedMessage.created_at)}</p>
                                   </div>
                                 </div>
                                 <div>

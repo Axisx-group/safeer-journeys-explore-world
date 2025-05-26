@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Save } from "lucide-react";
+import { Settings, Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { useAdminData } from "@/hooks/useAdminData";
 import GeneralSettingsTab from "./settings/GeneralSettingsTab";
 import StripeSettingsTab from "./settings/StripeSettingsTab";
 import EmailSettingsTab from "./settings/EmailSettingsTab";
@@ -15,18 +16,21 @@ import SystemSettingsTab from "./settings/SystemSettingsTab";
 
 const AdminSettings = () => {
   const { toast } = useToast();
-  const [settings, setSettings] = useState({
-    siteName: "ur trvl",
-    siteDescription: "منصة السفر والسياحة الرائدة",
-    supportEmail: "support@urtrvl.com",
-    phoneNumber: "+966500000000",
-    allowRegistration: true,
-    emailNotifications: true,
-    smsNotifications: false,
-    maintenanceMode: false,
-    autoApproveBookings: false,
-    currency: "EUR",
-    timezone: "Asia/Riyadh",
+  const { settings, loading, saveSettings } = useAdminData();
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const [localSettings, setLocalSettings] = useState({
+    siteName: settings?.site_name || "ur trvl",
+    siteDescription: settings?.site_description || "منصة السفر والسياحة الرائدة",
+    supportEmail: settings?.support_email || "support@urtrvl.com",
+    phoneNumber: settings?.phone_number || "+966500000000",
+    allowRegistration: settings?.allow_registration ?? true,
+    emailNotifications: settings?.email_notifications ?? true,
+    smsNotifications: settings?.sms_notifications ?? false,
+    maintenanceMode: settings?.maintenance_mode ?? false,
+    autoApproveBookings: settings?.auto_approve_bookings ?? false,
+    currency: settings?.currency || "EUR",
+    timezone: settings?.timezone || "Asia/Riyadh",
     maxUploadSize: "10MB",
     sessionTimeout: "30",
     // Stripe settings
@@ -49,16 +53,49 @@ const AdminSettings = () => {
   });
 
   const handleSettingChange = (key: string, value: any) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setLocalSettings(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSaveAll = () => {
-    console.log('تم حفظ جميع الإعدادات:', settings);
-    toast({
-      title: "تم الحفظ بنجاح",
-      description: "تم حفظ جميع الإعدادات بنجاح",
-    });
+  const handleSaveAll = async () => {
+    setIsSaving(true);
+    console.log('تم حفظ جميع الإعدادات:', localSettings);
+    
+    try {
+      const success = await saveSettings({
+        site_name: localSettings.siteName,
+        site_description: localSettings.siteDescription,
+        support_email: localSettings.supportEmail,
+        phone_number: localSettings.phoneNumber,
+        allow_registration: localSettings.allowRegistration,
+        email_notifications: localSettings.emailNotifications,
+        sms_notifications: localSettings.smsNotifications,
+        maintenance_mode: localSettings.maintenanceMode,
+        auto_approve_bookings: localSettings.autoApproveBookings,
+        currency: localSettings.currency,
+        timezone: localSettings.timezone
+      });
+
+      if (success) {
+        toast({
+          title: "تم الحفظ بنجاح",
+          description: "تم حفظ جميع الإعدادات وتطبيقها على الموقع",
+        });
+      }
+    } catch (error) {
+      console.error('خطأ في حفظ الإعدادات:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="mr-2">جاري تحميل الإعدادات...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -73,11 +110,21 @@ const AdminSettings = () => {
             </CardTitle>
             <Button 
               onClick={handleSaveAll}
+              disabled={isSaving}
               className="bg-white/20 hover:bg-white/30 text-white border-white/30"
               variant="outline"
             >
-              <Save className="h-4 w-4 mr-2" />
-              حفظ جميع الإعدادات
+              {isSaving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  جاري الحفظ...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  حفظ جميع الإعدادات
+                </>
+              )}
             </Button>
           </div>
         </CardHeader>
@@ -97,49 +144,49 @@ const AdminSettings = () => {
 
             <TabsContent value="general" className="space-y-6 mt-6">
               <GeneralSettingsTab 
-                settings={settings} 
+                settings={localSettings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
             <TabsContent value="stripe" className="space-y-6 mt-6">
               <StripeSettingsTab 
-                settings={settings} 
+                settings={localSettings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
             <TabsContent value="email" className="space-y-6 mt-6">
               <EmailSettingsTab 
-                settings={settings} 
+                settings={localSettings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
             <TabsContent value="notifications" className="space-y-6 mt-6">
               <NotificationsSettingsTab 
-                settings={settings} 
+                settings={localSettings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
             <TabsContent value="security" className="space-y-6 mt-6">
               <SecuritySettingsTab 
-                settings={settings} 
+                settings={localSettings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
             <TabsContent value="appearance" className="space-y-6 mt-6">
               <AppearanceSettingsTab 
-                settings={settings} 
+                settings={localSettings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
             <TabsContent value="system" className="space-y-6 mt-6">
               <SystemSettingsTab 
-                settings={settings} 
+                settings={localSettings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
