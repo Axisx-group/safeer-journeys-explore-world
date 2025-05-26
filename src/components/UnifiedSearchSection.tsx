@@ -5,10 +5,13 @@ import { Search, Sparkles, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import UnifiedSearchHeader from "@/components/unified-search/UnifiedSearchHeader";
 import ServiceSelector from "@/components/unified-search/ServiceSelector";
 import SearchForm from "@/components/unified-search/SearchForm";
 import PopularCombinations from "@/components/unified-search/PopularCombinations";
+import { useFlightSearch } from "@/hooks/useFlights";
 
 const UnifiedSearchSection = () => {
   const [includeFlights, setIncludeFlights] = useState(true);
@@ -30,6 +33,9 @@ const UnifiedSearchSection = () => {
 
   const { language } = useLanguage();
   const isArabic = language === 'ar';
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { mutate: searchFlights, isPending: isSearching } = useFlightSearch();
 
   const handleSearch = () => {
     console.log('Enhanced unified search:', { 
@@ -38,10 +44,79 @@ const UnifiedSearchSection = () => {
       includeHotels, 
       includeCars 
     });
-    
-    // Here you would integrate with your booking API
-    // For now, we'll show a success message
-    alert(isArabic ? 'جاري البحث عن أفضل العروض...' : 'Searching for the best deals...');
+
+    // Validate required fields
+    if (!searchParams.from || !searchParams.to || !searchParams.checkIn) {
+      toast({
+        title: isArabic ? "خطأ في البحث" : "Search Error",
+        description: isArabic 
+          ? "يرجى ملء جميع الحقول المطلوبة (من، إلى، تاريخ المغادرة)"
+          : "Please fill in all required fields (From, To, Departure date)",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // If flights are selected, trigger flight search
+    if (includeFlights) {
+      const flightSearchParams = {
+        departure_city: searchParams.from,
+        arrival_city: searchParams.to,
+        departure_date: searchParams.checkIn
+      };
+
+      searchFlights(flightSearchParams, {
+        onSuccess: (data) => {
+          console.log('Flight search successful:', data);
+          toast({
+            title: isArabic ? "تم العثور على رحلات!" : "Flights Found!",
+            description: isArabic 
+              ? `تم العثور على ${data?.flights?.length || 0} رحلة`
+              : `Found ${data?.flights?.length || 0} flights`,
+          });
+          
+          // Navigate to booking page with search results
+          navigate('/booking', { 
+            state: { 
+              searchResults: data,
+              searchParams: flightSearchParams,
+              includeHotels,
+              includeCars
+            } 
+          });
+        },
+        onError: (error) => {
+          console.error('Flight search error:', error);
+          toast({
+            title: isArabic ? "خطأ في البحث" : "Search Error",
+            description: isArabic 
+              ? "حدث خطأ أثناء البحث عن الرحلات. يرجى المحاولة مرة أخرى."
+              : "An error occurred while searching for flights. Please try again.",
+            variant: "destructive"
+          });
+        }
+      });
+    } else {
+      // If only hotels or other services are selected
+      toast({
+        title: isArabic ? "جاري البحث..." : "Searching...",
+        description: isArabic 
+          ? "جاري البحث عن أفضل العروض للفنادق والخدمات الأخرى..."
+          : "Searching for the best hotel and other service deals...",
+      });
+      
+      // Navigate to appropriate page based on selected services
+      if (includeHotels) {
+        navigate('/hotels', { 
+          state: { 
+            searchParams,
+            includeCars 
+          } 
+        });
+      } else {
+        navigate('/services');
+      }
+    }
   };
 
   const handleFlightsChange = (checked: boolean | "indeterminate") => {
@@ -147,6 +222,7 @@ const UnifiedSearchSection = () => {
                     <Button 
                       size="lg" 
                       onClick={handleSearch}
+                      disabled={isSearching}
                       className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white px-20 py-6 text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 rounded-full border-2 border-white/20 hover:border-white/30 group overflow-hidden"
                     >
                       {/* Button shine effect */}
@@ -159,7 +235,10 @@ const UnifiedSearchSection = () => {
                         </div>
                         
                         <span className="font-extrabold tracking-wide">
-                          {isArabic ? 'ابحث عن أفضل العروض' : 'Find Best Deals'}
+                          {isSearching 
+                            ? (isArabic ? 'جاري البحث...' : 'Searching...')
+                            : (isArabic ? 'ابحث عن أفضل العروض' : 'Find Best Deals')
+                          }
                         </span>
                         
                         <ArrowRight className={`h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 ${isArabic ? 'rotate-180' : ''}`} />

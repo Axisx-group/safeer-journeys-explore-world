@@ -1,5 +1,5 @@
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface Flight {
@@ -67,23 +67,27 @@ export const useFlights = (searchParams?: {
 };
 
 export const useFlightSearch = () => {
-  return useQuery({
-    queryKey: ['flight-search'],
-    queryFn: async () => {
-      // This will call the edge function to fetch fresh data from Skyscanner
+  return useMutation({
+    mutationFn: async (searchParams: {
+      departure_city?: string;
+      arrival_city?: string;
+      departure_date?: string;
+      return_date?: string;
+    }) => {
+      console.log('Searching for flights with params:', searchParams);
+      
+      // Call the edge function to fetch fresh data from external APIs
       const { data, error } = await supabase.functions.invoke('fetch-flights', {
-        body: { 
-          searchParams: {
-            departure_city: 'الرياض',
-            arrival_city: 'جدة',
-            departure_date: '2024-03-15'
-          }
-        }
+        body: { searchParams }
       });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Flight search error:', error);
+        throw error;
+      }
+      
+      console.log('Flight search response:', data);
       return data;
     },
-    enabled: false, // Only run when manually triggered
   });
 };
