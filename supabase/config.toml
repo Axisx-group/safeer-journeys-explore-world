@@ -46,6 +46,11 @@ refresh_token_rotation_enabled = true
 security_update_password_require_reauthentication = true
 enable_leaked_password_protection = true
 
+[auth.mfa]
+enabled = true
+totp_enabled = true
+phone_enabled = true
+
 [functions.fetch-flights]
 verify_jwt = false
 
