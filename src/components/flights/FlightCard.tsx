@@ -28,6 +28,16 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
     });
   };
 
+  // Format price display with proper currency symbol
+  const formatPrice = (price: number, currency: string) => {
+    if (currency === 'EUR') {
+      return `€${price}`;
+    } else if (currency === 'SAR') {
+      return `${price} ريال`;
+    }
+    return `${price} ${currency}`;
+  };
+
   return (
     <Card className="hover:shadow-lg transition-shadow bg-white">
       <CardHeader>
@@ -40,7 +50,7 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
             )}
           </div>
           <div className="text-2xl font-bold text-green-600">
-            {flight.price} {flight.currency}
+            {formatPrice(flight.price, flight.currency)}
           </div>
         </CardTitle>
       </CardHeader>

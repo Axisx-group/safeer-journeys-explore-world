@@ -7,7 +7,7 @@ export const corsHeaders = {
 export const cityToAirport: { [key: string]: string } = {
   // Saudi departure cities only
   'الرياض': 'RUH',
-  'جدة': 'JED',
+  'جدة': 'JED', 
   'الدمام': 'DMM',
   
   // European destinations only
@@ -39,11 +39,19 @@ export const cityToAirport: { [key: string]: string } = {
 // European budget airlines only - no Gulf carriers
 export const airlines = [
   'Ryanair',
-  'EasyJet', 
-  'Wizz Air',
+  'EasyJet',
+  'Wizz Air', 
   'Vueling',
   'Eurowings',
   'Norwegian Air',
   'Jet2',
-  'Pegasus Airlines'
+  'Pegasus Airlines',
+  'Transavia',
+  'TUI Airways',
+  'Volotea',
+  'Air Europa',
+  'TAP Air Portugal',
+  'Lufthansa',
+  'KLM',
+  'Air France'
 ];
