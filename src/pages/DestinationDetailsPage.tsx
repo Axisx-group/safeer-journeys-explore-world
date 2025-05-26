@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useDestinations } from "@/hooks/useDestinations";
@@ -13,7 +12,7 @@ import {
   Sun,
   Shield,
   CreditCard,
-  Passport
+  FileText
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -210,7 +209,7 @@ const DestinationDetailsPage = () => {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Passport className="h-5 w-5 text-red-500 mr-2" />
+                    <FileText className="h-5 w-5 text-red-500 mr-2" />
                     <span className="text-sm">
                       {language === 'ar' ? 'تأشيرة مطلوبة' : 'Visa Required'}
                     </span>
