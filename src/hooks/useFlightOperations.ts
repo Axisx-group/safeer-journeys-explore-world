@@ -23,7 +23,7 @@ export const useFlightOperations = () => {
     try {
       console.log('Searching with params:', searchParams);
       
-      // First try to fetch fresh data from European budget airlines APIs
+      // First try to fetch fresh data from global flight APIs
       await fetchFromAPI(searchParams);
       
       // Then fetch from database
@@ -64,7 +64,7 @@ export const useFlightOperations = () => {
   }) => {
     try {
       setIsFetching(true);
-      console.log('Fetching from European budget airlines APIs with params:', searchParams);
+      console.log('Fetching from global flight APIs with params:', searchParams);
       
       const { data, error } = await supabase.functions.invoke('fetch-flights', {
         body: { 
@@ -76,7 +76,7 @@ export const useFlightOperations = () => {
         console.error('API fetch error:', error);
       } else {
         console.log('API response:', data);
-        setDataSource(data?.source || 'european-budget');
+        setDataSource(data?.source || 'global-airlines');
       }
     } catch (error) {
       console.error('Error calling API:', error);
@@ -86,10 +86,10 @@ export const useFlightOperations = () => {
   };
 
   const handleFetchNewData = async () => {
-    // Updated default params to show European destination with EUR currency
+    // Default params for worldwide destinations
     const defaultParams = {
       departure_city: 'الرياض',
-      arrival_city: 'باريس', // Changed to Paris as default
+      arrival_city: 'دبي',
       departure_date: '2025-06-01',
     };
 

@@ -15,7 +15,7 @@ const RealTimeFlightData = () => {
   
   const [searchParams, setSearchParams] = useState({
     departure_city: 'الرياض',
-    arrival_city: 'باريس', // Changed default to Paris
+    arrival_city: 'دبي',
     departure_date: '2025-06-01',
   });
 
@@ -50,19 +50,18 @@ const RealTimeFlightData = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {isArabic ? 'رحلات إلى أوروبا' : 'Flights to Europe'}
+            {isArabic ? 'رحلات حول العالم' : 'Flights Around the World'}
           </h2>
           <p className="text-xl text-gray-600 mb-4">
-            {isArabic ? 'اكتشف أفضل الرحلات من السعودية إلى أوروبا بأسعار تنافسية باليورو' : 'Discover the best flights from Saudi Arabia to Europe at competitive EUR prices'}
+            {isArabic ? 'اكتشف أفضل الرحلات إلى جميع أنحاء العالم بأسعار تنافسية' : 'Discover the best flights to destinations worldwide at competitive prices'}
           </p>
           
-          {/* مؤشر الحجز المباشر */}
           <div className="flex justify-center items-center gap-2 text-blue-600">
             <span className="text-lg font-semibold">
-              {isArabic ? '✈️ رحلات مباشرة إلى أوروبا' : '✈️ Direct flights to Europe'}
+              {isArabic ? '✈️ رحلات عالمية' : '✈️ Global Flights'}
             </span>
             <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
-              {isArabic ? 'أسعار باليورو - شركات الطيران الأوروبية' : 'EUR Prices - European Airlines'}
+              {isArabic ? 'جميع شركات الطيران العالمية' : 'All Global Airlines'}
             </span>
           </div>
         </div>
@@ -112,7 +111,6 @@ const RealTimeFlightData = () => {
         </div>
       </div>
 
-      {/* نافذة الحجز */}
       {selectedFlight && (
         <FlightBookingModal
           isOpen={isBookingModalOpen}
