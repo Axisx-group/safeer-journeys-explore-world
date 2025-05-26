@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import AdminSetup from "@/components/AdminSetup";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BookingPage from "./pages/BookingPage";
@@ -37,6 +38,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <AuthProvider>
+        <AdminSetup />
         <TooltipProvider>
           <Toaster />
           <Sonner />

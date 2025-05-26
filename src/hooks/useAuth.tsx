@@ -40,9 +40,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               
               setUserProfile(profile);
 
-              // For now, check if user email contains 'admin' to determine admin status
-              // This is a temporary solution until user_roles table is properly set up
-              const isUserAdmin = session.user.email?.includes('admin') || false;
+              // Check if user email is the admin email
+              const isUserAdmin = session.user.email === 'admin@urtrvl.com';
               setIsAdmin(isUserAdmin);
             } catch (error) {
               console.error('Error fetching user data:', error);
