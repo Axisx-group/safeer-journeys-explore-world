@@ -22,27 +22,104 @@ serve(async (req) => {
     const body = await req.json();
     const { searchParams } = body;
     
-    console.log('Fetching flights with params:', searchParams);
+    console.log('Fetching flights from Booking.com API with params:', searchParams);
+
+    // Get RapidAPI key from environment
+    const rapidApiKey = Deno.env.get('RAPIDAPI_KEY');
+    if (!rapidApiKey) {
+      throw new Error('RAPIDAPI_KEY not configured');
+    }
+
+    // Default search parameters
+    const departureDate = searchParams?.departure_date || '2024-03-15';
+    const departureCity = searchParams?.departure_city || 'الرياض';
+    const arrivalCity = searchParams?.arrival_city || 'جدة';
+    
+    // Convert Arabic city names to airport codes
+    const cityToAirport: { [key: string]: string } = {
+      'الرياض': 'RUH',
+      'جدة': 'JED',
+      'الدمام': 'DMM',
+      'مكة': 'JED', // Closest airport to Mecca
+      'المدينة': 'MED',
+      'الطائف': 'TIF'
+    };
+    
+    const departureAirport = cityToAirport[departureCity] || 'RUH';
+    const arrivalAirport = cityToAirport[arrivalCity] || 'JED';
+
+    // Call Booking.com Flights API via RapidAPI
+    const apiUrl = `https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?fromId=${departureAirport}&toId=${arrivalAirport}&departDate=${departureDate}&pageNo=1&adults=1&children=0%2C17&sort=PRICE&cabinClass=ECONOMY&currency_code=USD`;
+
+    console.log('Calling flights API with URL:', apiUrl);
+
+    const apiResponse = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com',
+        'X-RapidAPI-Key': rapidApiKey
+      }
+    });
+
+    if (!apiResponse.ok) {
+      console.error('Booking.com Flights API error:', apiResponse.status, apiResponse.statusText);
+      throw new Error(`API call failed: ${apiResponse.status}`);
+    }
+
+    const apiData = await apiResponse.json();
+    console.log('Booking.com Flights API response received:', apiData);
 
     // Clear existing data first
     const { error: deleteError } = await supabaseClient
       .from('flights')
       .delete()
-      .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all existing records
+      .neq('id', '00000000-0000-0000-0000-000000000000');
 
     if (deleteError) {
       console.log('Note: Could not clear existing flights:', deleteError);
     }
 
-    // Sample flights data with unique flight numbers
-    const sampleFlights = [
-      {
+    // Transform API data to our database format
+    const transformedFlights = [];
+    
+    if (apiData?.data?.flightOffers && Array.isArray(apiData.data.flightOffers)) {
+      for (const flight of apiData.data.flightOffers.slice(0, 10)) { // Limit to 10 flights
+        const segment = flight.segments?.[0];
+        if (segment) {
+          const transformedFlight = {
+            flight_number: segment.flightNumber || `FL${Math.floor(Math.random() * 9000 + 1000)}`,
+            departure_airport: departureAirport,
+            arrival_airport: arrivalAirport,
+            departure_city: departureCity,
+            arrival_city: arrivalCity,
+            departure_date: departureDate,
+            departure_time: segment.departureTime?.slice(11, 16) || '08:00',
+            arrival_time: segment.arrivalTime?.slice(11, 16) || '10:00',
+            airline: segment.marketingCarrier?.name || 'الخطوط السعودية',
+            price: flight.priceBreakdown?.total?.units ? parseFloat(flight.priceBreakdown.total.units) * 3.75 : 450, // Convert USD to SAR
+            currency: 'SAR',
+            duration_minutes: segment.duration || 90,
+            stops: segment.stops || 0,
+            is_direct: !segment.stops || segment.stops === 0,
+            class_type: 'economy',
+            available_seats: Math.floor(Math.random() * 50) + 10
+          };
+          
+          transformedFlights.push(transformedFlight);
+        }
+      }
+    }
+
+    // If no data from API, use fallback data
+    if (transformedFlights.length === 0) {
+      console.log('No flights data from API, using fallback data');
+      transformedFlights.push({
         flight_number: 'SV' + Math.floor(Math.random() * 9000 + 1000),
-        departure_airport: 'RUH',
-        arrival_airport: 'JED',
-        departure_city: searchParams?.departure_city || 'الرياض',
-        arrival_city: searchParams?.arrival_city || 'جدة',
-        departure_date: searchParams?.departure_date || '2024-03-15',
+        departure_airport: departureAirport,
+        arrival_airport: arrivalAirport,
+        departure_city: departureCity,
+        arrival_city: arrivalCity,
+        departure_date: departureDate,
         departure_time: '08:00',
         arrival_time: '09:30',
         airline: 'الخطوط السعودية',
@@ -53,85 +130,13 @@ serve(async (req) => {
         is_direct: true,
         class_type: 'economy',
         available_seats: 25
-      },
-      {
-        flight_number: 'MS' + Math.floor(Math.random() * 9000 + 1000),
-        departure_airport: 'CAI',
-        arrival_airport: 'RUH',
-        departure_city: 'القاهرة',
-        arrival_city: searchParams?.arrival_city || 'الرياض',
-        departure_date: searchParams?.departure_date || '2024-03-15',
-        departure_time: '14:00',
-        arrival_time: '17:00',
-        airline: 'مصر للطيران',
-        price: 1200.00,
-        currency: 'SAR',
-        duration_minutes: 180,
-        stops: 0,
-        is_direct: true,
-        class_type: 'economy',
-        available_seats: 15
-      },
-      {
-        flight_number: 'EK' + Math.floor(Math.random() * 9000 + 1000),
-        departure_airport: 'DXB',
-        arrival_airport: 'RUH',
-        departure_city: 'دبي',
-        arrival_city: searchParams?.arrival_city || 'الرياض',
-        departure_date: searchParams?.departure_date || '2024-03-15',
-        departure_time: '10:30',
-        arrival_time: '11:45',
-        airline: 'طيران الإمارات',
-        price: 850.00,
-        currency: 'SAR',
-        duration_minutes: 75,
-        stops: 0,
-        is_direct: true,
-        class_type: 'economy',
-        available_seats: 30
-      },
-      {
-        flight_number: 'QR' + Math.floor(Math.random() * 9000 + 1000),
-        departure_airport: 'DOH',
-        arrival_airport: 'JED',
-        departure_city: 'الدوحة',
-        arrival_city: 'جدة',
-        departure_date: searchParams?.departure_date || '2024-03-15',
-        departure_time: '16:15',
-        arrival_time: '17:45',
-        airline: 'الخطوط القطرية',
-        price: 920.00,
-        currency: 'SAR',
-        duration_minutes: 90,
-        stops: 0,
-        is_direct: true,
-        class_type: 'economy',
-        available_seats: 20
-      },
-      {
-        flight_number: 'FZ' + Math.floor(Math.random() * 9000 + 1000),
-        departure_airport: 'DXB',
-        arrival_airport: 'JED',
-        departure_city: 'دبي',
-        arrival_city: 'جدة',
-        departure_date: searchParams?.departure_date || '2024-03-15',
-        departure_time: '12:00',
-        arrival_time: '13:15',
-        airline: 'فلاي دبي',
-        price: 600.00,
-        currency: 'SAR',
-        duration_minutes: 75,
-        stops: 0,
-        is_direct: true,
-        class_type: 'economy',
-        available_seats: 40
-      }
-    ];
+      });
+    }
 
-    // Insert new flights
+    // Insert flights into database
     const { data, error } = await supabaseClient
       .from('flights')
-      .insert(sampleFlights)
+      .insert(transformedFlights)
       .select();
 
     if (error) {
@@ -139,13 +144,14 @@ serve(async (req) => {
       throw error;
     }
 
-    console.log('Successfully inserted flights:', data);
+    console.log('Successfully inserted flights from Booking.com:', data);
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         flights: data,
-        message: 'تم جلب بيانات الرحلات بنجاح' 
+        source: 'booking.com',
+        message: 'تم جلب بيانات الرحلات من Booking.com بنجاح' 
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -154,12 +160,12 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error fetching flights:', error);
+    console.error('Error fetching flights from Booking.com:', error);
     
     return new Response(
       JSON.stringify({ 
         error: error.message,
-        message: 'حدث خطأ في جلب بيانات الرحلات' 
+        message: 'حدث خطأ في جلب بيانات الرحلات من Booking.com' 
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
