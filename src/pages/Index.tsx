@@ -19,8 +19,9 @@ import RealTimeHotelData from "@/components/RealTimeHotelData";
 import AdvancedAIChat from "@/components/AdvancedAIChat";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Bot } from "lucide-react";
+import { Bot, Sparkles } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { motion } from "framer-motion";
 
 const Index = () => {
   const [showAIAssistant, setShowAIAssistant] = useState(false);
@@ -32,36 +33,78 @@ const Index = () => {
       <Hero />
       
       {/* AI Assistant Toggle */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            {language === 'ar' ? 'جرب مساعد السفر الذكي' : 'Try Our AI Travel Assistant'}
-          </h2>
-          <p className="text-xl text-blue-100 mb-6">
-            {language === 'ar' 
-              ? 'أخبرنا عن نفسيتك وتفضيلاتك وسنجد لك الوجهة المثالية'
-              : 'Tell us about your mood and preferences, and we\'ll find your perfect destination'
-            }
-          </p>
-          <Button 
-            size="lg" 
-            className="bg-white text-blue-600 hover:bg-gray-100"
-            onClick={() => setShowAIAssistant(!showAIAssistant)}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full animate-pulse delay-500"></div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto text-center relative">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <Bot className="h-5 w-5 mr-2" />
-            {showAIAssistant 
-              ? (language === 'ar' ? 'إخفاء المساعد' : 'Hide Assistant')
-              : (language === 'ar' ? 'ابدأ المحادثة' : 'Start Conversation')
-            }
-          </Button>
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                <div className="absolute inset-0 bg-white rounded-full blur-lg opacity-30 animate-pulse"></div>
+                <div className="relative bg-white/20 backdrop-blur-sm p-6 rounded-full border border-white/30">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Sparkles className="h-12 w-12 text-white" />
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+              {language === 'ar' ? 'جرب مساعد السفر الذكي' : 'Try Our AI Travel Assistant'}
+            </h2>
+            <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto">
+              {language === 'ar' 
+                ? 'أخبرنا عن نفسيتك وتفضيلاتك وسنجد لك الوجهة المثالية'
+                : 'Tell us about your mood and preferences, and we\'ll find your perfect destination'
+              }
+            </p>
+            
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                size="lg" 
+                className="bg-white text-blue-600 hover:bg-gray-100 px-12 py-4 text-lg font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 relative overflow-hidden group"
+                onClick={() => setShowAIAssistant(!showAIAssistant)}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                <Bot className="h-6 w-6 mr-3 relative z-10" />
+                <span className="relative z-10">
+                  {showAIAssistant 
+                    ? (language === 'ar' ? 'إخفاء المساعد' : 'Hide Assistant')
+                    : (language === 'ar' ? 'ابدأ المحادثة' : 'Start Conversation')
+                  }
+                </span>
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* AI Travel Assistant */}
       {showAIAssistant && (
-        <section className="py-12 bg-gray-50">
+        <motion.section
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.5 }}
+          className="py-12 bg-gradient-to-br from-gray-50 to-blue-50"
+        >
           <AITravelAssistant />
-        </section>
+        </motion.section>
       )}
 
       {/* Real-time Flight Data */}
