@@ -1,19 +1,5 @@
 
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  LayoutDashboard, 
-  Calendar, 
-  MessageSquare, 
-  Package, 
-  Settings, 
-  Users,
-  Images,
-  BarChart3,
-  Type,
-  CreditCard,
-  UserCheck,
-  Activity
-} from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AdminTabsNavigationProps {
@@ -31,8 +17,8 @@ const AdminTabsNavigation = ({ tabs }: AdminTabsNavigationProps) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-2">
-      <TabsList className="grid w-full grid-cols-7 gap-1">
-        {tabs.slice(0, 14).map((tab) => {
+      <TabsList className="grid w-full gap-1" style={{ gridTemplateColumns: `repeat(${Math.min(tabs.length, 7)}, minmax(0, 1fr))` }}>
+        {tabs.map((tab) => {
           const IconComponent = tab.icon;
           return (
             <TabsTrigger

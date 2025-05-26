@@ -60,7 +60,7 @@ const AdminSettings = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="general" className="w-full">
-            <TabsList className="grid w-full grid-cols-7">
+            <TabsList className="grid w-full grid-cols-7 mb-6">
               <TabsTrigger value="general">عام</TabsTrigger>
               <TabsTrigger value="stripe">Stripe</TabsTrigger>
               <TabsTrigger value="email">الإيميل</TabsTrigger>
