@@ -1,28 +1,68 @@
 
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import SearchSection from "@/components/SearchSection";
+import AdvancedSearchSection from "@/components/advanced/AdvancedSearchSection";
+import SmartRecommendationEngine from "@/components/advanced/SmartRecommendationEngine";
+import AITravelAssistant from "@/components/ai/AITravelAssistant";
 import RealDataServicesSection from "@/components/RealDataServicesSection";
 import RealDataPackages from "@/components/RealDataPackages";
-import SimpleDynamicPricing from "@/components/SimpleDynamicPricing";
-import RealDataGallery from "@/components/RealDataGallery";
+import EnhancedGallery from "@/components/advanced/EnhancedGallery";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
-import SimpleAIAssistant from "@/components/SimpleAIAssistant";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Bot, Sparkles } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const { language } = useLanguage();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <Hero />
-      <SearchSection />
-      <RealDataPackages />
-      <SimpleDynamicPricing />
+      
+      {/* AI Assistant Toggle */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            {language === 'ar' ? 'جرب مساعد السفر الذكي' : 'Try Our AI Travel Assistant'}
+          </h2>
+          <p className="text-xl text-blue-100 mb-6">
+            {language === 'ar' 
+              ? 'أخبرنا عن نفسيتك وتفضيلاتك وسنجد لك الوجهة المثالية'
+              : 'Tell us about your mood and preferences, and we\'ll find your perfect destination'
+            }
+          </p>
+          <Button 
+            size="lg" 
+            className="bg-white text-blue-600 hover:bg-gray-100"
+            onClick={() => setShowAIAssistant(!showAIAssistant)}
+          >
+            <Bot className="h-5 w-5 mr-2" />
+            {showAIAssistant 
+              ? (language === 'ar' ? 'إخفاء المساعد' : 'Hide Assistant')
+              : (language === 'ar' ? 'ابدأ المحادثة' : 'Start Conversation')
+            }
+          </Button>
+        </div>
+      </section>
+
+      {/* AI Travel Assistant */}
+      {showAIAssistant && (
+        <section className="py-12 bg-gray-50">
+          <AITravelAssistant />
+        </section>
+      )}
+
+      <AdvancedSearchSection />
+      <SmartRecommendationEngine />
       <RealDataServicesSection />
-      <RealDataGallery />
+      <RealDataPackages />
+      <EnhancedGallery />
       <FeaturesSection />
       <Footer />
-      <SimpleAIAssistant />
     </div>
   );
 };
