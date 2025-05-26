@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Plane, Phone, Mail, MapPin } from "lucide-react";
@@ -96,7 +95,7 @@ const Navbar = () => {
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  {isArabic ? 'رحلات السفر' : 'Travel Tours'}
+                  {isArabic ? 'شركة التنقل العلوي' : 'Sky Travel Company'}
                 </span>
                 <span className="text-xs text-gray-500 font-medium">
                   {isArabic ? 'اكتشف العالم معنا' : 'Discover the World'}
