@@ -24,7 +24,9 @@ const AdminSetup = () => {
 
         if (error) {
           // If user already exists, that's fine - we don't need to show an error
-          if (error.message.includes('User already registered')) {
+          if (error && typeof error === 'object' && 'message' in error && 
+              typeof error.message === 'string' && 
+              error.message.includes('User already registered')) {
             console.log('Admin account already exists');
             return;
           }
