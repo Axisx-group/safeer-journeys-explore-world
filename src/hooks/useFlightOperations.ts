@@ -23,7 +23,7 @@ export const useFlightOperations = () => {
     try {
       console.log('Searching with params:', searchParams);
       
-      // First try to fetch fresh data from Skyscanner/Booking.com APIs
+      // First try to fetch fresh data from European budget airlines APIs
       await fetchFromAPI(searchParams);
       
       // Then fetch from database
@@ -64,7 +64,7 @@ export const useFlightOperations = () => {
   }) => {
     try {
       setIsFetching(true);
-      console.log('Fetching from Skyscanner/Booking.com APIs with params:', searchParams);
+      console.log('Fetching from European budget airlines APIs with params:', searchParams);
       
       const { data, error } = await supabase.functions.invoke('fetch-flights', {
         body: { 
@@ -76,7 +76,7 @@ export const useFlightOperations = () => {
         console.error('API fetch error:', error);
       } else {
         console.log('API response:', data);
-        setDataSource(data?.source || 'unknown');
+        setDataSource(data?.source || 'european-budget');
       }
     } catch (error) {
       console.error('Error calling API:', error);

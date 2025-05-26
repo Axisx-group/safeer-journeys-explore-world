@@ -50,19 +50,19 @@ const RealTimeFlightData = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {isArabic ? 'احجز رحلتك الآن' : 'Book Your Flight Now'}
+            {isArabic ? 'رحلات إلى أوروبا' : 'Flights to Europe'}
           </h2>
           <p className="text-xl text-gray-600 mb-4">
-            {isArabic ? 'اكتشف أفضل الرحلات واحجز مباشرة من موقعنا بأسعار تنافسية' : 'Discover the best flights and book directly from our site at competitive prices'}
+            {isArabic ? 'اكتشف أفضل الرحلات من السعودية إلى أوروبا بأسعار تنافسية' : 'Discover the best flights from Saudi Arabia to Europe at competitive prices'}
           </p>
           
           {/* مؤشر الحجز المباشر */}
           <div className="flex justify-center items-center gap-2 text-blue-600">
             <span className="text-lg font-semibold">
-              {isArabic ? '🎯 احجز من موقعنا مباشرة' : '🎯 Book directly with us'}
+              {isArabic ? '✈️ رحلات مباشرة إلى أوروبا' : '✈️ Direct flights to Europe'}
             </span>
             <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
-              {isArabic ? 'أفضل الأسعار مضمونة' : 'Best prices guaranteed'}
+              {isArabic ? 'شركات الطيران الأوروبية الاقتصادية' : 'European Budget Airlines'}
             </span>
           </div>
         </div>

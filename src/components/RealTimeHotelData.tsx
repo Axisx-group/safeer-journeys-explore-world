@@ -13,7 +13,7 @@ const RealTimeHotelData = () => {
   const isArabic = language === 'ar';
   
   const [searchParams, setSearchParams] = useState({
-    city: '',
+    city: 'مدريد',
     check_in_date: '',
     check_out_date: '',
     currency: 'EUR'
@@ -88,10 +88,10 @@ const RealTimeHotelData = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {isArabic ? 'الفنادق الأوروبية المتاحة' : 'Available European Hotels'}
+            {isArabic ? 'فنادق أوروبا المميزة' : 'Premium European Hotels'}
           </h2>
           <p className="text-xl text-gray-600">
-            {isArabic ? 'اكتشف أفضل الفنادق الأوروبية مع أجود الخدمات' : 'Discover the best European hotels with premium services'}
+            {isArabic ? 'اكتشف أفضل الفنادق في أوروبا مع خدمات استثنائية' : 'Discover the best hotels in Europe with exceptional services'}
           </p>
         </div>
 
