@@ -285,6 +285,81 @@ export type Database = {
         }
         Relationships: []
       }
+      flights: {
+        Row: {
+          aircraft_type: string | null
+          airline: string
+          arrival_airport: string
+          arrival_city: string
+          arrival_time: string | null
+          available_seats: number | null
+          booking_url: string | null
+          class_type: string | null
+          created_at: string | null
+          currency: string | null
+          departure_airport: string
+          departure_city: string
+          departure_date: string
+          departure_time: string | null
+          duration_minutes: number | null
+          flight_number: string | null
+          id: string
+          is_direct: boolean | null
+          price: number
+          return_date: string | null
+          stops: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          aircraft_type?: string | null
+          airline: string
+          arrival_airport: string
+          arrival_city: string
+          arrival_time?: string | null
+          available_seats?: number | null
+          booking_url?: string | null
+          class_type?: string | null
+          created_at?: string | null
+          currency?: string | null
+          departure_airport: string
+          departure_city: string
+          departure_date: string
+          departure_time?: string | null
+          duration_minutes?: number | null
+          flight_number?: string | null
+          id?: string
+          is_direct?: boolean | null
+          price: number
+          return_date?: string | null
+          stops?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          aircraft_type?: string | null
+          airline?: string
+          arrival_airport?: string
+          arrival_city?: string
+          arrival_time?: string | null
+          available_seats?: number | null
+          booking_url?: string | null
+          class_type?: string | null
+          created_at?: string | null
+          currency?: string | null
+          departure_airport?: string
+          departure_city?: string
+          departure_date?: string
+          departure_time?: string | null
+          duration_minutes?: number | null
+          flight_number?: string | null
+          id?: string
+          is_direct?: boolean | null
+          price?: number
+          return_date?: string | null
+          stops?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       gallery: {
         Row: {
           category: string
@@ -315,6 +390,93 @@ export type Database = {
           is_featured?: boolean | null
           title?: string
           title_ar?: string
+        }
+        Relationships: []
+      }
+      hotels: {
+        Row: {
+          address: string | null
+          amenities: string[] | null
+          booking_url: string | null
+          check_in_date: string
+          check_out_date: string
+          city: string
+          country: string
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          free_parking: boolean | null
+          free_wifi: boolean | null
+          guest_rating: number | null
+          gym: boolean | null
+          id: string
+          image_urls: string[] | null
+          latitude: number | null
+          longitude: number | null
+          name: string
+          pool: boolean | null
+          price_per_night: number
+          restaurant: boolean | null
+          room_type: string | null
+          spa: boolean | null
+          star_rating: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          amenities?: string[] | null
+          booking_url?: string | null
+          check_in_date: string
+          check_out_date: string
+          city: string
+          country: string
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          free_parking?: boolean | null
+          free_wifi?: boolean | null
+          guest_rating?: number | null
+          gym?: boolean | null
+          id?: string
+          image_urls?: string[] | null
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          pool?: boolean | null
+          price_per_night: number
+          restaurant?: boolean | null
+          room_type?: string | null
+          spa?: boolean | null
+          star_rating?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          amenities?: string[] | null
+          booking_url?: string | null
+          check_in_date?: string
+          check_out_date?: string
+          city?: string
+          country?: string
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          free_parking?: boolean | null
+          free_wifi?: boolean | null
+          guest_rating?: number | null
+          gym?: boolean | null
+          id?: string
+          image_urls?: string[] | null
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          pool?: boolean | null
+          price_per_night?: number
+          restaurant?: boolean | null
+          room_type?: string | null
+          spa?: boolean | null
+          star_rating?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -454,6 +616,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      price_history: {
+        Row: {
+          change_percentage: number | null
+          currency: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          new_price: number
+          old_price: number | null
+          recorded_at: string | null
+        }
+        Insert: {
+          change_percentage?: number | null
+          currency?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          new_price: number
+          old_price?: number | null
+          recorded_at?: string | null
+        }
+        Update: {
+          change_percentage?: number | null
+          currency?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          new_price?: number
+          old_price?: number | null
+          recorded_at?: string | null
+        }
+        Relationships: []
       }
       reviews: {
         Row: {
