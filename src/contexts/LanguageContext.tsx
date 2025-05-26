@@ -20,6 +20,9 @@ const translations = {
     cars: "السيارات",
     about: "من نحن",
     login: "تسجيل الدخول",
+    booking: "الحجز",
+    support: "الدعم",
+    services: "الخدمات",
     
     // Hero Section
     heroTitle: "اكتشف العالم مع",
@@ -93,6 +96,9 @@ const translations = {
     cars: "Cars",
     about: "About",
     login: "Login",
+    booking: "Booking",
+    support: "Support",
+    services: "Services",
     
     // Hero Section
     heroTitle: "Discover the World with",
