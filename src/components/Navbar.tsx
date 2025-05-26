@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Plane, Phone, Mail, MapPin } from "lucide-react";
+import { Menu, X, Plane } from "lucide-react";
 import { Link } from "react-router-dom";
 import LanguageToggle from "./LanguageToggle";
 import CurrencyDropdown from "./CurrencyDropdown";
@@ -53,37 +53,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Contact Bar */}
-      <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 text-white py-3 px-4 sm:px-6 lg:px-8 hidden md:block shadow-sm">
-        <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center space-x-8">
-            <div className="flex items-center space-x-2 hover:text-blue-200 transition-colors duration-200">
-              <Phone className="h-4 w-4" />
-              <span className="font-medium">+1 (555) 123-4567</span>
-            </div>
-            <div className="flex items-center space-x-2 hover:text-blue-200 transition-colors duration-200">
-              <Mail className="h-4 w-4" />
-              <span className="font-medium">info@traveltours.com</span>
-            </div>
-            <div className="flex items-center space-x-2 hover:text-blue-200 transition-colors duration-200">
-              <MapPin className="h-4 w-4" />
-              <span className="font-medium">{isArabic ? 'خدمة عالمية 24/7' : '24/7 Global Service'}</span>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="transform hover:scale-105 transition-transform duration-200">
-              <CurrencyDropdown 
-                selectedCurrency={selectedCurrency}
-                onCurrencyChange={setSelectedCurrency}
-              />
-            </div>
-            <div className="transform hover:scale-105 transition-transform duration-200">
-              <LanguageToggle />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navigation */}
       <nav className="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,6 +87,19 @@ const Navbar = () => {
                 </Link>
               ))}
               
+              {/* Enhanced Currency and Language Controls */}
+              <div className="flex items-center space-x-3 ml-6 pl-6 border-l border-gray-200">
+                <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
+                  <CurrencyDropdown 
+                    selectedCurrency={selectedCurrency}
+                    onCurrencyChange={setSelectedCurrency}
+                  />
+                </div>
+                <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
+                  <LanguageToggle />
+                </div>
+              </div>
+              
               <Link to="/booking" className="ml-4">
                 <Button 
                   size="lg" 
@@ -131,13 +113,13 @@ const Navbar = () => {
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-3">
-              <div className="transform hover:scale-105 transition-transform duration-200">
+              <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
                 <CurrencyDropdown 
                   selectedCurrency={selectedCurrency}
                   onCurrencyChange={setSelectedCurrency}
                 />
               </div>
-              <div className="transform hover:scale-105 transition-transform duration-200">
+              <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
                 <LanguageToggle />
               </div>
               <Button
