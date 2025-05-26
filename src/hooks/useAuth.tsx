@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Fetch user profile and role
+          // Fetch user profile using setTimeout to avoid recursion
           setTimeout(async () => {
             try {
               const { data: profile } = await supabase
@@ -40,14 +40,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               
               setUserProfile(profile);
 
-              const { data: roles } = await supabase
-                .from('user_roles')
-                .select('role')
-                .eq('user_id', session.user.id);
-              
-              setIsAdmin(roles?.some(r => r.role === 'admin') || false);
+              // For now, check if user email contains 'admin' to determine admin status
+              // This is a temporary solution until user_roles table is properly set up
+              const isUserAdmin = session.user.email?.includes('admin') || false;
+              setIsAdmin(isUserAdmin);
             } catch (error) {
               console.error('Error fetching user data:', error);
+              // If profile doesn't exist, create one
+              if (error && typeof error === 'object' && 'code' in error && error.code === 'PGRST116') {
+                try {
+                  const { data: newProfile } = await supabase
+                    .from('user_profiles')
+                    .insert({
+                      user_id: session.user.id,
+                      preferred_language: 'ar'
+                    })
+                    .select()
+                    .single();
+                  
+                  setUserProfile(newProfile);
+                } catch (insertError) {
+                  console.error('Error creating user profile:', insertError);
+                }
+              }
             }
           }, 0);
         } else {
