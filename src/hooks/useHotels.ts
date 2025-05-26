@@ -31,6 +31,15 @@ export interface Hotel {
   updated_at: string;
 }
 
+export interface HotelSearchResponse {
+  hotels: Hotel[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+  source: string;
+}
+
 export const useHotels = (searchParams?: {
   city?: string;
   country?: string;
@@ -38,6 +47,8 @@ export const useHotels = (searchParams?: {
   check_out_date?: string;
   max_price?: number;
   min_rating?: number;
+  page?: number;
+  limit?: number;
 }) => {
   return useQuery({
     queryKey: ['hotels', searchParams],
@@ -66,25 +77,46 @@ export const useHotels = (searchParams?: {
         query = query.gte('guest_rating', searchParams.min_rating);
       }
 
-      const { data, error } = await query;
+      // إضافة pagination
+      const page = searchParams?.page || 1;
+      const limit = searchParams?.limit || 20;
+      const from = (page - 1) * limit;
+      const to = from + limit - 1;
+
+      query = query.range(from, to);
+
+      const { data, error, count } = await query;
       
       if (error) throw error;
-      return data as Hotel[];
+      return {
+        hotels: data as Hotel[],
+        total: count || 0,
+        page: page,
+        limit: limit,
+        hasMore: (data?.length || 0) === limit
+      } as HotelSearchResponse;
     },
   });
 };
 
-export const useHotelSearch = () => {
+export const useHotelSearch = (searchParams?: {
+  city?: string;
+  check_in_date?: string;
+  check_out_date?: string;
+  page?: number;
+  limit?: number;
+}) => {
   return useQuery({
-    queryKey: ['hotel-search'],
+    queryKey: ['hotel-search', searchParams],
     queryFn: async () => {
-      // This will call the edge function to fetch fresh data from Booking.com
       const { data, error } = await supabase.functions.invoke('fetch-hotels', {
         body: { 
           searchParams: {
-            city: 'الرياض',
-            check_in_date: '2024-03-15',
-            check_out_date: '2024-03-17'
+            city: searchParams?.city || 'مدريد',
+            check_in_date: searchParams?.check_in_date || '2025-06-15',
+            check_out_date: searchParams?.check_out_date || '2025-06-18',
+            page: searchParams?.page || 1,
+            limit: searchParams?.limit || 50
           }
         }
       });
@@ -92,6 +124,6 @@ export const useHotelSearch = () => {
       if (error) throw error;
       return data;
     },
-    enabled: false, // Only run when manually triggered
+    enabled: false,
   });
 };
