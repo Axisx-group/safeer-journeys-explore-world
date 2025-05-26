@@ -18,7 +18,7 @@ import {
   BarChart3,
   PieChart,
   FileDown,
-  DateRange
+  CalendarDays
 } from "lucide-react";
 
 const AdminCustomerExport = () => {
