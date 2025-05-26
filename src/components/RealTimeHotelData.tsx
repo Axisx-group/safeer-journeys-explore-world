@@ -44,16 +44,14 @@ const RealTimeHotelData = () => {
 
   const getAmenityIcon = (amenity: string) => {
     switch (amenity.toLowerCase()) {
-      case 'واي فاي مجاني':
       case 'free wifi':
+      case 'wifi':
         return <Wifi className="h-4 w-4" />;
-      case 'مواقف مجانية':
       case 'free parking':
+      case 'parking':
         return <Car className="h-4 w-4" />;
-      case 'مطعم':
       case 'restaurant':
         return <Coffee className="h-4 w-4" />;
-      case 'مسبح':
       case 'pool':
         return <Waves className="h-4 w-4" />;
       default:
@@ -144,7 +142,7 @@ const RealTimeHotelData = () => {
                       <h3 className="font-bold text-lg line-clamp-1">{hotel.name}</h3>
                       <div className="text-right">
                         <p className="text-2xl font-bold text-blue-600">
-                          {formatPrice(hotel.price_per_night, searchParams.currency)}
+                          {formatPrice(hotel.price_per_night, hotel.currency || searchParams.currency)}
                         </p>
                         <p className="text-sm text-gray-500">
                           {isArabic ? 'لليلة' : 'per night'}
