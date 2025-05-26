@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useHotels, useHotelSearch } from '@/hooks/useHotels';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Star, MapPin, Wifi, Car, Coffee, Waves, RefreshCw } from 'lucide-react';
+import { Star, MapPin, Wifi, Car, Coffee, Waves } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import HotelSearchForm from '@/components/hotels/HotelSearchForm';
 
 const RealTimeHotelData = () => {
   const { language } = useLanguage();
@@ -16,6 +16,7 @@ const RealTimeHotelData = () => {
     city: '',
     check_in_date: '',
     check_out_date: '',
+    currency: 'EUR'
   });
 
   const { data: hotels, isLoading, refetch } = useHotels(searchParams);
@@ -60,53 +61,51 @@ const RealTimeHotelData = () => {
     }
   };
 
+  const formatPrice = (price: number, currency: string) => {
+    const currencySymbols = {
+      'EUR': '€',
+      'GBP': '£',
+      'CHF': 'CHF',
+      'NOK': 'kr',
+      'SEK': 'kr',
+      'DKK': 'kr',
+      'PLN': 'zł',
+      'CZK': 'Kč',
+      'HUF': 'Ft',
+      'RON': 'lei',
+      'BGN': 'лв',
+      'HRK': 'kn',
+      'RSD': 'RSD',
+      'RUB': '₽',
+      'UAH': '₴',
+      'TRY': '₺'
+    };
+    
+    const symbol = currencySymbols[currency] || currency;
+    return `${symbol}${price}`;
+  };
+
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {isArabic ? 'الفنادق المتاحة' : 'Available Hotels'}
+            {isArabic ? 'الفنادق الأوروبية المتاحة' : 'Available European Hotels'}
           </h2>
           <p className="text-xl text-gray-600">
-            {isArabic ? 'اكتشف أفضل الفنادق مع أجود الخدمات' : 'Discover the best hotels with premium services'}
+            {isArabic ? 'اكتشف أفضل الفنادق الأوروبية مع أجود الخدمات' : 'Discover the best European hotels with premium services'}
           </p>
         </div>
 
         <div className="space-y-6">
-          <div className="flex flex-col md:flex-row gap-4 p-4 bg-gray-50 rounded-lg">
-            <Input
-              placeholder={isArabic ? "المدينة" : "City"}
-              value={searchParams.city}
-              onChange={(e) => setSearchParams(prev => ({ ...prev, city: e.target.value }))}
-              className="flex-1"
-            />
-            <Input
-              type="date"
-              placeholder={isArabic ? "تاريخ الوصول" : "Check-in Date"}
-              value={searchParams.check_in_date}
-              onChange={(e) => setSearchParams(prev => ({ ...prev, check_in_date: e.target.value }))}
-              className="flex-1"
-            />
-            <Input
-              type="date"
-              placeholder={isArabic ? "تاريخ المغادرة" : "Check-out Date"}
-              value={searchParams.check_out_date}
-              onChange={(e) => setSearchParams(prev => ({ ...prev, check_out_date: e.target.value }))}
-              className="flex-1"
-            />
-            <Button onClick={handleSearch} disabled={isLoading}>
-              {isArabic ? "بحث" : "Search"}
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={handleFetchNewData} 
-              disabled={isFetching}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
-              {isArabic ? "تحديث البيانات" : "Update Data"}
-            </Button>
-          </div>
+          <HotelSearchForm
+            searchParams={searchParams}
+            onSearchParamsChange={setSearchParams}
+            onSearch={handleSearch}
+            onFetchNewData={handleFetchNewData}
+            isLoading={isLoading}
+            isFetching={isFetching}
+          />
 
           {isLoading || isFetching ? (
             <div className="flex justify-center p-8">
@@ -144,7 +143,9 @@ const RealTimeHotelData = () => {
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-bold text-lg line-clamp-1">{hotel.name}</h3>
                       <div className="text-right">
-                        <p className="text-2xl font-bold text-blue-600">{hotel.price_per_night} {hotel.currency}</p>
+                        <p className="text-2xl font-bold text-blue-600">
+                          {formatPrice(hotel.price_per_night, searchParams.currency)}
+                        </p>
                         <p className="text-sm text-gray-500">
                           {isArabic ? 'لليلة' : 'per night'}
                         </p>
