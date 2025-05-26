@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePackages } from "@/hooks/usePackages";
@@ -16,6 +15,17 @@ const PackageDetailsPage = () => {
   const { data: packages, isLoading } = usePackages();
 
   const packageData = packages?.find(pkg => pkg.id === id);
+
+  const handleBookNow = () => {
+    console.log('Package Details Book Now clicked:', id);
+    navigate('/booking', { 
+      state: { 
+        packageId: id,
+        packageData: packageData,
+        bookingType: 'package'
+      }
+    });
+  };
 
   if (isLoading) {
     return (
@@ -55,7 +65,6 @@ const PackageDetailsPage = () => {
       <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Back Button */}
         <Button 
           variant="outline" 
           onClick={() => navigate(-1)}
@@ -66,7 +75,6 @@ const PackageDetailsPage = () => {
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image Section */}
           <div className="space-y-4">
             <img 
               src={packageData.image_url}
@@ -85,7 +93,6 @@ const PackageDetailsPage = () => {
             )}
           </div>
 
-          {/* Details Section */}
           <div className="space-y-6">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -126,14 +133,13 @@ const PackageDetailsPage = () => {
                 </p>
                 <Button 
                   className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                  onClick={() => navigate('/booking')}
+                  onClick={handleBookNow}
                 >
                   {language === 'ar' ? 'احجز الآن' : 'Book Now'}
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Highlights */}
             {packageData.highlights && (
               <Card>
                 <CardHeader>

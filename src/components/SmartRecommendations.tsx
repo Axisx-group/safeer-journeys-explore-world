@@ -22,6 +22,26 @@ const SmartRecommendations = () => {
   const { language } = useLanguage();
   const navigate = useNavigate();
 
+  const handleBookNow = (recommendationId: string) => {
+    console.log('Recommendation Book Now clicked:', recommendationId);
+    navigate('/booking', { 
+      state: { 
+        recommendationId: recommendationId,
+        bookingType: 'recommendation'
+      }
+    });
+  };
+
+  const handleMoreInfo = (recommendationId: string) => {
+    console.log('Recommendation More Info clicked:', recommendationId);
+    navigate('/booking', { 
+      state: { 
+        recommendationId: recommendationId,
+        bookingType: 'recommendation'
+      }
+    });
+  };
+
   const generateSmartRecommendations = () => {
     const destinations = language === 'ar' ? [
       {
@@ -270,14 +290,14 @@ const SmartRecommendations = () => {
                   <Button 
                     variant="outline"
                     className="flex-1"
-                    onClick={() => navigate('/booking')}
+                    onClick={() => handleMoreInfo(rec.id)}
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     {language === 'ar' ? 'المزيد' : 'More Info'}
                   </Button>
                   <Button 
                     className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                    onClick={() => navigate('/booking')}
+                    onClick={() => handleBookNow(rec.id)}
                   >
                     {language === 'ar' ? 'احجز الآن' : 'Book Now'}
                   </Button>

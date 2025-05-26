@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Calendar, Users, Star, Eye } from "lucide-react";
@@ -10,6 +9,21 @@ const RealDataPackages = () => {
   const { language } = useLanguage();
   const { data: packages, isLoading, error } = useFeaturedPackages();
   const navigate = useNavigate();
+
+  const handleViewDetails = (packageId: string) => {
+    console.log('Package Details clicked:', packageId);
+    navigate(`/package/${packageId}`);
+  };
+
+  const handleBookNow = (packageId: string) => {
+    console.log('Package Book Now clicked:', packageId);
+    navigate('/booking', { 
+      state: { 
+        packageId: packageId,
+        bookingType: 'package'
+      }
+    });
+  };
 
   if (isLoading) {
     return (
@@ -113,14 +127,14 @@ const RealDataPackages = () => {
                   <Button 
                     variant="outline"
                     className="flex-1"
-                    onClick={() => navigate(`/package/${pkg.id}`)}
+                    onClick={() => handleViewDetails(pkg.id)}
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     {language === 'ar' ? 'التفاصيل' : 'Details'}
                   </Button>
                   <Button 
                     className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                    onClick={() => navigate('/booking')}
+                    onClick={() => handleBookNow(pkg.id)}
                   >
                     {language === 'ar' ? 'احجز الآن' : 'Book Now'}
                   </Button>

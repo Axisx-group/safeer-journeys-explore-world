@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Star, MapPin, Wifi, Car, Coffee, Waves, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -26,7 +26,18 @@ interface Hotel {
 
 const HotelsPage = () => {
   const { language } = useLanguage();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+
+  const handleBookNow = (hotelId: string) => {
+    console.log('Hotel Book Now clicked:', hotelId);
+    navigate('/booking', { 
+      state: { 
+        hotelId: hotelId,
+        bookingType: 'hotel'
+      }
+    });
+  };
 
   const hotels: Hotel[] = [
     {
@@ -280,7 +291,10 @@ const HotelsPage = () => {
                   ))}
                 </div>
                 
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                <Button 
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                  onClick={() => handleBookNow(hotel.id)}
+                >
                   {language === 'ar' ? 'احجز الآن' : 'Book Now'}
                 </Button>
               </CardContent>

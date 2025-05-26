@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,8 +16,10 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
   const isArabic = language === 'ar';
   const navigate = useNavigate();
 
-  const handleBookNow = () => {
-    // التنقل إلى صفحة الحجز مع بيانات الرحلة
+  const handleBookNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Flight Book Now clicked:', flight.id);
     navigate('/booking', { 
       state: { 
         flightData: flight,
@@ -105,7 +106,6 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
           </Button>
         </div>
         
-        {/* إشارة الحجز المباشر */}
         <div className="mt-2 text-center">
           <Badge className="bg-blue-50 text-blue-700 border-blue-200">
             {isArabic ? "🎯 حجز مباشر من موقعنا" : "🎯 Direct booking from our website"}

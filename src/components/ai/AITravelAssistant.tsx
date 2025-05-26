@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,6 +20,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import DetailedTravelForm from "./DetailedTravelForm";
 
 interface MoodQuestion {
@@ -64,6 +64,7 @@ interface TravelFormData {
 
 const AITravelAssistant = () => {
   const { language } = useLanguage();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -71,6 +72,16 @@ const AITravelAssistant = () => {
   const [showResults, setShowResults] = useState(false);
   const [showDetailedForm, setShowDetailedForm] = useState(false);
   const [detailedFormData, setDetailedFormData] = useState<TravelFormData | null>(null);
+
+  const handleBookNow = (destination: string) => {
+    console.log('AI Assistant Book Now clicked:', destination);
+    navigate('/booking', { 
+      state: { 
+        destination: destination,
+        bookingType: 'ai_recommendation'
+      }
+    });
+  };
 
   const moodQuestions: MoodQuestion[] = [
     {
@@ -108,7 +119,6 @@ const AITravelAssistant = () => {
     if (currentStep < moodQuestions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Move to detailed form instead of immediate analysis
       setShowDetailedForm(true);
     }
   };
@@ -124,10 +134,8 @@ const AITravelAssistant = () => {
     setShowDetailedForm(false);
     setIsAnalyzing(true);
     
-    // Simulate AI analysis with the detailed form data
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Generate recommendations based on both mood answers and detailed form
     const mockRecommendations: AIRecommendation[] = generatePersonalizedRecommendations(formData);
     
     setRecommendations(mockRecommendations);
@@ -187,7 +195,6 @@ const AITravelAssistant = () => {
       }
     ];
 
-    // Customize recommendations based on preferences
     return baseRecommendations.map(rec => {
       if (formData.preferences.includes('beach') && rec.destination === 'Santorini') {
         rec.matchScore += 5;
@@ -209,7 +216,6 @@ const AITravelAssistant = () => {
 
   const progress = ((currentStep + 1) / moodQuestions.length) * 100;
 
-  // Show detailed form
   if (showDetailedForm) {
     return (
       <div className="max-w-6xl mx-auto p-6">
@@ -221,7 +227,6 @@ const AITravelAssistant = () => {
     );
   }
 
-  // Show results with detailed information
   if (showResults) {
     return (
       <div className="max-w-6xl mx-auto p-6">
@@ -336,7 +341,10 @@ const AITravelAssistant = () => {
                     ))}
                   </div>
 
-                  <Button className="w-full">
+                  <Button 
+                    className="w-full"
+                    onClick={() => handleBookNow(rec.destination)}
+                  >
                     <Plane className="h-4 w-4 mr-2" />
                     {language === 'ar' ? 'احجز الآن' : 'Book Now'}
                   </Button>
@@ -370,7 +378,6 @@ const AITravelAssistant = () => {
     );
   }
 
-  // Show analysis screen
   if (isAnalyzing) {
     return (
       <div className="max-w-2xl mx-auto p-6">
@@ -396,7 +403,6 @@ const AITravelAssistant = () => {
     );
   }
 
-  // Show mood questions (initial flow) - Auto-start with first question
   const currentQuestion = moodQuestions[currentStep];
   const IconComponent = currentQuestion.icon;
 
