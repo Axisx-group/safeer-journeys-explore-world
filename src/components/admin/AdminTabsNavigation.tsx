@@ -17,7 +17,7 @@ const AdminTabsNavigation = ({ tabs }: AdminTabsNavigationProps) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-2">
-      <TabsList className="grid w-full gap-1" style={{ gridTemplateColumns: `repeat(${Math.min(tabs.length, 7)}, minmax(0, 1fr))` }}>
+      <TabsList className="grid w-full gap-1" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
         {tabs.map((tab) => {
           const IconComponent = tab.icon;
           return (

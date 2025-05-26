@@ -60,59 +60,61 @@ const AdminSettings = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="general" className="w-full">
-            <TabsList className="grid w-full grid-cols-7 mb-6">
-              <TabsTrigger value="general">عام</TabsTrigger>
-              <TabsTrigger value="stripe">Stripe</TabsTrigger>
-              <TabsTrigger value="email">الإيميل</TabsTrigger>
-              <TabsTrigger value="notifications">الإشعارات</TabsTrigger>
-              <TabsTrigger value="security">الأمان</TabsTrigger>
-              <TabsTrigger value="appearance">المظهر</TabsTrigger>
-              <TabsTrigger value="system">النظام</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-full">
+                <TabsTrigger value="general" className="px-3 py-1.5 text-sm">عام</TabsTrigger>
+                <TabsTrigger value="stripe" className="px-3 py-1.5 text-sm">Stripe</TabsTrigger>
+                <TabsTrigger value="email" className="px-3 py-1.5 text-sm">الإيميل</TabsTrigger>
+                <TabsTrigger value="notifications" className="px-3 py-1.5 text-sm">الإشعارات</TabsTrigger>
+                <TabsTrigger value="security" className="px-3 py-1.5 text-sm">الأمان</TabsTrigger>
+                <TabsTrigger value="appearance" className="px-3 py-1.5 text-sm">المظهر</TabsTrigger>
+                <TabsTrigger value="system" className="px-3 py-1.5 text-sm">النظام</TabsTrigger>
+              </TabsList>
+            </div>
 
-            <TabsContent value="general" className="space-y-6">
+            <TabsContent value="general" className="space-y-6 mt-6">
               <GeneralSettingsTab 
                 settings={settings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
-            <TabsContent value="stripe" className="space-y-6">
+            <TabsContent value="stripe" className="space-y-6 mt-6">
               <StripeSettingsTab 
                 settings={settings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
-            <TabsContent value="email" className="space-y-6">
+            <TabsContent value="email" className="space-y-6 mt-6">
               <EmailSettingsTab 
                 settings={settings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
-            <TabsContent value="notifications" className="space-y-6">
+            <TabsContent value="notifications" className="space-y-6 mt-6">
               <NotificationsSettingsTab 
                 settings={settings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
-            <TabsContent value="security" className="space-y-6">
+            <TabsContent value="security" className="space-y-6 mt-6">
               <SecuritySettingsTab 
                 settings={settings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
-            <TabsContent value="appearance" className="space-y-6">
+            <TabsContent value="appearance" className="space-y-6 mt-6">
               <AppearanceSettingsTab 
                 settings={settings} 
                 handleSettingChange={handleSettingChange} 
               />
             </TabsContent>
 
-            <TabsContent value="system" className="space-y-6">
+            <TabsContent value="system" className="space-y-6 mt-6">
               <SystemSettingsTab 
                 settings={settings} 
                 handleSettingChange={handleSettingChange} 
