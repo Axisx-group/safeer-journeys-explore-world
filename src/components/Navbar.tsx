@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Plane, Phone, Mail, MapPin } from "lucide-react";
@@ -28,6 +27,11 @@ const Navbar = () => {
       nameEn: "Car Rental", 
       nameAr: "تأجير السيارات", 
       href: "/car-rental" 
+    },
+    { 
+      nameEn: "Currency Exchange", 
+      nameAr: "أسعار الصرف", 
+      href: "/currency-exchange" 
     },
     { 
       nameEn: "Services", 

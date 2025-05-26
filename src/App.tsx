@@ -18,6 +18,7 @@ import PackageDetailsPage from "./pages/PackageDetailsPage";
 import DestinationDetailsPage from "./pages/DestinationDetailsPage";
 import HotelsPage from "./pages/HotelsPage";
 import CarRentalPage from "./pages/CarRentalPage";
+import CurrencyExchangePage from "./pages/CurrencyExchangePage";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/hotels" element={<HotelsPage />} />
             <Route path="/car-rental" element={<CarRentalPage />} />
+            <Route path="/currency-exchange" element={<CurrencyExchangePage />} />
             <Route path="/package/:id" element={<PackageDetailsPage />} />
             <Route path="/destination/:id" element={<DestinationDetailsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
