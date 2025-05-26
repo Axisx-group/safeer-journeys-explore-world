@@ -3,6 +3,7 @@ import { Plane, Facebook, Twitter, Instagram, Mail, Phone, MapPin, TrendingUp, T
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import { europeanCurrencies } from "@/constants/europeanData";
 
 const Footer = () => {
@@ -87,9 +88,9 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
-          <div className="space-y-4">
+          <div className="lg:col-span-2 space-y-4">
             <div className={`flex items-center ${language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
               <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-2 rounded-lg">
                 <Plane className="h-6 w-6 text-white" />
@@ -121,57 +122,69 @@ const Footer = () => {
               {language === 'ar' ? 'روابط سريعة' : 'Quick Links'}
             </h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{t('home')}</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{t('about')}</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">
+              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">{t('home')}</Link></li>
+              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">{t('about')}</Link></li>
+              <li><Link to="/services" className="text-gray-300 hover:text-white transition-colors">
                 {language === 'ar' ? 'الخدمات' : 'Services'}
-              </a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">
+              </Link></li>
+              <li><Link to="/offers" className="text-gray-300 hover:text-white transition-colors">
                 {language === 'ar' ? 'العروض' : 'Offers'}
-              </a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">
+              </Link></li>
+              <li><Link to="/support" className="text-gray-300 hover:text-white transition-colors">
                 {language === 'ar' ? 'اتصل بنا' : 'Contact Us'}
-              </a></li>
+              </Link></li>
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Support Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">
-              {language === 'ar' ? 'خدماتنا' : 'Our Services'}
+              {language === 'ar' ? 'الدعم' : 'Support'}
             </h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{t('hotelBooking')}</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{t('flightBooking')}</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{t('carRental')}</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">{t('tours')}</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">
-                {language === 'ar' ? 'التأمين' : 'Insurance'}
-              </a></li>
+              <li><Link to="/faq" className="text-gray-300 hover:text-white transition-colors">
+                {language === 'ar' ? 'الأسئلة المتكررة' : 'FAQ'}
+              </Link></li>
+              <li><Link to="/manage-trips" className="text-gray-300 hover:text-white transition-colors">
+                {language === 'ar' ? 'إدارة رحلاتك' : 'Manage Trips'}
+              </Link></li>
+              <li><Link to="/customer-service" className="text-gray-300 hover:text-white transition-colors">
+                {language === 'ar' ? 'خدمة العملاء' : 'Customer Service'}
+              </Link></li>
+              <li><Link to="/safety-info" className="text-gray-300 hover:text-white transition-colors">
+                {language === 'ar' ? 'معلومات السلامة' : 'Safety Info'}
+              </Link></li>
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Legal Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">
-              {language === 'ar' ? 'تواصل معنا' : 'Contact Us'}
+              {language === 'ar' ? 'الشروط والإعدادات' : 'Terms & Settings'}
             </h3>
-            <div className="space-y-3">
-              <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
-                <Phone className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">0033766555514</span>
-              </div>
-              <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
-                <Mail className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">Info@urtrvl.com</span>
-              </div>
-              <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
-                <MapPin className="h-5 w-5 text-blue-400" />
-                <span className="text-gray-300">
-                  {language === 'ar' ? 'باريس، فرنسا' : 'Paris, France'}
-                </span>
-              </div>
-            </div>
+            <ul className="space-y-2">
+              <li><Link to="/terms" className="text-gray-300 hover:text-white transition-colors">
+                {language === 'ar' ? 'الشروط والأحكام' : 'Terms & Conditions'}
+              </Link></li>
+              <li><Link to="/privacy" className="text-gray-300 hover:text-white transition-colors">
+                {language === 'ar' ? 'الخصوصية' : 'Privacy Policy'}
+              </Link></li>
+              <li><Link to="/cookie-settings" className="text-gray-300 hover:text-white transition-colors">
+                {language === 'ar' ? 'إعدادات ملفات تعريف الارتباط' : 'Cookie Settings'}
+              </Link></li>
+              <li>
+                <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
+                  <Phone className="h-4 w-4 text-blue-400" />
+                  <span className="text-gray-300 text-sm">0033766555514</span>
+                </div>
+              </li>
+              <li>
+                <div className={`flex items-center gap-3 ${language === 'ar' ? 'space-x-reverse' : ''}`}>
+                  <Mail className="h-4 w-4 text-blue-400" />
+                  <span className="text-gray-300 text-sm">Info@urtrvl.com</span>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
 

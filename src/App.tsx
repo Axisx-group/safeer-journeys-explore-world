@@ -19,6 +19,13 @@ import DestinationDetailsPage from "./pages/DestinationDetailsPage";
 import HotelsPage from "./pages/HotelsPage";
 import CarRentalPage from "./pages/CarRentalPage";
 import CurrencyExchangePage from "./pages/CurrencyExchangePage";
+import FAQPage from "./pages/FAQPage";
+import ManageTripsPage from "./pages/ManageTripsPage";
+import CustomerServicePage from "./pages/CustomerServicePage";
+import SafetyInfoPage from "./pages/SafetyInfoPage";
+import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import CookieSettingsPage from "./pages/CookieSettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +48,13 @@ const App = () => (
             <Route path="/hotels" element={<HotelsPage />} />
             <Route path="/car-rental" element={<CarRentalPage />} />
             <Route path="/currency-exchange" element={<CurrencyExchangePage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/manage-trips" element={<ManageTripsPage />} />
+            <Route path="/customer-service" element={<CustomerServicePage />} />
+            <Route path="/safety-info" element={<SafetyInfoPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/cookie-settings" element={<CookieSettingsPage />} />
             <Route path="/package/:id" element={<PackageDetailsPage />} />
             <Route path="/destination/:id" element={<DestinationDetailsPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
