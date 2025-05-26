@@ -28,20 +28,6 @@ const RealTimeHotelData = () => {
   const { data: hotelResponse, isLoading, refetch, error } = useHotels(searchParams);
   const { refetch: fetchNewHotels, isLoading: isFetching, error: fetchError } = useHotelSearch(searchParams);
 
-  // Automatically fetch hotels on component mount if none exist
-  useEffect(() => {
-    const checkAndFetchHotels = async () => {
-      if (!hotelResponse || hotelResponse.hotels.length === 0) {
-        console.log('No hotels found, fetching new data...');
-        await handleFetchNewData();
-      }
-    };
-    
-    if (!isLoading) {
-      checkAndFetchHotels();
-    }
-  }, [isLoading, hotelResponse]);
-
   const handleSearch = () => {
     console.log('Searching hotels with params:', searchParams);
     setSearchParams(prev => ({ ...prev, page: 1 }));
@@ -86,7 +72,7 @@ const RealTimeHotelData = () => {
       <div className="max-w-7xl mx-auto">
         <HotelHeader />
 
-        {hotelResponse && (
+        {hotelResponse && hotels.length > 0 && (
           <HotelStats
             currentCount={hotels.length}
             totalCount={hotelResponse.total}
@@ -151,11 +137,13 @@ const RealTimeHotelData = () => {
                     ))}
                   </div>
 
-                  <HotelPagination
-                    currentPage={searchParams.page}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                  />
+                  {totalPages > 1 && (
+                    <HotelPagination
+                      currentPage={searchParams.page}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  )}
                 </>
               ) : (
                 <EmptyHotelsState onFetchData={handleFetchNewData} />

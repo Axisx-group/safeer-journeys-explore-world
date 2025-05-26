@@ -105,6 +105,8 @@ export const useHotels = (searchParams?: {
         source: 'database'
       } as HotelSearchResponse;
     },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: false,
   });
 };
 
