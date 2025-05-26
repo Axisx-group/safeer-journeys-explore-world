@@ -21,7 +21,6 @@ const translations = {
     about: "من نحن",
     login: "تسجيل الدخول",
     booking: "الحجز",
-    support: "الدعم",
     services: "الخدمات",
     
     // Hero Section
@@ -35,7 +34,7 @@ const translations = {
     hotels_count: "فندق",
     destinations_count: "وجهة", 
     happy_clients: "عميل سعيد",
-    support: "دعم العملاء",
+    customer_support: "دعم العملاء",
     
     // Services
     servicesTitle: "خدماتنا المميزة",
@@ -97,7 +96,6 @@ const translations = {
     about: "About",
     login: "Login",
     booking: "Booking",
-    support: "Support",
     services: "Services",
     
     // Hero Section
@@ -111,7 +109,7 @@ const translations = {
     hotels_count: "Hotels",
     destinations_count: "Destinations",
     happy_clients: "Happy Clients", 
-    support: "Customer Support",
+    customer_support: "Customer Support",
     
     // Services
     servicesTitle: "Our Premium Services",

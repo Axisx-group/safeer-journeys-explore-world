@@ -78,13 +78,15 @@ const PaymentPage = () => {
       icon: Lock,
       titleAr: "دفع آمن 100%",
       titleEn: "100% Secure Payment",
-      descAr: "جميع البيانات محمية بتشفير SSL"
+      descAr: "جميع البيانات محمية بتشفير SSL",
+      descEn: "All data is protected with SSL encryption"
     },
     {
       icon: CheckCircle,
       titleAr: "ضمان الاسترداد",
       titleEn: "Money Back Guarantee",
-      descAr: "ضمان استرداد كامل في حالة الإلغاء"
+      descAr: "ضمان استرداد كامل في حالة الإلغاء",
+      descEn: "Full refund guarantee in case of cancellation"
     }
   ];
 

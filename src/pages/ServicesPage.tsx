@@ -112,19 +112,22 @@ const ServicesPage = () => {
       icon: Star,
       titleAr: "خبرة 15 عاماً",
       titleEn: "15 Years Experience",
-      descAr: "خبرة طويلة في مجال السياحة والسفر"
+      descAr: "خبرة طويلة في مجال السياحة والسفر",
+      descEn: "Long experience in tourism and travel industry"
     },
     {
       icon: Award,
       titleAr: "جوائز متعددة",
       titleEn: "Multiple Awards",
-      descAr: "حاصلون على جوائز عالمية للتميز"
+      descAr: "حاصلون على جوائز عالمية للتميز",
+      descEn: "Recipients of international excellence awards"
     },
     {
       icon: Clock,
       titleAr: "خدمة سريعة",
       titleEn: "Fast Service",
-      descAr: "حجز فوري وتأكيد خلال دقائق"
+      descAr: "حجز فوري وتأكيد خلال دقائق",
+      descEn: "Instant booking and confirmation within minutes"
     }
   ];
 
