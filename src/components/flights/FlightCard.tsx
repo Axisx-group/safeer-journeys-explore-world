@@ -105,9 +105,11 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
           </Button>
         </div>
         
-        {/* إشارة لمصدر البيانات */}
-        <div className="mt-2 text-xs text-gray-400 text-center">
-          {isArabic ? "البيانات من" : "Data from"} Skyscanner & Booking.com
+        {/* إشارة الحجز المباشر */}
+        <div className="mt-2 text-center">
+          <Badge className="bg-blue-50 text-blue-700 border-blue-200">
+            {isArabic ? "🎯 حجز مباشر من موقعنا" : "🎯 Direct booking from our website"}
+          </Badge>
         </div>
       </CardContent>
     </Card>

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, ExternalLink } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useFlightOperations } from '@/hooks/useFlightOperations';
 import FlightSearchForm from '@/components/flights/FlightSearchForm';
@@ -56,18 +56,13 @@ const RealTimeFlightData = () => {
             {isArabic ? 'اكتشف أفضل الرحلات واحجز مباشرة من موقعنا بأسعار تنافسية' : 'Discover the best flights and book directly from our site at competitive prices'}
           </p>
           
-          {/* مؤشر مصدر البيانات */}
+          {/* مؤشر الحجز المباشر */}
           <div className="flex justify-center items-center gap-2 text-blue-600">
-            <span className="text-sm">
-              {isArabic ? 'البيانات من' : 'Data powered by'}
+            <span className="text-lg font-semibold">
+              {isArabic ? '🎯 احجز من موقعنا مباشرة' : '🎯 Book directly with us'}
             </span>
-            <div className="flex items-center gap-1">
-              <span className="text-sm font-semibold">Skyscanner</span>
-              <span className="text-sm text-gray-400">+</span>
-              <span className="text-sm font-semibold">Booking.com</span>
-            </div>
-            <span className="text-sm">
-              {isArabic ? '• احجز من موقعنا مباشرة' : '• Book directly with us'}
+            <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
+              {isArabic ? 'أفضل الأسعار مضمونة' : 'Best prices guaranteed'}
             </span>
           </div>
         </div>
@@ -90,7 +85,7 @@ const RealTimeFlightData = () => {
               className="flex items-center gap-2 bg-white hover:bg-gray-50"
             >
               <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
-              {isArabic ? "تحديث البيانات" : "Update Data"}
+              {isArabic ? "تحديث الرحلات" : "Update Flights"}
             </Button>
           </div>
 

@@ -41,15 +41,11 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
           </h3>
         </div>
         <div className="flex items-center gap-2">
-          {dataSource && (
-            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-              {dataSource.includes('skyscanner') ? 'Skyscanner + Booking.com' : 
-               dataSource.includes('booking') ? 'Booking.com' : 
-               dataSource}
-            </Badge>
-          )}
+          <Badge className="bg-blue-100 text-blue-800 border-blue-200">
+            {isArabic ? "حجز مباشر" : "Direct Booking"}
+          </Badge>
           <Badge className="bg-green-100 text-green-800 border-green-200">
-            {isArabic ? "احجز من موقعنا" : "Book with us"}
+            {isArabic ? "أفضل الأسعار" : "Best Prices"}
           </Badge>
         </div>
       </div>
@@ -127,15 +123,15 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
         <div className="mt-4 text-center">
           <div className="inline-flex items-center gap-2 text-blue-600 text-sm">
             <RefreshCw className="h-4 w-4 animate-spin" />
-            {isArabic ? "جلب أحدث الأسعار من Skyscanner و Booking.com..." : "Fetching latest prices from Skyscanner & Booking.com..."}
+            {isArabic ? "جلب أحدث الأسعار والرحلات المتاحة..." : "Fetching latest prices and available flights..."}
           </div>
         </div>
       )}
       
       <div className="mt-3 text-center text-xs text-gray-500">
         {isArabic ? 
-          "نحصل على أفضل الأسعار من Skyscanner و Booking.com ونوفر لك خدمة الحجز المباشر" :
-          "We get the best prices from Skyscanner & Booking.com and provide direct booking service"
+          "نوفر لك أفضل الأسعار وخدمة الحجز المباشر بضمان الجودة والموثوقية" :
+          "We provide you with the best prices and direct booking service with quality and reliability guarantee"
         }
       </div>
     </div>
