@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Plane, LogIn } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LanguageToggle from "./LanguageToggle";
 import CurrencyDropdown from "./CurrencyDropdown";
 import UserMenu from "./UserMenu";
@@ -13,6 +13,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { language } = useLanguage();
   const { user } = useAuth();
+  const location = useLocation();
   const isArabic = language === 'ar';
 
   const navigationItems = [
@@ -53,6 +54,10 @@ const Navbar = () => {
     }
   ];
 
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
       {/* Main Navigation */}
@@ -60,7 +65,7 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Logo - Enhanced with better styling */}
-            <Link to="/" className="flex items-center space-x-3 group">
+            <Link to="/" className="flex items-center space-x-3 group" onClick={handleLinkClick}>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
                 <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-full shadow-lg group-hover:shadow-2xl transition-all duration-300">
@@ -80,18 +85,32 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
-              {navigationItems.map((item, index) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className="relative text-gray-700 hover:text-blue-600 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <span className="relative z-10">{isArabic ? item.nameAr : item.nameEn}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300 origin-center"></div>
-                  <div className="absolute bottom-2 left-1/2 w-0 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full group-hover:w-6 group-hover:left-1/2 group-hover:-translate-x-1/2 transition-all duration-300"></div>
-                </Link>
-              ))}
+              {navigationItems.map((item, index) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={`relative px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 group ${
+                      isActive 
+                        ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-indigo-50' 
+                        : 'text-gray-700 hover:text-blue-600'
+                    }`}
+                    style={{ animationDelay: `${index * 50}ms` }}
+                    onClick={handleLinkClick}
+                  >
+                    <span className="relative z-10">{isArabic ? item.nameAr : item.nameEn}</span>
+                    {!isActive && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300 origin-center"></div>
+                    )}
+                    <div className={`absolute bottom-2 left-1/2 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-300 ${
+                      isActive 
+                        ? 'w-6 -translate-x-1/2' 
+                        : 'w-0 group-hover:w-6 group-hover:-translate-x-1/2'
+                    }`}></div>
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Right Side Controls */}
@@ -119,7 +138,7 @@ const Navbar = () => {
               {user ? (
                 <UserMenu />
               ) : (
-                <Link to="/auth" className="hidden md:block">
+                <Link to="/auth" className="hidden md:block" onClick={handleLinkClick}>
                   <Button 
                     size="lg" 
                     className="relative bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white font-bold px-8 py-3 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden group"
@@ -165,24 +184,35 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200/50 shadow-2xl">
             <div className="px-6 pt-6 pb-8 space-y-3">
-              {navigationItems.map((item, index) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className="flex items-center px-4 py-4 text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 rounded-xl text-base font-medium transition-all duration-300 transform hover:translate-x-2 border border-transparent hover:border-blue-200 group"
-                  onClick={() => setIsMenuOpen(false)}
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <div className="w-2 h-8 bg-gradient-to-b from-blue-600 to-indigo-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-3"></div>
-                  <span className="relative">
-                    {isArabic ? item.nameAr : item.nameEn}
-                    <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full group-hover:w-full transition-all duration-300"></div>
-                  </span>
-                </Link>
-              ))}
+              {navigationItems.map((item, index) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={`flex items-center px-4 py-4 rounded-xl text-base font-medium transition-all duration-300 transform hover:translate-x-2 border group ${
+                      isActive 
+                        ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200' 
+                        : 'text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 border-transparent hover:border-blue-200'
+                    }`}
+                    onClick={handleLinkClick}
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <div className={`w-2 h-8 bg-gradient-to-b from-blue-600 to-indigo-600 rounded-full transition-opacity duration-300 mr-3 ${
+                      isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                    }`}></div>
+                    <span className="relative">
+                      {isArabic ? item.nameAr : item.nameEn}
+                      <div className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-300 ${
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      }`}></div>
+                    </span>
+                  </Link>
+                );
+              })}
               
               {!user && (
-                <Link to="/auth" onClick={() => setIsMenuOpen(false)} className="block pt-6">
+                <Link to="/auth" onClick={handleLinkClick} className="block pt-6">
                   <Button 
                     size="lg" 
                     className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-purple-600 hover:via-indigo-600 hover:to-blue-600 text-white font-bold py-5 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-[1.02] transition-all duration-300 relative overflow-hidden group"
