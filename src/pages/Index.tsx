@@ -2,7 +2,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import UnifiedSearchSection from "@/components/UnifiedSearchSection";
-import AdvancedSearchSection from "@/components/advanced/AdvancedSearchSection";
 import SmartRecommendationEngine from "@/components/advanced/SmartRecommendationEngine";
 import AITravelAssistant from "@/components/ai/AITravelAssistant";
 import InteractiveServicesGrid from "@/components/enhanced/InteractiveServicesGrid";
@@ -114,7 +113,6 @@ const Index = () => {
 
       {/* Advanced Features */}
       <div className="space-y-0 bg-gray-50">
-        <AdvancedSearchSection />
         <SmartRecommendationEngine />
       </div>
 
