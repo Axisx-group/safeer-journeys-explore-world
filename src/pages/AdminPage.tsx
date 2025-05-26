@@ -15,7 +15,10 @@ import {
   BarChart3,
   Bell,
   Shield,
-  Database
+  Database,
+  Type,
+  CreditCard,
+  UserCheck
 } from "lucide-react";
 import AdminDashboard from "@/components/admin/AdminDashboard";
 import AdminBookings from "@/components/admin/AdminBookings";
@@ -23,6 +26,10 @@ import AdminMessages from "@/components/admin/AdminMessages";
 import AdminPackages from "@/components/admin/AdminPackages";
 import AdminServices from "@/components/admin/AdminServices";
 import AdminGallery from "@/components/admin/AdminGallery";
+import AdminTexts from "@/components/admin/AdminTexts";
+import AdminPayments from "@/components/admin/AdminPayments";
+import AdminUsers from "@/components/admin/AdminUsers";
+import AdminSettings from "@/components/admin/AdminSettings";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const AdminPage = () => {
@@ -43,6 +50,20 @@ const AdminPage = () => {
       label_ar: "الحجوزات",
       icon: Calendar,
       component: AdminBookings
+    },
+    {
+      id: "payments",
+      label: "Payments",
+      label_ar: "المدفوعات",
+      icon: CreditCard,
+      component: AdminPayments
+    },
+    {
+      id: "users",
+      label: "Users",
+      label_ar: "المستخدمين",
+      icon: UserCheck,
+      component: AdminUsers
     },
     {
       id: "messages",
@@ -71,6 +92,20 @@ const AdminPage = () => {
       label_ar: "المعرض",
       icon: Images,
       component: AdminGallery
+    },
+    {
+      id: "texts",
+      label: "Texts",
+      label_ar: "النصوص",
+      icon: Type,
+      component: AdminTexts
+    },
+    {
+      id: "settings",
+      label: "Settings",
+      label_ar: "الإعدادات",
+      icon: Shield,
+      component: AdminSettings
     }
   ];
 
@@ -107,8 +142,8 @@ const AdminPage = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Navigation Tabs */}
           <div className="bg-white rounded-lg shadow-sm p-2">
-            <TabsList className="grid w-full grid-cols-6 gap-2">
-              {tabs.map((tab) => {
+            <TabsList className="grid w-full grid-cols-5 gap-2">
+              {tabs.slice(0, 10).map((tab) => {
                 const IconComponent = tab.icon;
                 return (
                   <TabsTrigger
