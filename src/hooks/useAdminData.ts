@@ -58,7 +58,19 @@ export const useAdminData = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setMessages(data || []);
+      
+      const formattedMessages: AdminMessage[] = data?.map(msg => ({
+        id: msg.id,
+        name: msg.name,
+        email: msg.email,
+        phone: msg.phone,
+        subject: msg.subject,
+        message: msg.message,
+        status: (msg.status as AdminMessage['status']) || 'new',
+        created_at: msg.created_at
+      })) || [];
+      
+      setMessages(formattedMessages);
     } catch (error) {
       console.error('Error loading messages:', error);
       // Use fallback data if Supabase fails
@@ -92,29 +104,22 @@ export const useAdminData = () => {
     try {
       const { data, error } = await supabase
         .from('bookings')
-        .select(`
-          *,
-          profiles:user_id (
-            full_name,
-            email,
-            phone
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       
-      const formattedBookings = data?.map(booking => ({
+      const formattedBookings: AdminBooking[] = data?.map(booking => ({
         id: booking.id,
-        user_name: booking.profiles?.full_name || 'غير محدد',
-        user_email: booking.profiles?.email || 'غير محدد',
-        user_phone: booking.profiles?.phone,
+        user_name: booking.name || 'غير محدد',
+        user_email: booking.email || 'غير محدد',
+        user_phone: booking.phone,
         destination: booking.destination || 'غير محدد',
         departure_date: booking.departure_date || '',
         return_date: booking.return_date || '',
         passengers: booking.passengers || 1,
-        total_price: booking.total_amount || 0,
-        status: booking.status || 'pending',
+        total_price: booking.total_price || 0,
+        status: (booking.status as AdminBooking['status']) || 'pending',
         created_at: booking.created_at
       })) || [];
 
@@ -143,14 +148,8 @@ export const useAdminData = () => {
   // Load settings
   const loadSettings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('*')
-        .single();
-
-      if (error && error.code !== 'PGRST116') throw error;
-      
-      setSettings(data || {
+      // Since site_settings table doesn't exist, use fallback data
+      setSettings({
         site_name: "ur trvl",
         site_description: "منصة السفر والسياحة الرائدة",
         support_email: "support@urtrvl.com",
@@ -237,12 +236,7 @@ export const useAdminData = () => {
   // Save settings
   const saveSettings = async (newSettings: Partial<AdminSettings>) => {
     try {
-      const { error } = await supabase
-        .from('site_settings')
-        .upsert({ ...settings, ...newSettings });
-
-      if (error) throw error;
-
+      // Since site_settings table doesn't exist, just update local state
       setSettings(prev => ({ ...prev!, ...newSettings }));
 
       toast({
