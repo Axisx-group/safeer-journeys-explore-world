@@ -4,12 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Plane } from "lucide-react";
 import { Link } from "react-router-dom";
 import LanguageToggle from "./LanguageToggle";
-import CurrencyDropdown from "./CurrencyDropdown";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
   const { language } = useLanguage();
   const isArabic = language === 'ar';
 
@@ -65,7 +63,7 @@ const Navbar = () => {
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  {isArabic ? 'ur trvl' : 'ur trvl'}
+                  ur trvl
                 </span>
                 <span className="text-xs text-gray-500 font-medium">
                   {isArabic ? 'اكتشف العالم معنا' : 'Discover the World'}
@@ -87,14 +85,8 @@ const Navbar = () => {
                 </Link>
               ))}
               
-              {/* Enhanced Currency and Language Controls */}
+              {/* Enhanced Language Control */}
               <div className="flex items-center space-x-3 ml-6 pl-6 border-l border-gray-200">
-                <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
-                  <CurrencyDropdown 
-                    selectedCurrency={selectedCurrency}
-                    onCurrencyChange={setSelectedCurrency}
-                  />
-                </div>
                 <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
                   <LanguageToggle />
                 </div>
@@ -113,12 +105,6 @@ const Navbar = () => {
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-3">
-              <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
-                <CurrencyDropdown 
-                  selectedCurrency={selectedCurrency}
-                  onCurrencyChange={setSelectedCurrency}
-                />
-              </div>
               <div className="transform hover:scale-110 transition-all duration-300 hover:shadow-lg rounded-lg">
                 <LanguageToggle />
               </div>

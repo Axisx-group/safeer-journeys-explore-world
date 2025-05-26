@@ -1,12 +1,91 @@
 
-import { Plane, Facebook, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Plane, Facebook, Twitter, Instagram, Mail, Phone, MapPin, TrendingUp, TrendingDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { europeanCurrencies } from "@/constants/europeanData";
 
 const Footer = () => {
   const { t, language } = useLanguage();
 
+  // Mock exchange rates for demonstration
+  const exchangeRates = {
+    'EUR': { rate: 1.0, change: 0.0, trend: 'stable' },
+    'GBP': { rate: 0.85, change: 0.15, trend: 'up' },
+    'CHF': { rate: 0.95, change: -0.08, trend: 'down' },
+    'USD': { rate: 1.08, change: 0.02, trend: 'up' },
+  };
+
+  const topCurrencies = ['EUR', 'GBP', 'CHF', 'USD'].map(code => {
+    const currency = europeanCurrencies.find(c => c.code === code) || 
+      { code: 'USD', symbol: '$', name: 'US Dollar', nameAr: 'الدولار الأمريكي' };
+    const rate = exchangeRates[code];
+    return { ...currency, ...rate };
+  }).filter(Boolean);
+
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case 'up':
+        return <TrendingUp className="h-3 w-3 text-green-500" />;
+      case 'down':
+        return <TrendingDown className="h-3 w-3 text-red-500" />;
+      default:
+        return <div className="w-3 h-3 bg-gray-400 rounded-full" />;
+    }
+  };
+
   return (
     <footer className="bg-gray-900 text-white">
+      {/* Currency Exchange Section */}
+      <div className="bg-gray-800 py-8 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6">
+            <h3 className="text-xl font-bold text-white mb-2">
+              {language === 'ar' ? 'أسعار الصرف الحية' : 'Live Exchange Rates'}
+            </h3>
+            <p className="text-gray-300 text-sm">
+              {language === 'ar' ? 'تحديث مباشر كل 15 دقيقة' : 'Updated every 15 minutes'}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {topCurrencies.map((currency) => (
+              <Card key={currency.code} className="bg-gray-700 border-gray-600 hover:bg-gray-600 transition-colors">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold text-blue-400">{currency.symbol}</span>
+                      <span className="text-sm text-gray-300">{currency.code}</span>
+                    </div>
+                    {getTrendIcon(currency.trend)}
+                  </div>
+                  
+                  <div className="text-lg font-bold text-white mb-1">
+                    {currency.rate?.toFixed(2)}
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <Badge 
+                      variant="outline" 
+                      className={`text-xs ${
+                        currency.trend === 'up' 
+                          ? 'bg-green-50 text-green-700 border-green-200' 
+                          : currency.trend === 'down'
+                          ? 'bg-red-50 text-red-700 border-red-200'
+                          : 'bg-gray-50 text-gray-700 border-gray-200'
+                      }`}
+                    >
+                      {currency.trend === 'up' ? '+' : currency.trend === 'down' ? '' : ''}
+                      {currency.change?.toFixed(2)}
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
