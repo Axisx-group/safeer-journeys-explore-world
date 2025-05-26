@@ -4,14 +4,18 @@ import Hero from "@/components/Hero";
 import AdvancedSearchSection from "@/components/advanced/AdvancedSearchSection";
 import SmartRecommendationEngine from "@/components/advanced/SmartRecommendationEngine";
 import AITravelAssistant from "@/components/ai/AITravelAssistant";
-import RealDataServicesSection from "@/components/RealDataServicesSection";
+import InteractiveServicesGrid from "@/components/enhanced/InteractiveServicesGrid";
 import RealDataPackages from "@/components/RealDataPackages";
+import TravelStatsSection from "@/components/enhanced/TravelStatsSection";
+import TestimonialsSection from "@/components/enhanced/TestimonialsSection";
+import BlogSection from "@/components/enhanced/BlogSection";
+import NewsletterSection from "@/components/enhanced/NewsletterSection";
 import EnhancedGallery from "@/components/advanced/EnhancedGallery";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Bot, Sparkles } from "lucide-react";
+import { Bot } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
@@ -58,9 +62,13 @@ const Index = () => {
 
       <AdvancedSearchSection />
       <SmartRecommendationEngine />
-      <RealDataServicesSection />
+      <InteractiveServicesGrid />
       <RealDataPackages />
+      <TravelStatsSection />
+      <TestimonialsSection />
       <EnhancedGallery />
+      <BlogSection />
+      <NewsletterSection />
       <FeaturesSection />
       <Footer />
     </div>
