@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Plane, Clock, MapPin } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Flight } from '@/hooks/useFlights';
+import { useNavigate } from 'react-router-dom';
 
 interface FlightCardProps {
   flight: Flight;
@@ -14,6 +15,17 @@ interface FlightCardProps {
 const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
+  const navigate = useNavigate();
+
+  const handleBookNow = () => {
+    // التنقل إلى صفحة الحجز مع بيانات الرحلة
+    navigate('/booking', { 
+      state: { 
+        flightData: flight,
+        bookingType: 'flight'
+      }
+    });
+  };
 
   return (
     <Card className="hover:shadow-lg transition-shadow bg-white">
@@ -85,9 +97,17 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight }) => {
               </span>
             )}
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700"
+            onClick={handleBookNow}
+          >
             {isArabic ? "احجز الآن" : "Book Now"}
           </Button>
+        </div>
+        
+        {/* إشارة لمصدر البيانات */}
+        <div className="mt-2 text-xs text-gray-400 text-center">
+          {isArabic ? "البيانات من" : "Data from"} Skyscanner & Booking.com
         </div>
       </CardContent>
     </Card>

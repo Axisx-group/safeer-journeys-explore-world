@@ -6,6 +6,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useFlightOperations } from '@/hooks/useFlightOperations';
 import FlightSearchForm from '@/components/flights/FlightSearchForm';
 import FlightCard from '@/components/flights/FlightCard';
+import FlightBookingModal from '@/components/flights/FlightBookingModal';
+import { Flight } from '@/hooks/useFlights';
 
 const RealTimeFlightData = () => {
   const { language } = useLanguage();
@@ -16,6 +18,9 @@ const RealTimeFlightData = () => {
     arrival_city: 'مدريد',
     departure_date: '2025-06-01',
   });
+
+  const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   const {
     flights,
@@ -35,39 +40,35 @@ const RealTimeFlightData = () => {
     handleSearch(searchParams);
   };
 
+  const handleFlightBook = (flight: Flight) => {
+    setSelectedFlight(flight);
+    setIsBookingModalOpen(true);
+  };
+
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {isArabic ? 'الرحلات المتاحة' : 'Available Flights'}
+            {isArabic ? 'احجز رحلتك الآن' : 'Book Your Flight Now'}
           </h2>
           <p className="text-xl text-gray-600 mb-4">
-            {isArabic ? 'اكتشف أفضل الرحلات من Skyscanner وBooking.com بأسعار مناسبة' : 'Discover the best flights from Skyscanner & Booking.com at great prices'}
+            {isArabic ? 'اكتشف أفضل الرحلات واحجز مباشرة من موقعنا بأسعار تنافسية' : 'Discover the best flights and book directly from our site at competitive prices'}
           </p>
           
-          {/* Skyscanner Reference */}
+          {/* مؤشر مصدر البيانات */}
           <div className="flex justify-center items-center gap-2 text-blue-600">
             <span className="text-sm">
-              {isArabic ? 'مدعوم من' : 'Powered by'}
+              {isArabic ? 'البيانات من' : 'Data powered by'}
             </span>
-            <a 
-              href="https://www.skyscanner.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-sm font-semibold hover:text-blue-800 transition-colors"
-            >
-              Skyscanner <ExternalLink className="h-3 w-3" />
-            </a>
-            <span className="text-sm text-gray-400">+</span>
-            <a 
-              href="https://www.booking.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-sm font-semibold hover:text-blue-800 transition-colors"
-            >
-              Booking.com <ExternalLink className="h-3 w-3" />
-            </a>
+            <div className="flex items-center gap-1">
+              <span className="text-sm font-semibold">Skyscanner</span>
+              <span className="text-sm text-gray-400">+</span>
+              <span className="text-sm font-semibold">Booking.com</span>
+            </div>
+            <span className="text-sm">
+              {isArabic ? '• احجز من موقعنا مباشرة' : '• Book directly with us'}
+            </span>
           </div>
         </div>
 
@@ -100,7 +101,10 @@ const RealTimeFlightData = () => {
           ) : (
             <div className="grid gap-4">
               {flights?.map((flight) => (
-                <FlightCard key={flight.id} flight={flight} />
+                <FlightCard 
+                  key={flight.id} 
+                  flight={flight}
+                />
               ))}
               
               {flights?.length === 0 && (
@@ -112,6 +116,18 @@ const RealTimeFlightData = () => {
           )}
         </div>
       </div>
+
+      {/* نافذة الحجز */}
+      {selectedFlight && (
+        <FlightBookingModal
+          isOpen={isBookingModalOpen}
+          onClose={() => {
+            setIsBookingModalOpen(false);
+            setSelectedFlight(null);
+          }}
+          flight={selectedFlight}
+        />
+      )}
     </section>
   );
 };

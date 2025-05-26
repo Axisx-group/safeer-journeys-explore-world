@@ -37,16 +37,21 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
         <div className="flex items-center gap-2">
           <Plane className="h-5 w-5 text-blue-600" />
           <h3 className="text-lg font-semibold text-gray-900">
-            {isArabic ? "البحث عن الرحلات" : "Flight Search"}
+            {isArabic ? "ابحث واحجز رحلتك" : "Search & Book Your Flight"}
           </h3>
         </div>
-        {dataSource && (
-          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-            {dataSource.includes('skyscanner') ? 'Skyscanner + Booking.com' : 
-             dataSource.includes('booking') ? 'Booking.com' : 
-             dataSource}
+        <div className="flex items-center gap-2">
+          {dataSource && (
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+              {dataSource.includes('skyscanner') ? 'Skyscanner + Booking.com' : 
+               dataSource.includes('booking') ? 'Booking.com' : 
+               dataSource}
+            </Badge>
+          )}
+          <Badge className="bg-green-100 text-green-800 border-green-200">
+            {isArabic ? "احجز من موقعنا" : "Book with us"}
           </Badge>
-        )}
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -111,7 +116,7 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
             ) : (
               <>
                 <Plane className="h-4 w-4 mr-2" />
-                {isArabic ? "بحث" : "Search"}
+                {isArabic ? "بحث واحجز" : "Search & Book"}
               </>
             )}
           </Button>
@@ -122,10 +127,17 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
         <div className="mt-4 text-center">
           <div className="inline-flex items-center gap-2 text-blue-600 text-sm">
             <RefreshCw className="h-4 w-4 animate-spin" />
-            {isArabic ? "جلب أحدث البيانات من Skyscanner..." : "Fetching latest data from Skyscanner..."}
+            {isArabic ? "جلب أحدث الأسعار من Skyscanner و Booking.com..." : "Fetching latest prices from Skyscanner & Booking.com..."}
           </div>
         </div>
       )}
+      
+      <div className="mt-3 text-center text-xs text-gray-500">
+        {isArabic ? 
+          "نحصل على أفضل الأسعار من Skyscanner و Booking.com ونوفر لك خدمة الحجز المباشر" :
+          "We get the best prices from Skyscanner & Booking.com and provide direct booking service"
+        }
+      </div>
     </div>
   );
 };
