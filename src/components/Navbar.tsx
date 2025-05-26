@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Plane, Phone, Mail, MapPin } from "lucide-react";
@@ -53,76 +54,105 @@ const Navbar = () => {
   return (
     <>
       {/* Contact Bar */}
-      <div className="bg-blue-600 text-white py-2 px-4 sm:px-6 lg:px-8 hidden md:block">
+      <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-600 text-white py-3 px-4 sm:px-6 lg:px-8 hidden md:block shadow-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-8">
+            <div className="flex items-center space-x-2 hover:text-blue-200 transition-colors duration-200">
               <Phone className="h-4 w-4" />
-              <span>+1 (555) 123-4567</span>
+              <span className="font-medium">+1 (555) 123-4567</span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 hover:text-blue-200 transition-colors duration-200">
               <Mail className="h-4 w-4" />
-              <span>info@traveltours.com</span>
+              <span className="font-medium">info@traveltours.com</span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 hover:text-blue-200 transition-colors duration-200">
               <MapPin className="h-4 w-4" />
-              <span>{isArabic ? 'خدمة عالمية 24/7' : '24/7 Global Service'}</span>
+              <span className="font-medium">{isArabic ? 'خدمة عالمية 24/7' : '24/7 Global Service'}</span>
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <CurrencyDropdown 
-              selectedCurrency={selectedCurrency}
-              onCurrencyChange={setSelectedCurrency}
-            />
-            <LanguageToggle />
+            <div className="transform hover:scale-105 transition-transform duration-200">
+              <CurrencyDropdown 
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
+            </div>
+            <div className="transform hover:scale-105 transition-transform duration-200">
+              <LanguageToggle />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Main Navigation */}
-      <nav className="bg-white shadow-md sticky top-0 z-40">
+      <nav className="bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2">
-              <Plane className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">
-                {isArabic ? 'رحلات السفر' : 'Travel Tours'}
-              </span>
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="relative">
+                <Plane className="h-10 w-10 text-blue-600 group-hover:text-blue-700 transition-all duration-300 transform group-hover:rotate-12" />
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-gradient-to-r from-orange-400 to-red-500 rounded-full opacity-80"></div>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  {isArabic ? 'رحلات السفر' : 'Travel Tours'}
+                </span>
+                <span className="text-xs text-gray-500 font-medium">
+                  {isArabic ? 'اكتشف العالم معنا' : 'Discover the World'}
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-1">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="relative text-gray-700 hover:text-blue-600 px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-300 group"
                 >
-                  {isArabic ? item.nameAr : item.nameEn}
+                  <span className="relative z-10">{isArabic ? item.nameAr : item.nameEn}</span>
+                  <div className="absolute inset-0 bg-blue-50 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-300 origin-center"></div>
+                  <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-8 group-hover:left-1/2 group-hover:-translate-x-1/2 transition-all duration-300"></div>
                 </Link>
               ))}
               
-              <Link to="/booking">
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+              <Link to="/booking" className="ml-4">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                >
                   {isArabic ? 'احجز الآن' : 'Book Now'}
+                  <div className="absolute inset-0 bg-white opacity-20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
                 </Button>
               </Link>
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-2">
-              <CurrencyDropdown 
-                selectedCurrency={selectedCurrency}
-                onCurrencyChange={setSelectedCurrency}
-              />
-              <LanguageToggle />
+            <div className="md:hidden flex items-center space-x-3">
+              <div className="transform hover:scale-105 transition-transform duration-200">
+                <CurrencyDropdown 
+                  selectedCurrency={selectedCurrency}
+                  onCurrencyChange={setSelectedCurrency}
+                />
+              </div>
+              <div className="transform hover:scale-105 transition-transform duration-200">
+                <LanguageToggle />
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="relative p-2 hover:bg-blue-50 rounded-lg transition-colors duration-200"
               >
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                <div className="relative">
+                  {isMenuOpen ? (
+                    <X className="h-6 w-6 text-gray-700 transform rotate-0 transition-transform duration-300" />
+                  ) : (
+                    <Menu className="h-6 w-6 text-gray-700 transform rotate-0 transition-transform duration-300" />
+                  )}
+                </div>
               </Button>
             </div>
           </div>
@@ -130,21 +160,28 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-200">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navigationItems.map((item) => (
+          <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+            <div className="px-4 pt-4 pb-6 space-y-2">
+              {navigationItems.map((item, index) => (
                 <Link
                   key={item.href}
                   to={item.href}
-                  className="block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md text-base font-medium"
+                  className="block px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg text-base font-medium transition-all duration-200 transform hover:translate-x-1"
                   onClick={() => setIsMenuOpen(false)}
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  {isArabic ? item.nameAr : item.nameEn}
+                  <div className="flex items-center space-x-3">
+                    <div className="w-1 h-6 bg-gradient-to-b from-blue-600 to-indigo-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                    <span>{isArabic ? item.nameAr : item.nameEn}</span>
+                  </div>
                 </Link>
               ))}
               
-              <Link to="/booking" onClick={() => setIsMenuOpen(false)}>
-                <Button size="sm" className="w-full mt-2 bg-blue-600 hover:bg-blue-700">
+              <Link to="/booking" onClick={() => setIsMenuOpen(false)} className="block pt-4">
+                <Button 
+                  size="lg" 
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
+                >
                   {isArabic ? 'احجز الآن' : 'Book Now'}
                 </Button>
               </Link>
