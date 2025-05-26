@@ -5,12 +5,12 @@ export const corsHeaders = {
 };
 
 export const cityToAirport: { [key: string]: string } = {
+  // Saudi departure cities only
   'الرياض': 'RUH',
   'جدة': 'JED',
   'الدمام': 'DMM',
-  'مكة': 'JED',
-  'المدينة': 'MED',
-  'الطائف': 'TIF',
+  
+  // European destinations only
   'مدريد': 'MAD',
   'برشلونة': 'BCN',
   'باريس': 'CDG',
@@ -20,12 +20,23 @@ export const cityToAirport: { [key: string]: string } = {
   'فرانكفورت': 'FRA',
   'زيورخ': 'ZUR',
   'إسطنبول': 'IST',
-  'دبي': 'DXB',
-  'الدوحة': 'DOH',
-  'الكويت': 'KWI',
-  'القاهرة': 'CAI'
+  'براغ': 'PRG',
+  'بودابست': 'BUD',
+  'وارسو': 'WAW',
+  'ميلان': 'MXP',
+  'أثينا': 'ATH',
+  'لشبونة': 'LIS',
+  'ستوكهولم': 'ARN',
+  'كوبنهاغن': 'CPH',
+  'أوسلو': 'OSL',
+  'هلسنكي': 'HEL',
+  'بروكسل': 'BRU',
+  'دبلن': 'DUB',
+  'فيينا': 'VIE',
+  'برلين': 'BER'
 };
 
+// European budget airlines only - no Gulf carriers
 export const airlines = [
   'Ryanair',
   'EasyJet', 

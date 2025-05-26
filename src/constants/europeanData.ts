@@ -95,3 +95,15 @@ export const europeanCurrencies = [
   { code: 'UAH', name: 'Ukrainian Hryvnia', nameAr: 'هريفنيا أوكراني', symbol: '₴' },
   { code: 'TRY', name: 'Turkish Lira', nameAr: 'ليرة تركية', symbol: '₺' }
 ];
+
+// European Budget Airlines only
+export const europeanBudgetAirlines = [
+  { code: 'FR', name: 'Ryanair', nameAr: 'رايان إير' },
+  { code: 'U2', name: 'EasyJet', nameAr: 'إيزي جيت' },
+  { code: 'W6', name: 'Wizz Air', nameAr: 'ويز إير' },
+  { code: 'VY', name: 'Vueling', nameAr: 'فويلنغ' },
+  { code: 'EW', name: 'Eurowings', nameAr: 'يوروينغز' },
+  { code: 'DY', name: 'Norwegian Air', nameAr: 'نورويجيان إير' },
+  { code: 'LS', name: 'Jet2', nameAr: 'جيت 2' },
+  { code: 'PC', name: 'Pegasus Airlines', nameAr: 'بيغاسوس' }
+];

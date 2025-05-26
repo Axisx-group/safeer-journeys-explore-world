@@ -33,15 +33,33 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
   const { language } = useLanguage();
   const isArabic = language === 'ar';
 
-  const cities = [
+  // Only Saudi departure cities and European destinations
+  const departureCities = [
     { value: 'الرياض', label: isArabic ? 'الرياض' : 'Riyadh' },
     { value: 'جدة', label: isArabic ? 'جدة' : 'Jeddah' },
-    { value: 'الدمام', label: isArabic ? 'الدمام' : 'Dammam' },
+    { value: 'الدمام', label: isArabic ? 'الدمام' : 'Dammam' }
+  ];
+
+  const europeanCities = [
     { value: 'مدريد', label: isArabic ? 'مدريد' : 'Madrid' },
     { value: 'برشلونة', label: isArabic ? 'برشلونة' : 'Barcelona' },
     { value: 'إسطنبول', label: isArabic ? 'إسطنبول' : 'Istanbul' },
     { value: 'باريس', label: isArabic ? 'باريس' : 'Paris' },
-    { value: 'لندن', label: isArabic ? 'لندن' : 'London' }
+    { value: 'لندن', label: isArabic ? 'لندن' : 'London' },
+    { value: 'روما', label: isArabic ? 'روما' : 'Rome' },
+    { value: 'أمستردام', label: isArabic ? 'أمستردام' : 'Amsterdam' },
+    { value: 'برلين', label: isArabic ? 'برلين' : 'Berlin' },
+    { value: 'فيينا', label: isArabic ? 'فيينا' : 'Vienna' },
+    { value: 'براغ', label: isArabic ? 'براغ' : 'Prague' },
+    { value: 'بودابست', label: isArabic ? 'بودابست' : 'Budapest' },
+    { value: 'وارسو', label: isArabic ? 'وارسو' : 'Warsaw' },
+    { value: 'زيورخ', label: isArabic ? 'زيورخ' : 'Zurich' },
+    { value: 'ميلان', label: isArabic ? 'ميلان' : 'Milan' },
+    { value: 'أثينا', label: isArabic ? 'أثينا' : 'Athens' },
+    { value: 'لشبونة', label: isArabic ? 'لشبونة' : 'Lisbon' },
+    { value: 'ستوكهولم', label: isArabic ? 'ستوكهولم' : 'Stockholm' },
+    { value: 'كوبنهاغن', label: isArabic ? 'كوبنهاغن' : 'Copenhagen' },
+    { value: 'أوسلو', label: isArabic ? 'أوسلو' : 'Oslo' }
   ];
 
   return (
@@ -61,7 +79,7 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
               className="space-y-2"
             >
               <Label className="text-sm font-medium text-gray-700">
-                {isArabic ? 'من' : 'From'}
+                {isArabic ? 'من (السعودية)' : 'From (Saudi Arabia)'}
               </Label>
               <Select
                 value={searchParams.departure_city}
@@ -73,7 +91,7 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
                   <SelectValue placeholder={isArabic ? 'اختر مدينة المغادرة' : 'Select departure city'} />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
+                  {departureCities.map((city) => (
                     <SelectItem key={`departure-${city.value}`} value={city.value}>
                       {city.label}
                     </SelectItem>
@@ -89,7 +107,7 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
               className="space-y-2"
             >
               <Label className="text-sm font-medium text-gray-700">
-                {isArabic ? 'إلى' : 'To'}
+                {isArabic ? 'إلى (أوروبا)' : 'To (Europe)'}
               </Label>
               <Select
                 value={searchParams.arrival_city}
@@ -98,10 +116,10 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={isArabic ? 'اختر مدينة الوصول' : 'Select arrival city'} />
+                  <SelectValue placeholder={isArabic ? 'اختر وجهتك الأوروبية' : 'Select European destination'} />
                 </SelectTrigger>
                 <SelectContent>
-                  {cities.map((city) => (
+                  {europeanCities.map((city) => (
                     <SelectItem key={`arrival-${city.value}`} value={city.value}>
                       {city.label}
                     </SelectItem>
@@ -147,14 +165,14 @@ const FlightSearchForm: React.FC<FlightSearchFormProps> = ({
               ) : (
                 <Search className="h-5 w-5 mr-2" />
               )}
-              {isArabic ? 'بحث عن الرحلات' : 'Search Flights'}
+              {isArabic ? 'بحث عن الرحلات الأوروبية' : 'Search European Flights'}
             </Button>
             
             {dataSource && (
               <div className="text-sm text-gray-600 flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 <span>
-                  {isArabic ? 'مصدر البيانات:' : 'Data source:'} {dataSource}
+                  {isArabic ? 'شركات الطيران الاقتصادية الأوروبية' : 'European Budget Airlines'} - {dataSource}
                 </span>
               </div>
             )}
