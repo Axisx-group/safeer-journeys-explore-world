@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Minus, Plus, Users, Baby, Child } from "lucide-react";
+import { Minus, Plus, Users, Baby, User } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 
@@ -106,7 +106,7 @@ const PassengerSelector = ({ passengers, onPassengersChange, isOpen, onToggle }:
               {/* Children */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Child className="h-5 w-5 text-green-600" />
+                  <User className="h-5 w-5 text-green-600" />
                   <div>
                     <div className="font-medium">{isArabic ? 'الأطفال' : 'Children'}</div>
                     <div className="text-sm text-gray-500">
