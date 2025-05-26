@@ -25,64 +25,124 @@ const SmartRecommendations = () => {
     const destinations = language === 'ar' ? [
       {
         id: '1',
-        destination: 'دبي، الإمارات',
-        price: '1200€',
-        duration: '5 أيام',
-        type: 'رحلة فاخرة',
-        image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400',
-        aiScore: 95,
-        reasons: ['طقس مثالي', 'عروض حصرية', 'تجارب فريدة']
+        destination: 'مدريد، إسبانيا',
+        price: '450€',
+        duration: '4 أيام',
+        type: 'رحلة ثقافية',
+        image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400',
+        aiScore: 96,
+        reasons: ['عاصمة فنية رائعة', 'طقس مثالي', 'تراث ثقافي غني']
       },
       {
         id: '2',
-        destination: 'باريس، فرنسا',
-        price: '800€',
-        duration: '4 أيام',
-        type: 'رحلة ثقافية',
-        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400',
-        aiScore: 92,
-        reasons: ['موسم مثالي', 'فعاليات خاصة', 'أسعار منخفضة']
+        destination: 'برشلونة، إسبانيا',
+        price: '520€',
+        duration: '5 أيام',
+        type: 'رحلة شاطئية وثقافية',
+        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400',
+        aiScore: 95,
+        reasons: ['شواطئ رائعة', 'فن الغاودي', 'مأكولات متميزة']
       },
       {
         id: '3',
-        destination: 'طوكيو، اليابان',
-        price: '1500€',
-        duration: '7 أيام',
-        type: 'رحلة مغامرة',
-        image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
-        aiScore: 88,
-        reasons: ['تجربة فريدة', 'ثقافة مميزة', 'طعام رائع']
+        destination: 'إشبيلية، إسبانيا',
+        price: '380€',
+        duration: '3 أيام',
+        type: 'رحلة تاريخية',
+        image: 'https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400',
+        aiScore: 94,
+        reasons: ['تراث أندلسي', 'عمارة إسلامية', 'جو رومانسي']
+      },
+      {
+        id: '4',
+        destination: 'إسطنبول، تركيا',
+        price: '420€',
+        duration: '4 أيام',
+        type: 'رحلة تاريخية وثقافية',
+        image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=400',
+        aiScore: 93,
+        reasons: ['ملتقى الحضارات', 'مساجد تاريخية', 'تجربة فريدة']
+      },
+      {
+        id: '5',
+        destination: 'روما، إيطاليا',
+        price: '480€',
+        duration: '4 أيام',
+        type: 'رحلة تاريخية',
+        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400',
+        aiScore: 92,
+        reasons: ['عاصمة التاريخ', 'آثار رومانية', 'فن النهضة']
+      },
+      {
+        id: '6',
+        destination: 'باريس، فرنسا',
+        price: '550€',
+        duration: '5 أيام',
+        type: 'رحلة رومانسية',
+        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400',
+        aiScore: 91,
+        reasons: ['مدينة النور', 'فن وثقافة', 'رومانسية خالدة']
       }
     ] : [
       {
         id: '1',
-        destination: 'Dubai, UAE',
-        price: '€1200',
-        duration: '5 days',
-        type: 'Luxury Trip',
-        image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400',
-        aiScore: 95,
-        reasons: ['Perfect Weather', 'Exclusive Deals', 'Unique Experiences']
+        destination: 'Madrid, Spain',
+        price: '€450',
+        duration: '4 days',
+        type: 'Cultural Trip',
+        image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400',
+        aiScore: 96,
+        reasons: ['Amazing Art Capital', 'Perfect Weather', 'Rich Cultural Heritage']
       },
       {
         id: '2',
-        destination: 'Paris, France',
-        price: '€800',
-        duration: '4 days',
-        type: 'Cultural Trip',
-        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400',
-        aiScore: 92,
-        reasons: ['Perfect Season', 'Special Events', 'Great Prices']
+        destination: 'Barcelona, Spain',
+        price: '€520',
+        duration: '5 days',
+        type: 'Beach & Culture',
+        image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400',
+        aiScore: 95,
+        reasons: ['Beautiful Beaches', 'Gaudí Architecture', 'Outstanding Cuisine']
       },
       {
         id: '3',
-        destination: 'Tokyo, Japan',
-        price: '€1500',
-        duration: '7 days',
-        type: 'Adventure Trip',
-        image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400',
-        aiScore: 88,
-        reasons: ['Unique Experience', 'Amazing Culture', 'Great Food']
+        destination: 'Seville, Spain',
+        price: '€380',
+        duration: '3 days',
+        type: 'Historical Trip',
+        image: 'https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400',
+        aiScore: 94,
+        reasons: ['Andalusian Heritage', 'Islamic Architecture', 'Romantic Atmosphere']
+      },
+      {
+        id: '4',
+        destination: 'Istanbul, Turkey',
+        price: '€420',
+        duration: '4 days',
+        type: 'Historical & Cultural',
+        image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=400',
+        aiScore: 93,
+        reasons: ['Meeting of Civilizations', 'Historic Mosques', 'Unique Experience']
+      },
+      {
+        id: '5',
+        destination: 'Rome, Italy',
+        price: '€480',
+        duration: '4 days',
+        type: 'Historical Trip',
+        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400',
+        aiScore: 92,
+        reasons: ['Capital of History', 'Roman Ruins', 'Renaissance Art']
+      },
+      {
+        id: '6',
+        destination: 'Paris, France',
+        price: '€550',
+        duration: '5 days',
+        type: 'Romantic Trip',
+        image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400',
+        aiScore: 91,
+        reasons: ['City of Light', 'Art & Culture', 'Timeless Romance']
       }
     ];
 
@@ -112,8 +172,8 @@ const SmartRecommendations = () => {
             </div>
             <p className="text-gray-600">
               {language === 'ar' 
-                ? 'نحن نحلل أفضل الوجهات لك بناءً على تفضيلاتك والاتجاهات الحالية'
-                : 'We are analyzing the best destinations for you based on your preferences and current trends'
+                ? 'نحن نحلل أفضل الوجهات الأوروبية لك مع التركيز على إسبانيا وتركيا'
+                : 'We are analyzing the best European destinations for you with focus on Spain and Turkey'
               }
             </p>
           </div>
@@ -141,18 +201,18 @@ const SmartRecommendations = () => {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="h-8 w-8 text-purple-600" />
             <h2 className="text-3xl font-bold text-gray-900">
-              {language === 'ar' ? 'اقتراحات ذكية مخصصة لك' : 'Smart Recommendations for You'}
+              {language === 'ar' ? 'أفضل الوجهات الأوروبية وتركيا' : 'Best European Destinations & Turkey'}
             </h2>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
             {language === 'ar' 
-              ? 'بناءً على تحليل الذكاء الاصطناعي للاتجاهات الحالية وتفضيلات المسافرين'
-              : 'Based on AI analysis of current trends and traveler preferences'
+              ? 'اكتشف أجمل المدن الأوروبية مع التركيز على إسبانيا الساحرة وتركيا التاريخية'
+              : 'Discover the most beautiful European cities with focus on charming Spain and historic Turkey'
             }
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recommendations.map((rec) => (
             <Card key={rec.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-0 bg-white">
               <div className="relative">

@@ -7,46 +7,46 @@ const GallerySection = () => {
 
   const destinations = [
     {
-      image: "https://images.unsplash.com/photo-1539650116574-75c0c6d73d0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "مكة المكرمة",
-      titleEn: "Mecca",
-      description: "الحرم المكي الشريف",
-      descriptionEn: "The Holy Mosque"
+      image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      title: "مدريد",
+      titleEn: "Madrid",
+      description: "عاصمة إسبانيا النابضة بالحياة",
+      descriptionEn: "Spain's vibrant capital"
     },
     {
-      image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "المدينة المنورة",
-      titleEn: "Medina",
-      description: "المسجد النبوي الشريف",
-      descriptionEn: "The Prophet's Mosque"
+      image: "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      title: "برشلونة",
+      titleEn: "Barcelona",
+      description: "مدينة الفن والعمارة",
+      descriptionEn: "City of Art and Architecture"
     },
     {
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "الرياض",
-      titleEn: "Riyadh",
-      description: "عاصمة المملكة العربية السعودية",
-      descriptionEn: "Capital of Saudi Arabia"
+      image: "https://images.unsplash.com/photo-1558642084-fd07fae5282e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      title: "إشبيلية",
+      titleEn: "Seville", 
+      description: "جوهرة الأندلس",
+      descriptionEn: "Jewel of Andalusia"
     },
     {
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "جدة",
-      titleEn: "Jeddah", 
-      description: "عروس البحر الأحمر",
-      descriptionEn: "Bride of the Red Sea"
+      image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      title: "إسطنبول",
+      titleEn: "Istanbul",
+      description: "ملتقى الشرق والغرب",
+      descriptionEn: "Where East Meets West"
     },
     {
-      image: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "العلا",
-      titleEn: "AlUla",
-      description: "عجائب التاريخ والطبيعة",
-      descriptionEn: "Wonders of History and Nature"
+      image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      title: "روما",
+      titleEn: "Rome",
+      description: "المدينة الخالدة",
+      descriptionEn: "The Eternal City"
     },
     {
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "الطائف",
-      titleEn: "Taif",
-      description: "مدينة الورود والمناخ المعتدل",
-      descriptionEn: "City of Roses and Mild Climate"
+      image: "https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      title: "باريس",
+      titleEn: "Paris",
+      description: "مدينة النور والحب",
+      descriptionEn: "City of Light and Love"
     }
   ];
 
@@ -55,12 +55,12 @@ const GallerySection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            {t('language') === 'ar' ? 'وجهات مميزة' : 'Featured Destinations'}
+            {t('language') === 'ar' ? 'الوجهات الأوروبية المميزة' : 'Featured European Destinations'}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             {t('language') === 'ar' 
-              ? 'اكتشف أجمل الوجهات السياحية في المملكة العربية السعودية'
-              : 'Discover the most beautiful tourist destinations in Saudi Arabia'
+              ? 'اكتشف أجمل المدن الأوروبية مع التركيز على إسبانيا الساحرة وتركيا التاريخية'
+              : 'Discover the most beautiful European cities with focus on charming Spain and historic Turkey'
             }
           </p>
         </div>
