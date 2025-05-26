@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { 
@@ -18,10 +16,12 @@ import {
   Plane,
   Camera,
   Music,
-  Coffee
+  Coffee,
+  FormInput
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
+import DetailedTravelForm from "./DetailedTravelForm";
 
 interface MoodQuestion {
   id: string;
@@ -43,6 +43,23 @@ interface AIRecommendation {
   priceRange: string;
   bestTime: string;
   activities: string[];
+  flightInfo?: {
+    departure: string;
+    price: string;
+    duration: string;
+  };
+}
+
+interface TravelFormData {
+  departureAirport: string;
+  destination: string;
+  preferences: string[];
+  adults: number;
+  children: number;
+  infants: number;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  duration: number;
 }
 
 const AITravelAssistant = () => {
@@ -52,6 +69,8 @@ const AITravelAssistant = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [recommendations, setRecommendations] = useState<AIRecommendation[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [showDetailedForm, setShowDetailedForm] = useState(false);
+  const [detailedFormData, setDetailedFormData] = useState<TravelFormData | null>(null);
 
   const moodQuestions: MoodQuestion[] = [
     {
@@ -78,33 +97,6 @@ const AITravelAssistant = () => {
       question_ar: 'قيم مستوى طاقتك للأنشطة (1-10)',
       type: 'scale',
       icon: Sparkles
-    },
-    {
-      id: 'budget_range',
-      question: 'What\'s your budget range for this trip?',
-      question_ar: 'ما هي ميزانيتك لهذه الرحلة؟',
-      type: 'multiple',
-      options: ['Budget-friendly (€500-1000)', 'Mid-range (€1000-2500)', 'Luxury (€2500-5000)', 'Ultra-luxury (€5000+)'],
-      options_ar: ['اقتصادي (€500-1000)', 'متوسط (€1000-2500)', 'فاخر (€2500-5000)', 'فائق الفخامة (€5000+)'],
-      icon: DollarSign
-    },
-    {
-      id: 'travel_duration',
-      question: 'How long do you want to travel?',
-      question_ar: 'كم يوماً تريد أن تسافر؟',
-      type: 'multiple',
-      options: ['Weekend (2-3 days)', 'Short trip (4-7 days)', 'Extended vacation (8-14 days)', 'Long journey (15+ days)'],
-      options_ar: ['عطلة نهاية أسبوع (2-3 أيام)', 'رحلة قصيرة (4-7 أيام)', 'عطلة ممتدة (8-14 يوماً)', 'رحلة طويلة (15+ يوماً)'],
-      icon: Calendar
-    },
-    {
-      id: 'companion_type',
-      question: 'Who are you traveling with?',
-      question_ar: 'مع من ستسافر؟',
-      type: 'multiple',
-      options: ['Solo', 'Partner/Spouse', 'Family with kids', 'Friends group', 'Business colleagues'],
-      options_ar: ['بمفردي', 'الشريك/الزوج', 'العائلة مع الأطفال', 'مجموعة أصدقاء', 'زملاء العمل'],
-      icon: Users
     }
   ];
 
@@ -116,7 +108,8 @@ const AITravelAssistant = () => {
     if (currentStep < moodQuestions.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      analyzeAndRecommend();
+      // Move to detailed form instead of immediate analysis
+      setShowDetailedForm(true);
     }
   };
 
@@ -126,14 +119,24 @@ const AITravelAssistant = () => {
     }
   };
 
-  const analyzeAndRecommend = async () => {
+  const handleDetailedFormSubmit = async (formData: TravelFormData) => {
+    setDetailedFormData(formData);
+    setShowDetailedForm(false);
     setIsAnalyzing(true);
     
-    // Simulate AI analysis
+    // Simulate AI analysis with the detailed form data
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // Mock recommendations based on answers
-    const mockRecommendations: AIRecommendation[] = [
+    // Generate recommendations based on both mood answers and detailed form
+    const mockRecommendations: AIRecommendation[] = generatePersonalizedRecommendations(formData);
+    
+    setRecommendations(mockRecommendations);
+    setIsAnalyzing(false);
+    setShowResults(true);
+  };
+
+  const generatePersonalizedRecommendations = (formData: TravelFormData): AIRecommendation[] => {
+    const baseRecommendations = [
       {
         destination: 'Barcelona',
         destination_ar: 'برشلونة',
@@ -143,7 +146,12 @@ const AITravelAssistant = () => {
         imageUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca',
         priceRange: '€800-1500',
         bestTime: 'Spring/Summer',
-        activities: ['Sightseeing', 'Beach', 'Culture', 'Nightlife']
+        activities: ['Sightseeing', 'Beach', 'Culture', 'Nightlife'],
+        flightInfo: {
+          departure: formData.departureAirport,
+          price: '2,850 SAR',
+          duration: '6h 30m'
+        }
       },
       {
         destination: 'Santorini',
@@ -154,7 +162,12 @@ const AITravelAssistant = () => {
         imageUrl: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff',
         priceRange: '€1200-2000',
         bestTime: 'Summer',
-        activities: ['Beach', 'Photography', 'Wine tasting', 'Relaxation']
+        activities: ['Beach', 'Photography', 'Wine tasting', 'Relaxation'],
+        flightInfo: {
+          departure: formData.departureAirport,
+          price: '3,200 SAR',
+          duration: '5h 45m'
+        }
       },
       {
         destination: 'Istanbul',
@@ -165,18 +178,50 @@ const AITravelAssistant = () => {
         imageUrl: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200',
         priceRange: '€600-1200',
         bestTime: 'Spring/Fall',
-        activities: ['History', 'Culture', 'Shopping', 'Cuisine']
+        activities: ['History', 'Culture', 'Shopping', 'Cuisine'],
+        flightInfo: {
+          departure: formData.departureAirport,
+          price: '1,850 SAR',
+          duration: '3h 20m'
+        }
       }
     ];
 
-    setRecommendations(mockRecommendations);
-    setIsAnalyzing(false);
-    setShowResults(true);
+    // Customize recommendations based on preferences
+    return baseRecommendations.map(rec => {
+      if (formData.preferences.includes('beach') && rec.destination === 'Santorini') {
+        rec.matchScore += 5;
+      }
+      if (formData.preferences.includes('historical') && rec.destination === 'Istanbul') {
+        rec.matchScore += 5;
+      }
+      if (formData.preferences.includes('city') && rec.destination === 'Barcelona') {
+        rec.matchScore += 5;
+      }
+      return rec;
+    }).sort((a, b) => b.matchScore - a.matchScore);
   };
 
-  const currentQuestion = moodQuestions[currentStep];
+  const handleBackToForm = () => {
+    setShowDetailedForm(true);
+    setShowResults(false);
+  };
+
   const progress = ((currentStep + 1) / moodQuestions.length) * 100;
 
+  // Show detailed form
+  if (showDetailedForm) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <DetailedTravelForm 
+          onSubmit={handleDetailedFormSubmit}
+          onBack={() => setShowDetailedForm(false)}
+        />
+      </div>
+    );
+  }
+
+  // Show results with detailed information
   if (showResults) {
     return (
       <div className="max-w-6xl mx-auto p-6">
@@ -189,9 +234,29 @@ const AITravelAssistant = () => {
             <Sparkles className="h-8 w-8 text-blue-600" />
             {language === 'ar' ? 'توصياتنا المخصصة لك' : 'Your Personalized Recommendations'}
           </h2>
-          <p className="text-gray-600">
-            {language === 'ar' ? 'بناءً على إجاباتك، إليك أفضل الوجهات المناسبة لك' : 'Based on your answers, here are the best destinations for you'}
-          </p>
+          
+          {detailedFormData && (
+            <div className="bg-blue-50 p-4 rounded-lg mb-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="font-semibold">{language === 'ar' ? 'من:' : 'From:'}</span>
+                  <p>{detailedFormData.departureAirport}</p>
+                </div>
+                <div>
+                  <span className="font-semibold">{language === 'ar' ? 'المسافرون:' : 'Travelers:'}</span>
+                  <p>{detailedFormData.adults + detailedFormData.children + detailedFormData.infants} {language === 'ar' ? 'شخص' : 'people'}</p>
+                </div>
+                <div>
+                  <span className="font-semibold">{language === 'ar' ? 'المدة:' : 'Duration:'}</span>
+                  <p>{detailedFormData.duration} {language === 'ar' ? 'يوم' : 'days'}</p>
+                </div>
+                <div>
+                  <span className="font-semibold">{language === 'ar' ? 'التفضيلات:' : 'Preferences:'}</span>
+                  <p>{detailedFormData.preferences.length} {language === 'ar' ? 'اختيار' : 'selected'}</p>
+                </div>
+              </div>
+            </div>
+          )}
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -228,6 +293,27 @@ const AITravelAssistant = () => {
                     <Progress value={rec.matchScore} className="h-2" />
                   </div>
 
+                  {rec.flightInfo && (
+                    <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Plane className="h-4 w-4 text-blue-600" />
+                        <span className="font-semibold text-sm">
+                          {language === 'ar' ? 'معلومات الطيران' : 'Flight Info'}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <span className="text-gray-600">{language === 'ar' ? 'من:' : 'From:'}</span>
+                          <p className="font-semibold">{rec.flightInfo.departure}</p>
+                        </div>
+                        <div>
+                          <span className="text-gray-600">{language === 'ar' ? 'السعر:' : 'Price:'}</span>
+                          <p className="font-semibold text-green-600">{rec.flightInfo.price}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="mb-4">
                     <h4 className="font-semibold mb-2">
                       {language === 'ar' ? 'لماذا هذه الوجهة؟' : 'Why this destination?'}
@@ -250,11 +336,6 @@ const AITravelAssistant = () => {
                     ))}
                   </div>
 
-                  <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                    <span>{rec.priceRange}</span>
-                    <span>{rec.bestTime}</span>
-                  </div>
-
                   <Button className="w-full">
                     <Plane className="h-4 w-4 mr-2" />
                     {language === 'ar' ? 'احجز الآن' : 'Book Now'}
@@ -265,7 +346,13 @@ const AITravelAssistant = () => {
           ))}
         </div>
 
-        <div className="text-center mt-8">
+        <div className="text-center mt-8 space-x-4">
+          <Button 
+            variant="outline" 
+            onClick={handleBackToForm}
+          >
+            {language === 'ar' ? 'تعديل التفاصيل' : 'Edit Details'}
+          </Button>
           <Button 
             variant="outline" 
             onClick={() => {
@@ -273,6 +360,7 @@ const AITravelAssistant = () => {
               setAnswers({});
               setShowResults(false);
               setRecommendations([]);
+              setDetailedFormData(null);
             }}
           >
             {language === 'ar' ? 'ابدأ من جديد' : 'Start Over'}
@@ -282,6 +370,7 @@ const AITravelAssistant = () => {
     );
   }
 
+  // Show analysis screen
   if (isAnalyzing) {
     return (
       <div className="max-w-2xl mx-auto p-6">
@@ -298,7 +387,7 @@ const AITravelAssistant = () => {
               {language === 'ar' ? 'يقوم الذكاء الاصطناعي بتحليل إجاباتك...' : 'AI is analyzing your answers...'}
             </h3>
             <p className="text-gray-600 mb-6">
-              {language === 'ar' ? 'نحن نحلل نفسيتك وتفضيلاتك لنجد أفضل الوجهات لك' : 'We\'re analyzing your mood and preferences to find the perfect destinations for you'}
+              {language === 'ar' ? 'نحن نحلل تفضيلاتك ومعلومات رحلتك لنجد أفضل الوجهات لك' : 'We\'re analyzing your preferences and trip details to find the perfect destinations for you'}
             </p>
             <Progress value={66} className="w-full" />
           </CardContent>
@@ -307,6 +396,8 @@ const AITravelAssistant = () => {
     );
   }
 
+  // Show mood questions (initial flow)
+  const currentQuestion = moodQuestions[currentStep];
   const IconComponent = currentQuestion.icon;
 
   return (
@@ -381,15 +472,6 @@ const AITravelAssistant = () => {
                   </div>
                 </div>
               )}
-
-              {currentQuestion.type === 'text' && (
-                <Textarea
-                  placeholder={language === 'ar' ? 'اكتب إجابتك هنا...' : 'Type your answer here...'}
-                  value={answers[currentQuestion.id] || ''}
-                  onChange={(e) => handleAnswer(currentQuestion.id, e.target.value)}
-                  className="min-h-32"
-                />
-              )}
             </motion.div>
           </AnimatePresence>
 
@@ -409,8 +491,8 @@ const AITravelAssistant = () => {
             >
               {currentStep === moodQuestions.length - 1 ? (
                 <>
-                  <Sparkles className="h-4 w-4" />
-                  {language === 'ar' ? 'احصل على التوصيات' : 'Get Recommendations'}
+                  <FormInput className="h-4 w-4" />
+                  {language === 'ar' ? 'تفاصيل الرحلة' : 'Trip Details'}
                 </>
               ) : (
                 <>
