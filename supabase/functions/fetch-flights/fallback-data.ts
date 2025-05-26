@@ -7,17 +7,19 @@ export function generateFallbackFlights(searchParams: SearchParams): FlightData[
   console.log('Generating fallback flight data for:', { departure_city, arrival_city, departure_date });
   
   const airlines = [
-    'الخطوط السعودية',
-    'طيران ناس',
-    'طيران أديل', 
-    'الخطوط الجوية الإسبانية',
-    'طيران الإمارات',
-    'الخطوط القطرية'
+    'Ryanair',
+    'EasyJet', 
+    'Wizz Air',
+    'Vueling',
+    'Eurowings',
+    'Norwegian Air',
+    'Jet2',
+    'Pegasus Airlines'
   ];
 
   const flightNumbers = [
-    'SV401', 'XY205', 'F3801', 'IB3626', 'EK817', 'QR147',
-    'SV403', 'XY207', 'F3803', 'IB3628', 'EK819', 'QR149'
+    'FR2801', 'U22205', 'W63401', 'VY8626', 'EW817', 'DY147',
+    'LS403', 'PC207', 'FR2803', 'U22207', 'W63403', 'VY8628'
   ];
 
   // Generate valid times (0-23 hours format)
@@ -30,13 +32,13 @@ export function generateFallbackFlights(searchParams: SearchParams): FlightData[
   const flights: FlightData[] = [];
   
   for (let i = 0; i < 8; i++) {
-    const basePrice = 800 + (i * 150);
+    const basePrice = 350 + (i * 80); // Lower prices for budget airlines
     const departureHour = 6 + (i * 2); // Start from 6 AM, every 2 hours
-    const flightDuration = 420 + (i * 30); // 7-11 hours
+    const flightDuration = 300 + (i * 45); // 5-8.5 hours
     const arrivalHour = (departureHour + Math.floor(flightDuration / 60)) % 24;
     
     const flight: FlightData = {
-      flight_number: flightNumbers[i] || `SV${400 + i}`,
+      flight_number: flightNumbers[i] || `FR${2800 + i}`,
       departure_airport: departure_city === 'الرياض' ? 'RUH' : 'JED',
       arrival_airport: arrival_city === 'مدريد' ? 'MAD' : 'BCN',
       departure_city,
@@ -45,13 +47,13 @@ export function generateFallbackFlights(searchParams: SearchParams): FlightData[
       departure_time: generateValidTime(departureHour),
       arrival_time: generateValidTime(arrivalHour, 30),
       airline: airlines[i % airlines.length],
-      price: basePrice + Math.floor(Math.random() * 300),
+      price: basePrice + Math.floor(Math.random() * 200), // More affordable pricing
       currency: 'SAR',
       duration_minutes: flightDuration,
-      stops: i % 3 === 0 ? 0 : (i % 2 === 0 ? 1 : 2),
-      is_direct: i % 3 === 0,
-      class_type: i % 4 === 0 ? 'business' : 'economy',
-      available_seats: 15 + Math.floor(Math.random() * 35)
+      stops: i % 4 === 0 ? 0 : (i % 2 === 0 ? 1 : 2),
+      is_direct: i % 4 === 0,
+      class_type: i % 6 === 0 ? 'business' : 'economy', // Mostly economy class
+      available_seats: 20 + Math.floor(Math.random() * 40)
     };
     
     flights.push(flight);

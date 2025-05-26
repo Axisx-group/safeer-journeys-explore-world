@@ -26,4 +26,13 @@ export const cityToAirport: { [key: string]: string } = {
   'القاهرة': 'CAI'
 };
 
-export const airlines = ['الخطوط السعودية', 'طيران ناس', 'طيران أديل', 'فلاي دبي', 'الإمارات', 'القطرية'];
+export const airlines = [
+  'Ryanair',
+  'EasyJet', 
+  'Wizz Air',
+  'Vueling',
+  'Eurowings',
+  'Norwegian Air',
+  'Jet2',
+  'Pegasus Airlines'
+];
