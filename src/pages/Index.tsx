@@ -13,6 +13,9 @@ import NewsletterSection from "@/components/enhanced/NewsletterSection";
 import EnhancedGallery from "@/components/advanced/EnhancedGallery";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
+import LiveChat from "@/components/LiveChat";
+import RealTimeFlightData from "@/components/RealTimeFlightData";
+import AdvancedAIChat from "@/components/AdvancedAIChat";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bot } from "lucide-react";
@@ -60,6 +63,9 @@ const Index = () => {
         </section>
       )}
 
+      {/* Real-time Flight Data */}
+      <RealTimeFlightData />
+
       <AdvancedSearchSection />
       <SmartRecommendationEngine />
       <InteractiveServicesGrid />
@@ -71,6 +77,12 @@ const Index = () => {
       <NewsletterSection />
       <FeaturesSection />
       <Footer />
+      
+      {/* Live Support Chat */}
+      <LiveChat />
+      
+      {/* Advanced AI Chat */}
+      <AdvancedAIChat />
     </div>
   );
 };
