@@ -44,6 +44,7 @@ additional_redirect_urls = ["https://vkmycgoowmelysnohssi.supabase.co"]
 jwt_expiry = 3600
 refresh_token_rotation_enabled = true
 security_update_password_require_reauthentication = true
+enable_leaked_password_protection = true
 
 [functions.fetch-flights]
 verify_jwt = false
