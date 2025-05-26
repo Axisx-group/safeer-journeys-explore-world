@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHotels, useHotelSearch } from '@/hooks/useHotels';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
@@ -72,15 +72,6 @@ const RealTimeHotelData = () => {
       <div className="max-w-7xl mx-auto">
         <HotelHeader />
 
-        {hotelResponse && hotels.length > 0 && (
-          <HotelStats
-            currentCount={hotels.length}
-            totalCount={hotelResponse.total}
-            currentPage={searchParams.page}
-            totalPages={totalPages}
-          />
-        )}
-
         <div className="space-y-6">
           <HotelSearchForm
             searchParams={searchParams}
@@ -124,8 +115,17 @@ const RealTimeHotelData = () => {
           {isLoading || isFetching ? (
             <LoadingState />
           ) : (
-            <>
-              {hotels && hotels.length > 0 ? (
+            <div className="space-y-6">
+              {hotels.length > 0 && (
+                <HotelStats
+                  currentCount={hotels.length}
+                  totalCount={hotelResponse?.total || 0}
+                  currentPage={searchParams.page}
+                  totalPages={totalPages}
+                />
+              )}
+
+              {hotels.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {hotels.map((hotel) => (
@@ -148,7 +148,7 @@ const RealTimeHotelData = () => {
               ) : (
                 <EmptyHotelsState onFetchData={handleFetchNewData} />
               )}
-            </>
+            </div>
           )}
         </div>
       </div>

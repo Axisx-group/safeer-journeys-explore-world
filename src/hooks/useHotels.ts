@@ -107,6 +107,8 @@ export const useHotels = (searchParams?: {
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: false,
+    retry: 3,
+    refetchOnMount: true,
   });
 };
 
@@ -144,5 +146,6 @@ export const useHotelSearch = (searchParams?: {
       return data;
     },
     enabled: false,
+    retry: 2,
   });
 };
