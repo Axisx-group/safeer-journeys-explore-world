@@ -7,39 +7,123 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Plane, Clock, MapPin, RefreshCw } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
 
 const RealTimeFlightData = () => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
   
   const [searchParams, setSearchParams] = useState({
-    departure_city: '',
-    arrival_city: '',
-    departure_date: '',
+    departure_city: 'الرياض',
+    arrival_city: 'جدة',
+    departure_date: '2025-06-01',
   });
 
-  const { data: flights, isLoading, refetch } = useFlights(searchParams);
-  const { refetch: fetchNewFlights, isLoading: isFetching } = useFlightSearch();
+  const [flights, setFlights] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   // Auto-load flights on component mount
   useEffect(() => {
     handleFetchNewData();
   }, []);
 
-  const handleSearch = () => {
-    refetch();
+  const handleSearch = async () => {
+    if (!searchParams.departure_city || !searchParams.arrival_city || !searchParams.departure_date) {
+      console.log('Missing search parameters');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      console.log('Searching with params:', searchParams);
+      
+      // First try to fetch fresh data from API
+      await fetchFromAPI();
+      
+      // Then fetch from database
+      let query = supabase
+        .from('flights')
+        .select('*')
+        .order('price', { ascending: true });
+
+      if (searchParams.departure_city) {
+        query = query.eq('departure_city', searchParams.departure_city);
+      }
+      if (searchParams.arrival_city) {
+        query = query.eq('arrival_city', searchParams.arrival_city);
+      }
+      if (searchParams.departure_date) {
+        query = query.eq('departure_date', searchParams.departure_date);
+      }
+
+      const { data, error } = await query;
+      
+      if (error) {
+        console.error('Database error:', error);
+      } else {
+        console.log('Search results:', data);
+        setFlights(data || []);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchFromAPI = async () => {
+    try {
+      setIsFetching(true);
+      console.log('Fetching from API with params:', searchParams);
+      
+      const { data, error } = await supabase.functions.invoke('fetch-flights', {
+        body: { 
+          searchParams: searchParams
+        }
+      });
+      
+      if (error) {
+        console.error('API fetch error:', error);
+      } else {
+        console.log('API response:', data);
+      }
+    } catch (error) {
+      console.error('Error calling API:', error);
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   const handleFetchNewData = async () => {
-    try {
-      await fetchNewFlights();
-      setTimeout(() => {
-        refetch();
-      }, 1000);
-    } catch (error) {
-      console.error('Error fetching flights:', error);
-    }
+    await fetchFromAPI();
+    
+    // Wait a moment for the data to be inserted, then fetch from database
+    setTimeout(async () => {
+      const { data, error } = await supabase
+        .from('flights')
+        .select('*')
+        .order('price', { ascending: true })
+        .limit(10);
+      
+      if (!error && data) {
+        setFlights(data);
+      }
+    }, 1000);
   };
+
+  const saudiCities = [
+    'الرياض',
+    'جدة', 
+    'الدمام',
+    'مكة',
+    'المدينة',
+    'الطائف',
+    'أبها',
+    'تبوك',
+    'القصيم',
+    'حائل'
+  ];
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -54,28 +138,69 @@ const RealTimeFlightData = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="flex flex-col md:flex-row gap-4 p-4 bg-white rounded-lg shadow">
-            <Input
-              placeholder={isArabic ? "المدينة المغادرة" : "Departure City"}
-              value={searchParams.departure_city}
-              onChange={(e) => setSearchParams(prev => ({ ...prev, departure_city: e.target.value }))}
-              className="flex-1"
-            />
-            <Input
-              placeholder={isArabic ? "مدينة الوصول" : "Arrival City"}
-              value={searchParams.arrival_city}
-              onChange={(e) => setSearchParams(prev => ({ ...prev, arrival_city: e.target.value }))}
-              className="flex-1"
-            />
-            <Input
-              type="date"
-              value={searchParams.departure_date}
-              onChange={(e) => setSearchParams(prev => ({ ...prev, departure_date: e.target.value }))}
-              className="flex-1"
-            />
-            <Button onClick={handleSearch} disabled={isLoading}>
-              {isArabic ? "بحث" : "Search"}
-            </Button>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-white rounded-lg shadow">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                {isArabic ? "مدينة المغادرة" : "Departure City"}
+              </label>
+              <select
+                value={searchParams.departure_city}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, departure_city: e.target.value }))}
+                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {saudiCities.map(city => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                {isArabic ? "مدينة الوصول" : "Arrival City"}
+              </label>
+              <select
+                value={searchParams.arrival_city}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, arrival_city: e.target.value }))}
+                className="w-full h-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {saudiCities.map(city => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                {isArabic ? "تاريخ المغادرة" : "Departure Date"}
+              </label>
+              <Input
+                type="date"
+                value={searchParams.departure_date}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, departure_date: e.target.value }))}
+                className="h-10"
+                min={new Date().toISOString().split('T')[0]}
+              />
+            </div>
+            
+            <div className="space-y-2 flex flex-col justify-end">
+              <Button 
+                onClick={handleSearch} 
+                disabled={isLoading || isFetching}
+                className="h-10 bg-blue-600 hover:bg-blue-700"
+              >
+                {isLoading ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    {isArabic ? "جاري البحث..." : "Searching..."}
+                  </>
+                ) : (
+                  isArabic ? "بحث" : "Search"
+                )}
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex justify-center">
             <Button 
               variant="outline" 
               onClick={handleFetchNewData} 
@@ -173,7 +298,7 @@ const RealTimeFlightData = () => {
               
               {flights?.length === 0 && (
                 <div className="text-center p-8 text-gray-500">
-                  {isArabic ? "لا توجد رحلات متاحة" : "No flights available"}
+                  {isArabic ? "لا توجد رحلات متاحة لهذا البحث" : "No flights available for this search"}
                 </div>
               )}
             </div>
