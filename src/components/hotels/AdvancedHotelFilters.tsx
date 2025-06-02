@@ -1,6 +1,5 @@
 
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Star } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -10,7 +9,6 @@ interface AdvancedHotelFiltersProps {
     minPrice: number;
     maxPrice: number;
     minRating: number;
-    rooms: number;
   };
   onUpdateFilter: (key: string, value: any) => void;
 }
@@ -56,26 +54,6 @@ const AdvancedHotelFilters = ({ filters, onUpdateFilter }: AdvancedHotelFiltersP
             className="w-full"
           />
         </div>
-      </div>
-
-      {/* Rooms */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-          <span className="text-lg">🏠</span>
-          {isArabic ? 'عدد الغرف' : 'Number of Rooms'}
-        </Label>
-        <Select value={filters.rooms.toString()} onValueChange={(value) => onUpdateFilter('rooms', parseInt(value))}>
-          <SelectTrigger className="w-full md:w-48 h-11 border-2 border-gray-200 focus:border-blue-500 rounded-lg">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {[1, 2, 3, 4, 5].map((num) => (
-              <SelectItem key={num} value={num.toString()}>
-                {num} {isArabic ? (num === 1 ? 'غرفة' : 'غرف') : (num === 1 ? 'Room' : 'Rooms')}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
     </div>
   );

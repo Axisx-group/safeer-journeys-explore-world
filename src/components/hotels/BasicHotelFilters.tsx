@@ -1,9 +1,11 @@
 
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Calendar, Users, Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { europeanCountries, europeanCities } from "./hotelFiltersData";
 
 interface BasicHotelFiltersProps {
   filters: {
@@ -21,13 +23,40 @@ interface BasicHotelFiltersProps {
 const BasicHotelFilters = ({ filters, onUpdateFilter }: BasicHotelFiltersProps) => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+
+  // Combine countries and cities for autocomplete
+  const allLocations = [
+    ...europeanCountries.map(country => isArabic ? country.nameAr : country.name),
+    ...europeanCities.map(city => isArabic ? city.nameAr : city.name)
+  ];
+
+  const handleSearchChange = (value: string) => {
+    onUpdateFilter('searchTerm', value);
+    
+    if (value.length > 0) {
+      const filtered = allLocations.filter(location =>
+        location.toLowerCase().includes(value.toLowerCase())
+      ).slice(0, 8);
+      setFilteredSuggestions(filtered);
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    onUpdateFilter('searchTerm', suggestion);
+    setShowSuggestions(false);
+  };
 
   return (
     <>
       {/* Main Search Bar */}
       <div className="bg-white rounded-xl shadow-md p-6 mb-6 border border-gray-100">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-          {/* Location Search */}
+          {/* Location Search with Autocomplete */}
           <div className="lg:col-span-2 space-y-2">
             <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
               <MapPin className="h-4 w-4 text-blue-600" />
@@ -39,9 +68,27 @@ const BasicHotelFilters = ({ filters, onUpdateFilter }: BasicHotelFiltersProps) 
                 type="text"
                 placeholder={isArabic ? 'ابحث عن البلد أو المدينة...' : 'Search country or city...'}
                 value={filters.searchTerm}
-                onChange={(e) => onUpdateFilter('searchTerm', e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                onFocus={() => filters.searchTerm.length > 0 && setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                 className={`h-12 ${isArabic ? 'pr-10' : 'pl-10'} border-gray-200 focus:border-blue-500 rounded-lg`}
               />
+              
+              {/* Autocomplete Suggestions */}
+              {showSuggestions && filteredSuggestions.length > 0 && (
+                <div className="absolute z-50 w-full mt-1 bg-white border-2 border-gray-200 rounded-lg shadow-xl max-h-48 overflow-y-auto">
+                  {filteredSuggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-3 hover:bg-blue-50 cursor-pointer text-sm transition-colors flex items-center gap-2"
+                      onMouseDown={() => handleSuggestionClick(suggestion)}
+                    >
+                      <MapPin className="h-4 w-4 text-blue-600" />
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

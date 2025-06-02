@@ -45,6 +45,13 @@ const EnhancedHotelFilters = ({ filters, onFiltersChange, onFetchNewData, isFetc
     });
   };
 
+  // Create filtered props for AdvancedHotelFilters (without rooms)
+  const advancedFiltersProps = {
+    minPrice: filters.minPrice,
+    maxPrice: filters.maxPrice,
+    minRating: filters.minRating
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-gray-100">
       <HotelFiltersHeader 
@@ -59,7 +66,7 @@ const EnhancedHotelFilters = ({ filters, onFiltersChange, onFetchNewData, isFetc
 
       {showAdvanced && (
         <AdvancedHotelFilters 
-          filters={filters}
+          filters={advancedFiltersProps}
           onUpdateFilter={updateFilter}
         />
       )}
