@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useHotels, useHotelSearch } from "@/hooks/useHotels";
@@ -14,21 +14,25 @@ import HotelEmptyState from "@/components/hotels/HotelEmptyState";
 
 const HotelsPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const hotelsPerPage = 12;
   
+  // Get prefilled filters from navigation state
+  const prefilledFilters = location.state?.prefilledFilters || {};
+  
   const [filters, setFilters] = useState({
-    searchTerm: '',
-    country: 'all',
-    city: 'all',
-    checkInDate: new Date().toISOString().split('T')[0],
-    checkOutDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    guests: 2,
-    rooms: 1,
-    minPrice: 0,
-    maxPrice: 1000,
-    minRating: 0
+    searchTerm: prefilledFilters.searchTerm || '',
+    country: prefilledFilters.country || 'all',
+    city: prefilledFilters.city || 'all',
+    checkInDate: prefilledFilters.checkInDate || new Date().toISOString().split('T')[0],
+    checkOutDate: prefilledFilters.checkOutDate || new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    guests: prefilledFilters.guests || 2,
+    rooms: prefilledFilters.rooms || 1,
+    minPrice: prefilledFilters.minPrice || 0,
+    maxPrice: prefilledFilters.maxPrice || 1000,
+    minRating: prefilledFilters.minRating || 0
   });
 
   // Convert filters for the API call, handling 'all' values
