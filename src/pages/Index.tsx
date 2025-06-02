@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import UnifiedSearchSection from "@/components/UnifiedSearchSection";
@@ -221,7 +220,7 @@ const Index = () => {
 
       {/* Advanced Features with proper spacing */}
       <div className="space-y-0 bg-gray-50">
-        <SmartRecommendationEngine />
+        
       </div>
 
       <div className="space-y-0">
