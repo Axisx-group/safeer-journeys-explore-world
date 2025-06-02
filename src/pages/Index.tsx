@@ -1,8 +1,10 @@
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import UnifiedSearchSection from "@/components/UnifiedSearchSection";
 import SmartRecommendationEngine from "@/components/advanced/SmartRecommendationEngine";
 import HomePageHotelSection from "@/components/hotels/HomePageHotelSection";
+import HotelsWithOffers from "@/components/hotels/HotelsWithOffers";
 import AITravelAssistant from "@/components/ai/AITravelAssistant";
 import InteractiveServicesGrid from "@/components/enhanced/InteractiveServicesGrid";
 import RealDataPackages from "@/components/RealDataPackages";
@@ -217,6 +219,9 @@ const Index = () => {
 
       {/* Hotel Recommendations Section */}
       <HomePageHotelSection />
+
+      {/* Hotels with Offers Section */}
+      <HotelsWithOffers />
 
       {/* Advanced Features with proper spacing */}
       <div className="space-y-0 bg-gray-50">
