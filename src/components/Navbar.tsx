@@ -23,6 +23,11 @@ const Navbar = () => {
       href: "/" 
     },
     { 
+      nameEn: "Flights", 
+      nameAr: "الطيران", 
+      href: "/flights" 
+    },
+    { 
       nameEn: "Hotels", 
       nameAr: "الفنادق", 
       href: "/hotels" 

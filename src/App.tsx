@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -32,6 +31,7 @@ import CookieSettingsPage from "./pages/CookieSettingsPage";
 import AuthPage from "./components/auth/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
+import FlightsPage from "./pages/FlightsPage";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +48,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/flights" element={<FlightsPage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/offers" element={<OffersPage />} />
               <Route path="/support" element={<SupportPage />} />
