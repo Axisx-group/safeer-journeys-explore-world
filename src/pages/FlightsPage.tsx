@@ -15,11 +15,9 @@ const FlightsPage = () => {
   const isArabic = language === 'ar';
 
   const [searchParams, setSearchParams] = useState({
-    origin: 'RUH',
-    destination: 'LHR',
-    date: '2025-06-15',
-    adults: 1,
-    currency: 'EUR'
+    departure_city: 'RUH',
+    arrival_city: 'LHR',
+    departure_date: '2025-06-15'
   });
 
   const [filters, setFilters] = useState({
@@ -31,7 +29,16 @@ const FlightsPage = () => {
 
   const [showFilters, setShowFilters] = useState(false);
 
-  const { data: flights = [], isLoading, isFetching } = useSkyscannerFlights(searchParams);
+  // Convert search params to the format expected by useSkyscannerFlights
+  const apiParams = {
+    origin: searchParams.departure_city,
+    destination: searchParams.arrival_city,
+    date: searchParams.departure_date,
+    adults: 1,
+    currency: 'EUR'
+  };
+
+  const { data: flights = [], isLoading, isFetching } = useSkyscannerFlights(apiParams);
 
   const handleSearch = () => {
     // Trigger refetch by updating search params
@@ -127,7 +134,7 @@ const FlightsPage = () => {
               <FlightGrid
                 flights={filteredFlights}
                 isLoading={isLoading}
-                searchParams={searchParams}
+                searchParams={apiParams}
               />
             </div>
           </div>
