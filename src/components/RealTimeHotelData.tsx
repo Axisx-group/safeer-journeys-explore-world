@@ -22,7 +22,7 @@ const RealTimeHotelData = () => {
     check_out_date: '2025-06-18',
     currency: 'EUR',
     page: 1,
-    limit: 20
+    limit: 100 // Increased limit to get more hotels
   });
 
   const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -36,7 +36,10 @@ const RealTimeHotelData = () => {
     page: searchParams.page,
     limit: searchParams.limit
   });
-  const { refetch: fetchNewHotels, isLoading: isFetching, error: fetchError } = useHotelSearch(searchParams);
+  const { refetch: fetchNewHotels, isLoading: isFetching, error: fetchError } = useHotelSearch({
+    ...searchParams,
+    limit: 200 // Fetch even more hotels from API
+  });
 
   // Auto-fetch hotels on component mount
   useEffect(() => {
@@ -84,7 +87,7 @@ const RealTimeHotelData = () => {
   });
   
   // Calculate total pages based on filtered hotels and assume more data exists
-  const totalFilteredCount = filteredHotels.length > 0 ? Math.max(100, filteredHotels.length * 5) : 0;
+  const totalFilteredCount = filteredHotels.length > 0 ? Math.max(200, filteredHotels.length * 3) : 0;
   const totalPages = Math.ceil(totalFilteredCount / searchParams.limit);
 
   console.log('Current component state:', {
@@ -183,8 +186,8 @@ const RealTimeHotelData = () => {
               </p>
               <p className="text-sm text-blue-600 mt-1">
                 {isArabic ? 
-                  "استخدم زر 'جلب فنادق جديدة' للحصول على أحدث العروض" :
-                  "Use 'Fetch New Hotels' button to get latest offers"
+                  "استخدم زر 'جلب فنادق جديدة' للحصول على أحدث العروض (حتى 200 فندق)" :
+                  "Use 'Fetch New Hotels' button to get latest offers (up to 200 hotels)"
                 }
               </p>
             </div>

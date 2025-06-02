@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,7 +24,7 @@ const HotelsPage = () => {
     check_in_date: '2025-06-15',
     check_out_date: '2025-06-18',
     page: 1,
-    limit: 50 // Fetch more hotels to enable pagination
+    limit: 150 // Increased limit to fetch more hotels
   });
 
   // Fetch hotels from database - remove city filter to get all hotels
@@ -34,8 +35,11 @@ const HotelsPage = () => {
     limit: searchParams.limit
   });
   
-  // Fetch new hotels from API
-  const { refetch: fetchNewHotels, isLoading: isFetching } = useHotelSearch(searchParams);
+  // Fetch new hotels from API with higher limit
+  const { refetch: fetchNewHotels, isLoading: isFetching } = useHotelSearch({
+    ...searchParams,
+    limit: 200 // Fetch up to 200 hotels from API
+  });
 
   // Auto-fetch on component mount
   useEffect(() => {
@@ -137,8 +141,8 @@ const HotelsPage = () => {
           </h1>
           <p className="text-xl text-gray-600 mb-6">
             {language === 'ar' 
-              ? 'اكتشف آلاف الفنادق الأوروبية مع أحدث الأسعار من Booking.com'
-              : 'Discover thousands of European hotels with latest prices from Booking.com'
+              ? 'اكتشف آلاف الفنادق الأوروبية مع أحدث الأسعار من Booking.com (حتى 200 فندق)'
+              : 'Discover thousands of European hotels with latest prices from Booking.com (up to 200 hotels)'
             }
           </p>
           
@@ -169,6 +173,9 @@ const HotelsPage = () => {
             </span>
             <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
               {language === 'ar' ? 'بيانات مباشرة' : 'Live Data'}
+            </span>
+            <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
+              {language === 'ar' ? 'حتى 200 فندق' : 'Up to 200 hotels'}
             </span>
           </div>
         </div>
