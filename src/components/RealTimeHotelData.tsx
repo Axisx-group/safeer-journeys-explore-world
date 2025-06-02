@@ -17,13 +17,15 @@ const RealTimeHotelData = () => {
   const isArabic = language === 'ar';
   
   const [searchParams, setSearchParams] = useState({
-    city: 'Madrid', // Default to Madrid (European city)
+    city: 'Madrid',
     check_in_date: '2025-06-15',
     check_out_date: '2025-06-18',
     currency: 'EUR',
     page: 1,
     limit: 20
   });
+
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   console.log('Current search params:', searchParams);
 
@@ -32,8 +34,11 @@ const RealTimeHotelData = () => {
 
   // Auto-fetch hotels on component mount
   useEffect(() => {
-    handleFetchNewData();
-  }, []);
+    if (isInitialLoad) {
+      handleFetchNewData();
+      setIsInitialLoad(false);
+    }
+  }, [isInitialLoad]);
 
   const handleSearch = () => {
     console.log('Searching hotels with params:', searchParams);
@@ -47,10 +52,11 @@ const RealTimeHotelData = () => {
       const result = await fetchNewHotels();
       console.log('Fetch result:', result);
       
+      // Wait a bit longer for database to be updated
       setTimeout(() => {
         console.log('Refetching from database...');
         refetch();
-      }, 2000);
+      }, 3000);
     } catch (error) {
       console.error('Error fetching hotels:', error);
     }
@@ -70,8 +76,12 @@ const RealTimeHotelData = () => {
     isLoading,
     isFetching,
     error,
-    fetchError
+    fetchError,
+    isInitialLoad
   });
+
+  // Show loading state during initial load or when fetching
+  const isLoadingState = isLoading || isFetching || isInitialLoad;
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -106,7 +116,7 @@ const RealTimeHotelData = () => {
             </div>
           )}
 
-          {isLoading || isFetching ? (
+          {isLoadingState ? (
             <LoadingState />
           ) : (
             <div className="space-y-6">
@@ -155,8 +165,8 @@ const RealTimeHotelData = () => {
               </p>
               <p className="text-sm text-blue-600 mt-1">
                 {isArabic ? 
-                  "استخدم زر 'تحديث البيانات' للحصول على أحدث العروض" :
-                  "Use 'Update Data' button to get latest offers"
+                  "استخدم زر 'جلب فنادق جديدة' للحصول على أحدث العروض" :
+                  "Use 'Fetch New Hotels' button to get latest offers"
                 }
               </p>
             </div>

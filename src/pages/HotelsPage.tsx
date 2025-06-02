@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ const HotelsPage = () => {
   const { language } = useLanguage();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   const [searchParams, setSearchParams] = useState({
     city: 'Madrid',
@@ -29,6 +30,14 @@ const HotelsPage = () => {
   
   // Fetch new hotels from API
   const { refetch: fetchNewHotels, isLoading: isFetching } = useHotelSearch(searchParams);
+
+  // Auto-fetch on component mount
+  useEffect(() => {
+    if (isInitialLoad) {
+      handleFetchNewData();
+      setIsInitialLoad(false);
+    }
+  }, [isInitialLoad]);
 
   const handleBookNow = (hotelId: string) => {
     console.log('Hotel Book Now clicked:', hotelId);
@@ -45,10 +54,11 @@ const HotelsPage = () => {
       console.log('Fetching new hotel data...');
       await fetchNewHotels();
       
-      // Refetch from database after API call
+      // Refetch from database after API call with longer delay
       setTimeout(() => {
+        console.log('Refetching from database...');
         refetch();
-      }, 2000);
+      }, 3000);
     } catch (error) {
       console.error('Error fetching hotels:', error);
     }
@@ -78,6 +88,8 @@ const HotelsPage = () => {
   const filteredHotels = hotels.filter(hotel =>
     hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const isLoadingState = isLoading || isFetching || isInitialLoad;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -126,7 +138,7 @@ const HotelsPage = () => {
           </div>
         </div>
 
-        {isLoading || isFetching ? (
+        {isLoadingState ? (
           <div className="flex flex-col items-center justify-center p-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
             <p className="text-gray-600">
