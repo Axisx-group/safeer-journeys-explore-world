@@ -4,7 +4,6 @@ import Hero from "@/components/Hero";
 import UnifiedSearchSection from "@/components/UnifiedSearchSection";
 import SmartRecommendationEngine from "@/components/advanced/SmartRecommendationEngine";
 import HomePageHotelSection from "@/components/hotels/HomePageHotelSection";
-import HotelsWithOffers from "@/components/hotels/HotelsWithOffers";
 import AITravelAssistant from "@/components/ai/AITravelAssistant";
 import InteractiveServicesGrid from "@/components/enhanced/InteractiveServicesGrid";
 import RealDataPackages from "@/components/RealDataPackages";
@@ -37,9 +36,6 @@ const Index = () => {
       <div className="relative">
         <UnifiedSearchSection />
       </div>
-
-      {/* Hotels with Offers Section */}
-      <HotelsWithOffers />
       
       {/* Enhanced AI Assistant Section - Ultra Modern Design - Improved mobile layout */}
       <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 relative overflow-hidden">
