@@ -15,8 +15,8 @@ const FlightsPage = () => {
   const isArabic = language === 'ar';
 
   const [searchParams, setSearchParams] = useState({
-    departure_city: 'RUH',
-    arrival_city: 'LHR',
+    departure_city: 'RUH', // Default to Riyadh airport code
+    arrival_city: 'LHR',   // Default to London Heathrow airport code
     departure_date: '2025-06-15'
   });
 
@@ -41,8 +41,9 @@ const FlightsPage = () => {
   const { data: flights = [], isLoading, isFetching } = useSkyscannerFlights(apiParams);
 
   const handleSearch = () => {
-    // Trigger refetch by updating search params
-    setSearchParams({ ...searchParams });
+    console.log('Searching with params:', searchParams);
+    console.log('API params:', apiParams);
+    // The query will automatically refetch when searchParams change
   };
 
   // Apply filters to flights

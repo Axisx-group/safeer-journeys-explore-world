@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { worldAirports } from '@/constants/worldAirports';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -33,14 +34,25 @@ const CitySearchInput: React.FC<CitySearchInputProps> = ({
       airport.code.toLowerCase().includes(searchTerm) ||
       airport.country.toLowerCase().includes(searchTerm)
     );
-  }).slice(0, 10); // Limit to 10 suggestions
+  }).slice(0, 8); // Limit to 8 suggestions
 
   useEffect(() => {
-    const selectedAirport = worldAirports.find(airport => airport.ar === value || airport.en === value);
+    const selectedAirport = worldAirports.find(airport => airport.code === value);
     if (selectedAirport) {
       setSearchValue(`${isArabic ? selectedAirport.ar : selectedAirport.en} (${selectedAirport.code})`);
+    } else if (value) {
+      // Try to find by Arabic or English name
+      const airportByName = worldAirports.find(airport => 
+        airport.ar === value || airport.en === value
+      );
+      if (airportByName) {
+        setSearchValue(`${isArabic ? airportByName.ar : airportByName.en} (${airportByName.code})`);
+        onValueChange(airportByName.code);
+      } else {
+        setSearchValue(value);
+      }
     } else {
-      setSearchValue(value);
+      setSearchValue('');
     }
   }, [value, isArabic]);
 
@@ -59,7 +71,7 @@ const CitySearchInput: React.FC<CitySearchInputProps> = ({
   const handleSuggestionClick = (airport: typeof worldAirports[0]) => {
     const displayValue = `${isArabic ? airport.ar : airport.en} (${airport.code})`;
     setSearchValue(displayValue);
-    onValueChange(airport.ar);
+    onValueChange(airport.code); // Pass the airport code to the parent
     setShowSuggestions(false);
     setSelectedIndex(-1);
   };
@@ -94,7 +106,7 @@ const CitySearchInput: React.FC<CitySearchInputProps> = ({
   };
 
   const handleFocus = () => {
-    if (searchValue && filteredAirports.length > 0) {
+    if (filteredAirports.length > 0) {
       setShowSuggestions(true);
     }
   };
@@ -111,9 +123,9 @@ const CitySearchInput: React.FC<CitySearchInputProps> = ({
 
   return (
     <div className="space-y-2 relative">
-      <label className="text-sm font-medium text-gray-700">
+      <Label className="text-sm font-medium text-gray-700">
         {label}
-      </label>
+      </Label>
       <div className="relative">
         <Input
           ref={inputRef}
@@ -124,19 +136,19 @@ const CitySearchInput: React.FC<CitySearchInputProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder={placeholder}
-          className="w-full"
+          className="w-full h-14 text-base"
           autoComplete="off"
         />
         
         {showSuggestions && filteredAirports.length > 0 && (
           <div
             ref={suggestionsRef}
-            className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto mt-1"
+            className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-md shadow-xl max-h-60 overflow-y-auto mt-1"
           >
             {filteredAirports.map((airport, index) => (
               <div
                 key={airport.code}
-                className={`px-4 py-3 cursor-pointer hover:bg-gray-50 border-b border-gray-100 last:border-b-0 ${
+                className={`px-4 py-3 cursor-pointer hover:bg-blue-50 border-b border-gray-100 last:border-b-0 transition-colors ${
                   index === selectedIndex ? 'bg-blue-50' : ''
                 }`}
                 onClick={() => handleSuggestionClick(airport)}
