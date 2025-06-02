@@ -71,7 +71,7 @@ export const useHotels = (searchParams?: HotelFilters) => {
         query = query.or(`name.ilike.%${searchParams.searchTerm}%,city.ilike.%${searchParams.searchTerm}%,country.ilike.%${searchParams.searchTerm}%`);
       }
       
-      if (searchParams?.country) {
+      if (searchParams?.country && searchParams.country !== 'all') {
         // Map country codes to country names for filtering
         const countryMapping: { [key: string]: string[] } = {
           'ES': ['Spain', 'إسبانيا'],
@@ -92,7 +92,7 @@ export const useHotels = (searchParams?: HotelFilters) => {
         }
       }
       
-      if (searchParams?.city) {
+      if (searchParams?.city && searchParams.city !== 'all') {
         query = query.eq('city', searchParams.city);
       }
       

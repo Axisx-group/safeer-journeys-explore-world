@@ -31,10 +31,11 @@ const HotelsPage = () => {
     minRating: 0
   });
 
-  const { data: hotelResponse, isLoading, refetch } = useHotels({
+  // Convert filters for the API call, handling 'all' values
+  const apiFilters = {
     searchTerm: filters.searchTerm,
-    country: filters.country,
-    city: filters.city,
+    country: filters.country === 'all' ? '' : filters.country,
+    city: filters.city === 'all' ? '' : filters.city,
     check_in_date: filters.checkInDate,
     check_out_date: filters.checkOutDate,
     min_price: filters.minPrice,
@@ -42,10 +43,12 @@ const HotelsPage = () => {
     min_rating: filters.minRating,
     page: currentPage,
     limit: hotelsPerPage
-  });
+  };
+
+  const { data: hotelResponse, isLoading, refetch } = useHotels(apiFilters);
   
   const { refetch: fetchNewHotels, isLoading: isFetching } = useHotelSearch({
-    city: filters.city || 'مدريد',
+    city: filters.city === 'all' || !filters.city ? 'مدريد' : filters.city,
     check_in_date: filters.checkInDate,
     check_out_date: filters.checkOutDate,
     limit: 200

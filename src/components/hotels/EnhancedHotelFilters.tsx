@@ -131,7 +131,7 @@ const EnhancedHotelFilters = ({ filters, onFiltersChange, onFetchNewData, isFetc
               <SelectValue placeholder={isArabic ? 'اختر البلد' : 'Select Country'} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">{isArabic ? 'جميع البلدان' : 'All Countries'}</SelectItem>
+              <SelectItem value="all">{isArabic ? 'جميع البلدان' : 'All Countries'}</SelectItem>
               {europeanCountries.map((country) => (
                 <SelectItem key={country.code} value={country.code}>
                   {isArabic ? country.nameAr : country.name}
@@ -152,7 +152,7 @@ const EnhancedHotelFilters = ({ filters, onFiltersChange, onFetchNewData, isFetc
               <SelectValue placeholder={isArabic ? 'اختر المدينة' : 'Select City'} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">{isArabic ? 'جميع المدن' : 'All Cities'}</SelectItem>
+              <SelectItem value="all">{isArabic ? 'جميع المدن' : 'All Cities'}</SelectItem>
               {filteredCities.map((city) => (
                 <SelectItem key={city.name} value={city.name}>
                   {isArabic ? city.nameAr : city.name}
