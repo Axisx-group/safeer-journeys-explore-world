@@ -31,6 +31,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 import CookieSettingsPage from "./pages/CookieSettingsPage";
 import AuthPage from "./components/auth/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
               <Route path="/terms" element={<TermsPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/cookie-settings" element={<CookieSettingsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/package/:id" element={<PackageDetailsPage />} />
               <Route path="/destination/:id" element={<DestinationDetailsPage />} />
               
