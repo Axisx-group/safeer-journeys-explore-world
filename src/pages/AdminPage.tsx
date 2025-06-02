@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,17 +10,17 @@ import { Plus } from "lucide-react";
 import AdminDashboard from '@/components/admin/AdminDashboard';
 import SecurityDashboard from '@/components/admin/security/SecurityDashboard';
 
-// استيراد المكونات من المجلد الصحيح
-import { AdminUsers } from '@/components/admin/AdminUsers';
-import { AdminBookings } from '@/components/admin/AdminBookings';
-import { AdminMessages } from '@/components/admin/AdminMessages';
-import { AdminPackages } from '@/components/admin/AdminPackages';
-import { AdminServices } from '@/components/admin/AdminServices';
-import { AdminGallery } from '@/components/admin/AdminGallery';
-import { AdminAnalytics } from '@/components/admin/AdminAnalytics';
-import { AdminSettings } from '@/components/admin/AdminSettings';
-import { AdminPayments } from '@/components/admin/AdminPayments';
-import { AdminTexts } from '@/components/admin/AdminTexts';
+// استيراد المكونات كـ default imports
+import AdminUsers from '@/components/admin/AdminUsers';
+import AdminBookings from '@/components/admin/AdminBookings';
+import AdminMessages from '@/components/admin/AdminMessages';
+import AdminPackages from '@/components/admin/AdminPackages';
+import AdminServices from '@/components/admin/AdminServices';
+import AdminGallery from '@/components/admin/AdminGallery';
+import AdminAnalytics from '@/components/admin/AdminAnalytics';
+import AdminSettings from '@/components/admin/AdminSettings';
+import AdminPayments from '@/components/admin/AdminPayments';
+import AdminTexts from '@/components/admin/AdminTexts';
 
 const AdminPage = () => {
   const { language } = useLanguage();
