@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import UnifiedSearchSection from "@/components/UnifiedSearchSection";
@@ -18,6 +17,7 @@ import Footer from "@/components/Footer";
 import LiveChat from "@/components/LiveChat";
 import AdvancedAIChat from "@/components/AdvancedAIChat";
 import SmartChatInterface from "@/components/ai/SmartChatInterface";
+import FlightOffers from "@/components/flights/FlightOffers";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bot, Sparkles, Zap, Star } from "lucide-react";
@@ -222,6 +222,9 @@ const Index = () => {
 
       {/* Hotels with Offers Section */}
       <HotelsWithOffers />
+
+      {/* Flight Offers Section */}
+      <FlightOffers />
 
       {/* Advanced Features with proper spacing */}
       <div className="space-y-0 bg-gray-50">
