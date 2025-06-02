@@ -21,7 +21,8 @@ serve(async (req) => {
     
     console.log('Fetching hotels with params:', searchParams);
 
-    const rapidApiKey = Deno.env.get('RAPIDAPI_KEY');
+    // Use your provided RapidAPI key
+    const rapidApiKey = '5283cccec4mshe94884681afa7b2p1d7553jsn81838e7edc5b';
     const page = searchParams.page || 1;
     const limit = searchParams.limit || 50;
     
@@ -29,18 +30,22 @@ serve(async (req) => {
     let dataSource = 'booking.com';
     let totalHotels = 0;
     
-    // Try to fetch from Booking.com API
-    if (rapidApiKey) {
-      try {
-        hotels = await fetchFromBookingCom(searchParams, rapidApiKey);
-        totalHotels = hotels.length > 0 ? 500 : 0; // Estimate total
-        
-        if (hotels.length > 0) {
-          console.log(`Successfully processed ${hotels.length} hotels from Booking.com page ${page}`);
-        }
-      } catch (apiError) {
-        console.error('Booking.com API error:', apiError);
+    // Try to fetch from Booking.com API with your key
+    try {
+      hotels = await fetchFromBookingCom(searchParams, rapidApiKey);
+      totalHotels = hotels.length > 0 ? 500 : 0; // Estimate total
+      
+      if (hotels.length > 0) {
+        console.log(`Successfully processed ${hotels.length} hotels from Booking.com page ${page}`);
       }
+    } catch (apiError) {
+      console.error('Booking.com API error:', apiError);
+      
+      // Use fallback data if API fails
+      dataSource = 'enhanced-european-hotels';
+      hotels = generateEnhancedEuropeanHotels(searchParams, page, limit);
+      totalHotels = 500;
+      console.log(`Generated ${hotels.length} enhanced European hotels for page ${page}`);
     }
     
     // Use fallback data if no API data
