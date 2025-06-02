@@ -58,18 +58,6 @@ const HomePageHotelSection = () => {
     });
   };
 
-  const handleViewAllHotels = () => {
-    navigate('/hotels', {
-      state: {
-        prefilledFilters: {
-          country: selectedCountry,
-          checkInDate: apiFilters.check_in_date,
-          checkOutDate: apiFilters.check_out_date
-        }
-      }
-    });
-  };
-
   const getValidImageUrl = (imageUrls: string[] | undefined, hotelId: string) => {
     const fallbackImages = [
       'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -107,13 +95,13 @@ const HomePageHotelSection = () => {
           className="text-center mb-10"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
-            <span className="text-2xl">✨</span>
-            {isArabic ? 'توصيات ذكية مخصصة لك' : 'Smart Hotel Recommendations for You'}
+            <span className="text-2xl">🏨</span>
+            {isArabic ? 'أفضل الفنادق الأوروبية' : 'Best European Hotels'}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             {isArabic 
-              ? 'اكتشف أفضل الوجهات بناءً على ذكاء اصطناعي متطور يحلل التوجهات والأسعار والطقس'
-              : 'Discover the best destinations powered by AI that analyzes trends, prices, and weather'
+              ? 'اكتشف فنادق رائعة في أجمل المدن الأوروبية بأفضل الأسعار'
+              : 'Discover amazing hotels in Europe\'s most beautiful cities at the best prices'
             }
           </p>
         </motion.div>
@@ -147,7 +135,7 @@ const HomePageHotelSection = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {hotels.map((hotel, index) => (
               <motion.div
                 key={hotel.id}
@@ -270,18 +258,6 @@ const HomePageHotelSection = () => {
             ))}
           </div>
         )}
-
-        {/* View All Hotels Button */}
-        <div className="text-center">
-          <Button
-            size="lg"
-            onClick={handleViewAllHotels}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            {isArabic ? 'عرض جميع الفنادق' : 'View All Hotels'}
-            <span className="ml-2">→</span>
-          </Button>
-        </div>
       </div>
     </section>
   );
