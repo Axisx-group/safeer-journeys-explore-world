@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useHotels, useHotelSearch } from "@/hooks/useHotels";
 import HotelPageHeader from "@/components/hotels/HotelPageHeader";
-import HotelFilters from "@/components/hotels/HotelFilters";
+import EnhancedHotelFilters from "@/components/hotels/EnhancedHotelFilters";
 import HotelGridStats from "@/components/hotels/HotelGridStats";
 import HotelGrid from "@/components/hotels/HotelGrid";
 import HotelPaginationControls from "@/components/hotels/HotelPaginationControls";
@@ -14,28 +14,40 @@ import HotelEmptyState from "@/components/hotels/HotelEmptyState";
 
 const HotelsPage = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const hotelsPerPage = 12;
   
-  const [searchParams, setSearchParams] = useState({
-    city: 'مدريد',
-    check_in_date: '2025-06-15',
-    check_out_date: '2025-06-18',
-    page: 1,
-    limit: 150
+  const [filters, setFilters] = useState({
+    searchTerm: '',
+    country: '',
+    city: '',
+    checkInDate: new Date().toISOString().split('T')[0],
+    checkOutDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    guests: 2,
+    rooms: 1,
+    minPrice: 0,
+    maxPrice: 1000,
+    minRating: 0
   });
 
   const { data: hotelResponse, isLoading, refetch } = useHotels({
-    check_in_date: searchParams.check_in_date,
-    check_out_date: searchParams.check_out_date,
-    page: searchParams.page,
-    limit: searchParams.limit
+    searchTerm: filters.searchTerm,
+    country: filters.country,
+    city: filters.city,
+    check_in_date: filters.checkInDate,
+    check_out_date: filters.checkOutDate,
+    min_price: filters.minPrice,
+    max_price: filters.maxPrice,
+    min_rating: filters.minRating,
+    page: currentPage,
+    limit: hotelsPerPage
   });
   
   const { refetch: fetchNewHotels, isLoading: isFetching } = useHotelSearch({
-    ...searchParams,
+    city: filters.city || 'مدريد',
+    check_in_date: filters.checkInDate,
+    check_out_date: filters.checkOutDate,
     limit: 200
   });
 
@@ -45,6 +57,11 @@ const HotelsPage = () => {
       setIsInitialLoad(false);
     }
   }, [isInitialLoad]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
 
   const handleBookNow = (hotel: any) => {
     console.log('Hotel Book Now clicked:', hotel.id);
@@ -59,8 +76,10 @@ const HotelsPage = () => {
         hotelCountry: hotel.country,
         hotelPrice: hotel.price_per_night,
         hotelCurrency: hotel.currency,
-        checkInDate: searchParams.check_in_date,
-        checkOutDate: searchParams.check_out_date
+        checkInDate: filters.checkInDate,
+        checkOutDate: filters.checkOutDate,
+        guests: filters.guests,
+        rooms: filters.rooms
       }
     });
   };
@@ -79,18 +98,14 @@ const HotelsPage = () => {
     }
   };
 
-  const hotels = hotelResponse?.hotels || [];
-  
-  const filteredHotels = hotels.filter(hotel =>
-    hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hotel.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hotel.country.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleFiltersChange = (newFilters: any) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+  };
 
-  const totalPages = Math.ceil(filteredHotels.length / hotelsPerPage);
-  const startIndex = (currentPage - 1) * hotelsPerPage;
-  const endIndex = startIndex + hotelsPerPage;
-  const currentHotels = filteredHotels.slice(startIndex, endIndex);
+  const hotels = hotelResponse?.hotels || [];
+  const totalHotels = hotelResponse?.total || 0;
+  const totalPages = Math.ceil(totalHotels / hotelsPerPage);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -100,22 +115,22 @@ const HotelsPage = () => {
   const isLoadingState = isLoading || isFetching || isInitialLoad;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         <HotelPageHeader />
 
-        <HotelFilters
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
+        <EnhancedHotelFilters
+          filters={filters}
+          onFiltersChange={handleFiltersChange}
           onFetchNewData={handleFetchNewData}
           isFetching={isFetching}
         />
 
         {isLoadingState ? (
           <HotelLoadingState />
-        ) : filteredHotels.length === 0 ? (
+        ) : hotels.length === 0 ? (
           <HotelEmptyState 
             onFetchNewData={handleFetchNewData} 
             isFetching={isFetching} 
@@ -123,22 +138,24 @@ const HotelsPage = () => {
         ) : (
           <>
             <HotelGridStats
-              currentCount={currentHotels.length}
-              totalCount={filteredHotels.length}
+              currentCount={hotels.length}
+              totalCount={totalHotels}
               currentPage={currentPage}
               totalPages={totalPages}
             />
 
             <HotelGrid 
-              hotels={currentHotels} 
+              hotels={hotels} 
               onBookNow={handleBookNow} 
             />
 
-            <HotelPaginationControls
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
+            {totalPages > 1 && (
+              <HotelPaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           </>
         )}
       </div>

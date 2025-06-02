@@ -40,16 +40,22 @@ export interface HotelSearchResponse {
   source: string;
 }
 
-export const useHotels = (searchParams?: {
-  city?: string;
+export interface HotelFilters {
+  searchTerm?: string;
   country?: string;
+  city?: string;
   check_in_date?: string;
   check_out_date?: string;
+  guests?: number;
+  rooms?: number;
   max_price?: number;
+  min_price?: number;
   min_rating?: number;
   page?: number;
   limit?: number;
-}) => {
+}
+
+export const useHotels = (searchParams?: HotelFilters) => {
   return useQuery({
     queryKey: ['hotels', searchParams],
     queryFn: async () => {
@@ -60,26 +66,57 @@ export const useHotels = (searchParams?: {
         .select('*', { count: 'exact' })
         .order('guest_rating', { ascending: false });
 
+      // Apply filters
+      if (searchParams?.searchTerm) {
+        query = query.or(`name.ilike.%${searchParams.searchTerm}%,city.ilike.%${searchParams.searchTerm}%,country.ilike.%${searchParams.searchTerm}%`);
+      }
+      
+      if (searchParams?.country) {
+        // Map country codes to country names for filtering
+        const countryMapping: { [key: string]: string[] } = {
+          'ES': ['Spain', 'إسبانيا'],
+          'FR': ['France', 'فرنسا'],
+          'IT': ['Italy', 'إيطاليا'],
+          'DE': ['Germany', 'ألمانيا'],
+          'UK': ['United Kingdom', 'المملكة المتحدة'],
+          'NL': ['Netherlands', 'هولندا'],
+          'PT': ['Portugal', 'البرتغال'],
+          'GR': ['Greece', 'اليونان'],
+          'AT': ['Austria', 'النمسا'],
+          'CH': ['Switzerland', 'سويسرا']
+        };
+        
+        const countryNames = countryMapping[searchParams.country] || [];
+        if (countryNames.length > 0) {
+          query = query.in('country', countryNames);
+        }
+      }
+      
       if (searchParams?.city) {
         query = query.eq('city', searchParams.city);
       }
-      if (searchParams?.country) {
-        query = query.eq('country', searchParams.country);
-      }
+      
       if (searchParams?.check_in_date) {
         query = query.eq('check_in_date', searchParams.check_in_date);
       }
+      
       if (searchParams?.check_out_date) {
         query = query.eq('check_out_date', searchParams.check_out_date);
       }
-      if (searchParams?.max_price) {
+      
+      if (searchParams?.min_price !== undefined) {
+        query = query.gte('price_per_night', searchParams.min_price);
+      }
+      
+      if (searchParams?.max_price !== undefined) {
         query = query.lte('price_per_night', searchParams.max_price);
       }
-      if (searchParams?.min_rating) {
+      
+      if (searchParams?.min_rating !== undefined && searchParams.min_rating > 0) {
         query = query.gte('guest_rating', searchParams.min_rating);
       }
 
-      // إضافة pagination
+      // Apply pagination
       const page = searchParams?.page || 1;
       const limit = searchParams?.limit || 20;
       const from = (page - 1) * limit;
@@ -112,13 +149,7 @@ export const useHotels = (searchParams?: {
   });
 };
 
-export const useHotelSearch = (searchParams?: {
-  city?: string;
-  check_in_date?: string;
-  check_out_date?: string;
-  page?: number;
-  limit?: number;
-}) => {
+export const useHotelSearch = (searchParams?: HotelFilters) => {
   return useQuery({
     queryKey: ['hotel-search', searchParams],
     queryFn: async () => {
