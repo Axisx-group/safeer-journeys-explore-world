@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useCreateBooking } from "@/hooks/useBooking";
 import { Shield, User } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import BookingHeader from "./booking/BookingHeader";
 import GuestInformationSection from "./booking/GuestInformationSection";
@@ -20,6 +20,7 @@ const BookingForm = () => {
   const { language } = useLanguage();
   const { user, userProfile } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const createBooking = useCreateBooking();
   const isArabic = language === 'ar';
   
@@ -58,6 +59,40 @@ const BookingForm = () => {
       }));
     }
   }, [user, userProfile, navigate]);
+
+  // Handle hotel booking data from navigation state
+  useEffect(() => {
+    const state = location.state as { 
+      hotelId?: string; 
+      bookingType?: string;
+      hotelName?: string;
+      hotelCity?: string;
+      hotelCountry?: string;
+    };
+    
+    console.log('Navigation state:', state);
+    
+    if (state?.bookingType === 'hotel' && state?.hotelId) {
+      console.log('Setting hotel booking data:', state);
+      
+      // Pre-populate destination with hotel location
+      const destination = state.hotelCity && state.hotelCountry 
+        ? `${state.hotelCity}, ${state.hotelCountry}` 
+        : '';
+        
+      // Pre-populate hotel preference with hotel name
+      const hotelPreference = state.hotelName || `Hotel ID: ${state.hotelId}`;
+      
+      setFormData(prev => ({
+        ...prev,
+        destination: destination,
+        hotel_preference: hotelPreference,
+        special_requests: prev.special_requests 
+          ? `${prev.special_requests}\n\nPreferred Hotel: ${hotelPreference}` 
+          : `Preferred Hotel: ${hotelPreference}`
+      }));
+    }
+  }, [location.state]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
@@ -49,12 +48,21 @@ const HotelsPage = () => {
     }
   }, [isInitialLoad]);
 
-  const handleBookNow = (hotelId: string) => {
-    console.log('Hotel Book Now clicked:', hotelId);
+  const handleBookNow = (hotel: any) => {
+    console.log('Hotel Book Now clicked:', hotel.id);
+    console.log('Hotel details:', hotel);
+    
     navigate('/booking', { 
       state: { 
-        hotelId: hotelId,
-        bookingType: 'hotel'
+        hotelId: hotel.id,
+        bookingType: 'hotel',
+        hotelName: hotel.name,
+        hotelCity: hotel.city,
+        hotelCountry: hotel.country,
+        hotelPrice: hotel.price_per_night,
+        hotelCurrency: hotel.currency,
+        checkInDate: searchParams.check_in_date,
+        checkOutDate: searchParams.check_out_date
       }
     });
   };
@@ -71,25 +79,6 @@ const HotelsPage = () => {
       }, 3000);
     } catch (error) {
       console.error('Error fetching hotels:', error);
-    }
-  };
-
-  const getAmenityIcon = (amenity: string) => {
-    switch (amenity.toLowerCase()) {
-      case 'free wifi':
-      case 'wifi':
-        return <Wifi className="h-4 w-4" />;
-      case 'parking':
-      case 'free parking':
-        return <Car className="h-4 w-4" />;
-      case 'restaurant':
-      case 'fine dining':
-        return <Coffee className="h-4 w-4" />;
-      case 'pool':
-      case 'spa':
-        return <Waves className="h-4 w-4" />;
-      default:
-        return <Star className="h-4 w-4" />;
     }
   };
 
@@ -293,7 +282,7 @@ const HotelsPage = () => {
                     
                     <Button 
                       className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                      onClick={() => handleBookNow(hotel.id)}
+                      onClick={() => handleBookNow(hotel)}
                     >
                       {language === 'ar' ? 'احجز الآن' : 'Book Now'}
                     </Button>
