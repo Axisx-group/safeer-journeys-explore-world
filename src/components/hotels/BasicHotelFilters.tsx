@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Calendar, Users } from "lucide-react";
+import { MapPin, Calendar, Users, Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { europeanCountries, europeanCities } from "./hotelFiltersData";
 
@@ -28,23 +28,32 @@ const BasicHotelFilters = ({ filters, onUpdateFilter }: BasicHotelFiltersProps) 
 
   return (
     <>
-      {/* Basic Filters Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        {/* Search Term */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-blue-600" />
-            {isArabic ? 'البحث' : 'Search'}
-          </Label>
+      {/* Enhanced Global Search - Single Line Search */}
+      <div className="mb-6">
+        <Label className="text-lg font-bold text-gray-800 flex items-center gap-3 mb-3">
+          <Search className="h-5 w-5 text-blue-600" />
+          {isArabic ? 'بحث شامل في جميع الفنادق' : 'Global Hotel Search'}
+        </Label>
+        <div className="relative">
+          <Search className={`absolute top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 ${isArabic ? 'right-4' : 'left-4'}`} />
           <Input
             type="text"
-            placeholder={isArabic ? 'ابحث عن فندق أو مدينة...' : 'Search hotels or cities...'}
+            placeholder={isArabic ? 'ابحث في اسم الفندق، المدينة، البلد، المرافق...' : 'Search hotels, cities, countries, amenities...'}
             value={filters.searchTerm}
             onChange={(e) => onUpdateFilter('searchTerm', e.target.value)}
-            className="h-11 border-2 border-gray-200 focus:border-blue-500 rounded-lg"
+            className={`h-14 ${isArabic ? 'pr-12' : 'pl-12'} border-2 border-gray-200 focus:border-blue-500 rounded-lg text-lg shadow-sm hover:shadow-md transition-all duration-300 bg-white/90`}
           />
         </div>
+        <p className="text-sm text-gray-600 mt-2">
+          {isArabic ? 
+            'اكتب أي شيء: اسم الفندق، المدينة، البلد، المرافق (WiFi، مسبح، سبا...)' :
+            'Type anything: hotel name, city, country, amenities (WiFi, pool, spa...)'
+          }
+        </p>
+      </div>
 
+      {/* Basic Filters Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {/* Country */}
         <div className="space-y-2">
           <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">

@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -66,9 +65,40 @@ export const useHotels = (searchParams?: HotelFilters) => {
         .select('*', { count: 'exact' })
         .order('guest_rating', { ascending: false });
 
-      // Apply filters
+      // Enhanced global search functionality
       if (searchParams?.searchTerm) {
-        query = query.or(`name.ilike.%${searchParams.searchTerm}%,city.ilike.%${searchParams.searchTerm}%,country.ilike.%${searchParams.searchTerm}%`);
+        const searchTerm = searchParams.searchTerm.toLowerCase();
+        
+        // Search across multiple fields: name, city, country, amenities, description
+        query = query.or(`
+          name.ilike.%${searchParams.searchTerm}%,
+          city.ilike.%${searchParams.searchTerm}%,
+          country.ilike.%${searchParams.searchTerm}%,
+          description.ilike.%${searchParams.searchTerm}%,
+          amenities.cs.["${searchParams.searchTerm}"],
+          address.ilike.%${searchParams.searchTerm}%,
+          room_type.ilike.%${searchParams.searchTerm}%
+        `);
+        
+        // Additional amenity-based search for common terms
+        if (searchTerm.includes('wifi') || searchTerm.includes('internet')) {
+          query = query.or('free_wifi.eq.true');
+        }
+        if (searchTerm.includes('pool') || searchTerm.includes('swimming') || searchTerm.includes('مسبح')) {
+          query = query.or('pool.eq.true');
+        }
+        if (searchTerm.includes('spa') || searchTerm.includes('wellness') || searchTerm.includes('سبا')) {
+          query = query.or('spa.eq.true');
+        }
+        if (searchTerm.includes('gym') || searchTerm.includes('fitness') || searchTerm.includes('رياضة')) {
+          query = query.or('gym.eq.true');
+        }
+        if (searchTerm.includes('restaurant') || searchTerm.includes('dining') || searchTerm.includes('مطعم')) {
+          query = query.or('restaurant.eq.true');
+        }
+        if (searchTerm.includes('parking') || searchTerm.includes('موقف')) {
+          query = query.or('free_parking.eq.true');
+        }
       }
       
       if (searchParams?.country && searchParams.country !== 'all') {
