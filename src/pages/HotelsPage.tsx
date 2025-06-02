@@ -20,8 +20,8 @@ const HotelsPage = () => {
   
   const [filters, setFilters] = useState({
     searchTerm: '',
-    country: '',
-    city: '',
+    country: 'all',
+    city: 'all',
     checkInDate: new Date().toISOString().split('T')[0],
     checkOutDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     guests: 2,
@@ -51,7 +51,7 @@ const HotelsPage = () => {
     city: filters.city === 'all' || !filters.city ? 'مدريد' : filters.city,
     check_in_date: filters.checkInDate,
     check_out_date: filters.checkOutDate,
-    limit: 200
+    limit: 100 // Reduced from 200 for faster response
   });
 
   useEffect(() => {
@@ -92,10 +92,11 @@ const HotelsPage = () => {
       console.log('Fetching new hotel data...');
       await fetchNewHotels();
       
+      // Reduced timeout for faster refresh
       setTimeout(() => {
         console.log('Refetching from database...');
         refetch();
-      }, 3000);
+      }, 2000);
     } catch (error) {
       console.error('Error fetching hotels:', error);
     }

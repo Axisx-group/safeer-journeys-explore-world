@@ -93,7 +93,18 @@ export const useHotels = (searchParams?: HotelFilters) => {
       }
       
       if (searchParams?.city && searchParams.city !== 'all') {
-        query = query.eq('city', searchParams.city);
+        // Handle city name variations (Rome/Roma, Milan/Milano, etc.)
+        const cityVariations: { [key: string]: string[] } = {
+          'Rome': ['Rome', 'Roma', 'روما'],
+          'Milan': ['Milan', 'Milano', 'ميلان'],
+          'Lisbon': ['Lisbon', 'Lisboa', 'لشبونة'],
+          'Athens': ['Athens', 'Athina', 'أثينا'],
+          'Vienna': ['Vienna', 'Wien', 'فيينا'],
+          'Zurich': ['Zurich', 'Zürich', 'زيورخ']
+        };
+        
+        const cityNames = cityVariations[searchParams.city] || [searchParams.city];
+        query = query.in('city', cityNames);
       }
       
       if (searchParams?.check_in_date) {
@@ -144,7 +155,7 @@ export const useHotels = (searchParams?: HotelFilters) => {
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: false,
-    retry: 3,
+    retry: 1, // Reduced retry count for faster response
     refetchOnMount: true,
   });
 };
@@ -155,10 +166,22 @@ export const useHotelSearch = (searchParams?: HotelFilters) => {
     queryFn: async () => {
       console.log('Calling fetch-hotels function with params:', searchParams);
       
+      // Map city names for the API call
+      const cityMapping: { [key: string]: string } = {
+        'Rome': 'Roma',
+        'Milan': 'Milano',
+        'Lisbon': 'Lisboa',
+        'Athens': 'Athina',
+        'Vienna': 'Wien',
+        'Zurich': 'Zürich'
+      };
+      
+      const apiCity = cityMapping[searchParams?.city || ''] || searchParams?.city || 'مدريد';
+      
       const { data, error } = await supabase.functions.invoke('fetch-hotels', {
         body: { 
           searchParams: {
-            city: searchParams?.city || 'مدريد',
+            city: apiCity,
             check_in_date: searchParams?.check_in_date || '2025-06-15',
             check_out_date: searchParams?.check_out_date || '2025-06-18',
             page: searchParams?.page || 1,
@@ -177,6 +200,6 @@ export const useHotelSearch = (searchParams?: HotelFilters) => {
       return data;
     },
     enabled: false,
-    retry: 2,
+    retry: 1, // Reduced retry count for faster response
   });
 };

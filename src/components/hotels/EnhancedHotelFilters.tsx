@@ -40,18 +40,18 @@ const europeanCountries = [
 ];
 
 const europeanCities = [
-  { name: 'Madrid', nameAr: 'مدريد', country: 'ES' },
-  { name: 'Barcelona', nameAr: 'برشلونة', country: 'ES' },
-  { name: 'Paris', nameAr: 'باريس', country: 'FR' },
-  { name: 'Rome', nameAr: 'روما', country: 'IT' },
-  { name: 'Milan', nameAr: 'ميلان', country: 'IT' },
-  { name: 'Berlin', nameAr: 'برلين', country: 'DE' },
-  { name: 'London', nameAr: 'لندن', country: 'UK' },
-  { name: 'Amsterdam', nameAr: 'أمستردام', country: 'NL' },
-  { name: 'Lisbon', nameAr: 'لشبونة', country: 'PT' },
-  { name: 'Athens', nameAr: 'أثينا', country: 'GR' },
-  { name: 'Vienna', nameAr: 'فيينا', country: 'AT' },
-  { name: 'Zurich', nameAr: 'زيورخ', country: 'CH' }
+  { name: 'Madrid', nameAr: 'مدريد', country: 'ES', alternateNames: ['مدريد'] },
+  { name: 'Barcelona', nameAr: 'برشلونة', country: 'ES', alternateNames: ['برشلونة'] },
+  { name: 'Paris', nameAr: 'باريس', country: 'FR', alternateNames: ['باريس'] },
+  { name: 'Rome', nameAr: 'روما', country: 'IT', alternateNames: ['Roma', 'روما'] },
+  { name: 'Milan', nameAr: 'ميلان', country: 'IT', alternateNames: ['Milano', 'ميلان'] },
+  { name: 'Berlin', nameAr: 'برلين', country: 'DE', alternateNames: ['برلين'] },
+  { name: 'London', nameAr: 'لندن', country: 'UK', alternateNames: ['لندن'] },
+  { name: 'Amsterdam', nameAr: 'أمستردام', country: 'NL', alternateNames: ['أمستردام'] },
+  { name: 'Lisbon', nameAr: 'لشبونة', country: 'PT', alternateNames: ['Lisboa', 'لشبونة'] },
+  { name: 'Athens', nameAr: 'أثينا', country: 'GR', alternateNames: ['Athina', 'أثينا'] },
+  { name: 'Vienna', nameAr: 'فيينا', country: 'AT', alternateNames: ['Wien', 'فيينا'] },
+  { name: 'Zurich', nameAr: 'زيورخ', country: 'CH', alternateNames: ['Zürich', 'زيورخ'] }
 ];
 
 const EnhancedHotelFilters = ({ filters, onFiltersChange, onFetchNewData, isFetching }: EnhancedHotelFiltersProps) => {
@@ -66,8 +66,8 @@ const EnhancedHotelFilters = ({ filters, onFiltersChange, onFetchNewData, isFetc
   const clearFilters = () => {
     onFiltersChange({
       searchTerm: '',
-      country: '',
-      city: '',
+      country: 'all',
+      city: 'all',
       checkInDate: new Date().toISOString().split('T')[0],
       checkOutDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       guests: 2,
@@ -78,7 +78,7 @@ const EnhancedHotelFilters = ({ filters, onFiltersChange, onFetchNewData, isFetc
     });
   };
 
-  const filteredCities = filters.country 
+  const filteredCities = filters.country && filters.country !== 'all'
     ? europeanCities.filter(city => city.country === filters.country)
     : europeanCities;
 
