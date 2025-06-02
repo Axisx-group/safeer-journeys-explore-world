@@ -8,34 +8,34 @@ const FlightOffers = () => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
 
-  // Popular European routes from Middle East
+  // Popular European routes from Middle East with proper Sky IDs
   const flightRoutes = [
     {
       id: "london",
       name: { en: "London", ar: "لندن" },
-      origin: "RIYD",
-      destination: "LOND",
+      origin: "RUH",
+      destination: "LHR",
       date: "2025-06-15"
     },
     {
       id: "paris",
       name: { en: "Paris", ar: "باريس" },
-      origin: "RIYD",
-      destination: "PARI",
+      origin: "RUH", 
+      destination: "CDG",
       date: "2025-06-20"
     },
     {
       id: "rome",
       name: { en: "Rome", ar: "روما" },
-      origin: "RIYD",
-      destination: "ROME",
+      origin: "RUH",
+      destination: "FCO",
       date: "2025-06-25"
     },
     {
       id: "madrid",
       name: { en: "Madrid", ar: "مدريد" },
-      origin: "RIYD",
-      destination: "MADR",
+      origin: "RUH",
+      destination: "MAD",
       date: "2025-06-30"
     }
   ];

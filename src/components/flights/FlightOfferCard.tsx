@@ -24,10 +24,15 @@ const FlightOfferCard = ({ flight, route, onBookFlight }: FlightOfferCardProps) 
 
   const formatTime = (dateString: string) => {
     try {
-      return new Date(dateString).toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      // Handle different time formats
+      if (dateString.includes('T')) {
+        return new Date(dateString).toLocaleTimeString('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } else {
+        return dateString;
+      }
     } catch {
       return dateString;
     }
@@ -35,14 +40,18 @@ const FlightOfferCard = ({ flight, route, onBookFlight }: FlightOfferCardProps) 
 
   const getCityName = (code: string) => {
     const cities: Record<string, { en: string; ar: string }> = {
-      'RIYD': { en: 'Riyadh', ar: 'الرياض' },
-      'LOND': { en: 'London', ar: 'لندن' },
-      'PARI': { en: 'Paris', ar: 'باريس' },
-      'ROME': { en: 'Rome', ar: 'روما' },
-      'MADR': { en: 'Madrid', ar: 'مدريد' }
+      'RUH': { en: 'Riyadh', ar: 'الرياض' },
+      'LHR': { en: 'London', ar: 'لندن' },
+      'CDG': { en: 'Paris', ar: 'باريس' },
+      'FCO': { en: 'Rome', ar: 'روما' },
+      'MAD': { en: 'Madrid', ar: 'مدريد' }
     };
     return cities[code] ? (isArabic ? cities[code].ar : cities[code].en) : code;
   };
+
+  const segment = flight.segments?.[0];
+  const price = flight.price?.amount || Math.floor(Math.random() * 500) + 200;
+  const currency = flight.price?.currency || 'EUR';
 
   return (
     <motion.div
@@ -64,7 +73,7 @@ const FlightOfferCard = ({ flight, route, onBookFlight }: FlightOfferCardProps) 
           <div className="absolute top-3 right-3">
             <Badge className="bg-green-600 text-white flex items-center gap-1">
               <Euro className="h-3 w-3" />
-              {flight.price?.amount || Math.floor(Math.random() * 500) + 200}
+              {price}
             </Badge>
           </div>
 
@@ -78,15 +87,15 @@ const FlightOfferCard = ({ flight, route, onBookFlight }: FlightOfferCardProps) 
 
         <CardContent className="p-6">
           {/* Flight Details */}
-          {flight.segments && flight.segments[0] && (
+          {segment && (
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-center">
                   <p className="font-bold text-lg">
-                    {formatTime(flight.segments[0].departure)}
+                    {formatTime(segment.departure)}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {flight.segments[0].origin?.displayCode}
+                    {segment.origin?.displayCode || route.origin}
                   </p>
                 </div>
                 
@@ -98,17 +107,17 @@ const FlightOfferCard = ({ flight, route, onBookFlight }: FlightOfferCardProps) 
                 
                 <div className="text-center">
                   <p className="font-bold text-lg">
-                    {formatTime(flight.segments[0].arrival)}
+                    {formatTime(segment.arrival)}
                   </p>
                   <p className="text-sm text-gray-500">
-                    {flight.segments[0].destination?.displayCode}
+                    {segment.destination?.displayCode || route.destination}
                   </p>
                 </div>
               </div>
               
               <div className="text-center text-sm text-gray-600 mb-3">
                 <Clock className="inline h-4 w-4 mr-1" />
-                {formatDuration(flight.segments[0].durationInMinutes || 480)}
+                {formatDuration(segment.durationInMinutes || 480)}
               </div>
             </div>
           )}
@@ -128,6 +137,13 @@ const FlightOfferCard = ({ flight, route, onBookFlight }: FlightOfferCardProps) 
               <p className="font-semibold">{isArabic ? 'مباشر' : 'Direct'}</p>
             </div>
           </div>
+
+          {/* Airline Info */}
+          {segment?.marketingCarrier && (
+            <div className="text-center text-sm text-gray-600 mb-4">
+              {segment.marketingCarrier.name}
+            </div>
+          )}
 
           {/* Action Button */}
           <Button 
