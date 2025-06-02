@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -70,6 +69,33 @@ const HomePageHotelSection = () => {
     });
   };
 
+  const getValidImageUrl = (imageUrls: string[] | undefined, hotelId: string) => {
+    const fallbackImages = [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    ];
+
+    if (!imageUrls || imageUrls.length === 0) {
+      const index = hotelId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % fallbackImages.length;
+      return fallbackImages[index];
+    }
+
+    const primaryUrl = imageUrls[0];
+    
+    // Check if it's an Unsplash URL that needs parameters
+    if (primaryUrl.includes('images.unsplash.com') && !primaryUrl.includes('ixlib=')) {
+      // Add required Unsplash parameters
+      const urlBase = primaryUrl.split('?')[0];
+      return `${urlBase}?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`;
+    }
+    
+    return primaryUrl;
+  };
+
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="max-w-7xl mx-auto">
@@ -132,9 +158,18 @@ const HomePageHotelSection = () => {
                 <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-0 bg-white">
                   <div className="relative">
                     <img 
-                      src={hotel.image_urls?.[0] || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'} 
+                      src={getValidImageUrl(hotel.image_urls, hotel.id)} 
                       alt={hotel.name}
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        const fallbackImages = [
+                          'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                          'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                          'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                        ];
+                        const index = hotel.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % fallbackImages.length;
+                        e.currentTarget.src = fallbackImages[index];
+                      }}
                     />
                     
                     {/* Match Score Badge */}

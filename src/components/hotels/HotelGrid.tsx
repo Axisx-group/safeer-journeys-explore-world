@@ -35,16 +35,33 @@ const HotelGrid = ({ hotels, onBookNow }: HotelGridProps) => {
 
   const getFallbackImage = (hotelId: string) => {
     const fallbackImages = [
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
-      'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
-      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800',
-      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
-      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     ];
     
     const index = hotelId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % fallbackImages.length;
     return fallbackImages[index];
+  };
+
+  const getValidImageUrl = (imageUrls: string[] | undefined, hotelId: string) => {
+    if (!imageUrls || imageUrls.length === 0) {
+      return getFallbackImage(hotelId);
+    }
+
+    const primaryUrl = imageUrls[0];
+    
+    // Check if it's an Unsplash URL that needs parameters
+    if (primaryUrl.includes('images.unsplash.com') && !primaryUrl.includes('ixlib=')) {
+      // Add required Unsplash parameters
+      const urlBase = primaryUrl.split('?')[0];
+      return `${urlBase}?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`;
+    }
+    
+    return primaryUrl;
   };
 
   return (
@@ -52,22 +69,14 @@ const HotelGrid = ({ hotels, onBookNow }: HotelGridProps) => {
       {hotels.map((hotel) => (
         <Card key={hotel.id} className="overflow-hidden hover:shadow-lg transition-shadow">
           <div className="relative h-48">
-            {hotel.image_urls && hotel.image_urls[0] ? (
-              <img 
-                src={hotel.image_urls[0]} 
-                alt={hotel.name}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = getFallbackImage(hotel.id);
-                }}
-              />
-            ) : (
-              <img 
-                src={getFallbackImage(hotel.id)}
-                alt={hotel.name}
-                className="w-full h-full object-cover"
-              />
-            )}
+            <img 
+              src={getValidImageUrl(hotel.image_urls, hotel.id)} 
+              alt={hotel.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.src = getFallbackImage(hotel.id);
+              }}
+            />
             <div className="absolute bottom-2 left-2">
               <div className="flex items-center bg-white px-2 py-1 rounded">
                 {[...Array(5)].map((_, i) => (
