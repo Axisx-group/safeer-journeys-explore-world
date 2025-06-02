@@ -135,7 +135,7 @@ const UnifiedSearchSection = () => {
   };
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 -mt-20 relative z-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 relative z-20 bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="max-w-7xl mx-auto">
         <BackgroundDecorations />
 
