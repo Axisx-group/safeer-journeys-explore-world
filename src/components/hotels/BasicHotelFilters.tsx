@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Calendar, Users, Search } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { europeanCountries, europeanCities } from "./hotelFiltersData";
 
 interface BasicHotelFiltersProps {
   filters: {
@@ -22,10 +21,6 @@ interface BasicHotelFiltersProps {
 const BasicHotelFilters = ({ filters, onUpdateFilter }: BasicHotelFiltersProps) => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
-
-  const filteredCities = filters.country && filters.country !== 'all'
-    ? europeanCities.filter(city => city.country === filters.country)
-    : europeanCities;
 
   return (
     <>
@@ -114,51 +109,6 @@ const BasicHotelFilters = ({ filters, onUpdateFilter }: BasicHotelFiltersProps) 
               </Select>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Additional Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {/* Country Filter */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-green-600" />
-            {isArabic ? 'تصفية حسب البلد' : 'Filter by Country'}
-          </Label>
-          <Select value={filters.country} onValueChange={(value) => onUpdateFilter('country', value)}>
-            <SelectTrigger className="h-11 border-2 border-gray-200 focus:border-green-500 rounded-lg">
-              <SelectValue placeholder={isArabic ? 'اختر البلد' : 'Select Country'} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{isArabic ? 'جميع البلدان' : 'All Countries'}</SelectItem>
-              {europeanCountries.map((country) => (
-                <SelectItem key={country.code} value={country.code}>
-                  {isArabic ? country.nameAr : country.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* City Filter */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-purple-600" />
-            {isArabic ? 'تصفية حسب المدينة' : 'Filter by City'}
-          </Label>
-          <Select value={filters.city} onValueChange={(value) => onUpdateFilter('city', value)}>
-            <SelectTrigger className="h-11 border-2 border-gray-200 focus:border-purple-500 rounded-lg">
-              <SelectValue placeholder={isArabic ? 'اختر المدينة' : 'Select City'} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">{isArabic ? 'جميع المدن' : 'All Cities'}</SelectItem>
-              {filteredCities.map((city) => (
-                <SelectItem key={city.name} value={city.name}>
-                  {isArabic ? city.nameAr : city.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
       </div>
     </>
