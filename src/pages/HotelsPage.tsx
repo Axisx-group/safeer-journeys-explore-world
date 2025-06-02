@@ -82,6 +82,25 @@ const HotelsPage = () => {
     }
   };
 
+  const getAmenityIcon = (amenity: string) => {
+    switch (amenity.toLowerCase()) {
+      case 'free wifi':
+      case 'wifi':
+        return <Wifi className="h-4 w-4" />;
+      case 'parking':
+      case 'free parking':
+        return <Car className="h-4 w-4" />;
+      case 'restaurant':
+      case 'fine dining':
+        return <Coffee className="h-4 w-4" />;
+      case 'pool':
+      case 'spa':
+        return <Waves className="h-4 w-4" />;
+      default:
+        return <Star className="h-4 w-4" />;
+    }
+  };
+
   // Generate different fallback images based on hotel ID
   const getFallbackImage = (hotelId: string) => {
     const fallbackImages = [
