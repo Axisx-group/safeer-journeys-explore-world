@@ -15,6 +15,7 @@ import TripDetailsSection from "./booking/TripDetailsSection";
 import PreferencesSection from "./booking/PreferencesSection";
 import TermsAndSubmitSection from "./booking/TermsAndSubmitSection";
 import SupportInformation from "./booking/SupportInformation";
+import HotelDetailsCard from "./booking/HotelDetailsCard";
 
 const BookingForm = () => {
   const { language } = useLanguage();
@@ -38,6 +39,7 @@ const BookingForm = () => {
   });
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [hotelBookingData, setHotelBookingData] = useState(null);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -68,12 +70,19 @@ const BookingForm = () => {
       hotelName?: string;
       hotelCity?: string;
       hotelCountry?: string;
+      hotelPrice?: number;
+      hotelCurrency?: string;
+      checkInDate?: string;
+      checkOutDate?: string;
     };
     
     console.log('Navigation state:', state);
     
     if (state?.bookingType === 'hotel' && state?.hotelId) {
       console.log('Setting hotel booking data:', state);
+      
+      // Store hotel booking data for display
+      setHotelBookingData(state);
       
       // Pre-populate destination with hotel location
       const destination = state.hotelCity && state.hotelCountry 
@@ -86,6 +95,8 @@ const BookingForm = () => {
       setFormData(prev => ({
         ...prev,
         destination: destination,
+        departure_date: state.checkInDate || '',
+        return_date: state.checkOutDate || '',
         hotel_preference: hotelPreference,
         special_requests: prev.special_requests 
           ? `${prev.special_requests}\n\nPreferred Hotel: ${hotelPreference}` 
@@ -130,6 +141,11 @@ const BookingForm = () => {
     <div className="max-w-4xl mx-auto space-y-6" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
       <BookingHeader />
 
+      {/* Hotel Details Card - Show only if booking a hotel */}
+      {hotelBookingData && (
+        <HotelDetailsCard hotelData={hotelBookingData} />
+      )}
+
       {/* Main Booking Form */}
       <Card className="shadow-lg border-0">
         <CardHeader className="bg-gray-50 border-b">
@@ -145,14 +161,16 @@ const BookingForm = () => {
           <form onSubmit={handleSubmit} className="space-y-8">
             <GuestInformationSection 
               formData={formData} 
-              handleChange={handleChange} 
+              handleChange={handleChange}
+              isReadOnly={true}
             />
 
             <Separator className="my-8" />
 
             <TripDetailsSection 
               formData={formData} 
-              handleChange={handleChange} 
+              handleChange={handleChange}
+              hotelBookingData={hotelBookingData}
             />
 
             <Separator className="my-8" />

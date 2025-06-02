@@ -11,9 +11,10 @@ interface GuestInformationSectionProps {
     phone: string;
   };
   handleChange: (field: string, value: string) => void;
+  isReadOnly?: boolean;
 }
 
-const GuestInformationSection = ({ formData, handleChange }: GuestInformationSectionProps) => {
+const GuestInformationSection = ({ formData, handleChange, isReadOnly = false }: GuestInformationSectionProps) => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
 
@@ -28,7 +29,10 @@ const GuestInformationSection = ({ formData, handleChange }: GuestInformationSec
             {isArabic ? 'معلومات الضيف الرئيسي' : 'Main Guest Information'}
           </h3>
           <p className="text-sm text-gray-600">
-            {isArabic ? 'هذه المعلومات مطلوبة لتأكيد الحجز' : 'This information is required to confirm your booking'}
+            {isReadOnly 
+              ? (isArabic ? 'معلوماتك من الحساب المسجل' : 'Your information from registered account')
+              : (isArabic ? 'هذه المعلومات مطلوبة لتأكيد الحجز' : 'This information is required to confirm your booking')
+            }
           </p>
         </div>
       </div>
@@ -43,11 +47,21 @@ const GuestInformationSection = ({ formData, handleChange }: GuestInformationSec
             id="name"
             type="text"
             value={formData.name}
-            onChange={(e) => handleChange('name', e.target.value)}
+            onChange={(e) => !isReadOnly && handleChange('name', e.target.value)}
             placeholder={isArabic ? 'مثال: أحمد محمد' : 'e.g., John Smith'}
-            className="h-12 border-2 border-gray-300 focus:border-[#003580] rounded-md"
+            className={`h-12 border-2 rounded-md ${
+              isReadOnly 
+                ? 'bg-gray-100 border-gray-300 text-gray-700 cursor-not-allowed' 
+                : 'border-gray-300 focus:border-[#003580]'
+            }`}
+            readOnly={isReadOnly}
             required
           />
+          {isReadOnly && (
+            <p className="text-xs text-gray-500">
+              {isArabic ? 'من بيانات حسابك المسجل' : 'From your registered account'}
+            </p>
+          )}
         </div>
         
         <div className="space-y-2">
@@ -59,9 +73,14 @@ const GuestInformationSection = ({ formData, handleChange }: GuestInformationSec
             id="email"
             type="email"
             value={formData.email}
-            onChange={(e) => handleChange('email', e.target.value)}
+            onChange={(e) => !isReadOnly && handleChange('email', e.target.value)}
             placeholder={isArabic ? 'ahmed@example.com' : 'john@example.com'}
-            className="h-12 border-2 border-gray-300 focus:border-[#003580] rounded-md"
+            className={`h-12 border-2 rounded-md ${
+              isReadOnly 
+                ? 'bg-gray-100 border-gray-300 text-gray-700 cursor-not-allowed' 
+                : 'border-gray-300 focus:border-[#003580]'
+            }`}
+            readOnly={isReadOnly}
             required
           />
           <p className="text-xs text-gray-500">
@@ -79,9 +98,14 @@ const GuestInformationSection = ({ formData, handleChange }: GuestInformationSec
           id="phone"
           type="tel"
           value={formData.phone}
-          onChange={(e) => handleChange('phone', e.target.value)}
+          onChange={(e) => !isReadOnly && handleChange('phone', e.target.value)}
           placeholder="+966 50 123 4567"
-          className="h-12 border-2 border-gray-300 focus:border-[#003580] rounded-md"
+          className={`h-12 border-2 rounded-md ${
+            isReadOnly 
+              ? 'bg-gray-100 border-gray-300 text-gray-700 cursor-not-allowed' 
+              : 'border-gray-300 focus:border-[#003580]'
+          }`}
+          readOnly={isReadOnly}
           required
         />
         <p className="text-xs text-gray-500">

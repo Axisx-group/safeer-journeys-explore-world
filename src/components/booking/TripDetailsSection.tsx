@@ -13,9 +13,10 @@ interface TripDetailsSectionProps {
     return_date: string;
   };
   handleChange: (field: string, value: string | number) => void;
+  hotelBookingData?: any;
 }
 
-const TripDetailsSection = ({ formData, handleChange }: TripDetailsSectionProps) => {
+const TripDetailsSection = ({ formData, handleChange, hotelBookingData }: TripDetailsSectionProps) => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
 
@@ -52,18 +53,34 @@ const TripDetailsSection = ({ formData, handleChange }: TripDetailsSectionProps)
             <MapPin className="h-4 w-4 text-green-600" />
             {isArabic ? 'الوجهة' : 'Destination'} <span className="text-red-500">*</span>
           </Label>
-          <Select onValueChange={(value) => handleChange('destination', value)} required>
-            <SelectTrigger className="h-12 border-2 border-gray-300 focus:border-[#003580]">
-              <SelectValue placeholder={isArabic ? 'اختر الوجهة' : 'Select destination'} />
-            </SelectTrigger>
-            <SelectContent>
-              {destinations.map((dest) => (
-                <SelectItem key={dest.value} value={dest.value}>
-                  {dest.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {hotelBookingData ? (
+            <div>
+              <Input
+                id="destination"
+                type="text"
+                value={formData.destination}
+                className="h-12 border-2 border-gray-300 bg-gray-100 text-gray-700 cursor-not-allowed rounded-md"
+                readOnly
+                required
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                {isArabic ? 'تم تحديد الوجهة بناءً على الفندق المختار' : 'Destination set based on selected hotel'}
+              </p>
+            </div>
+          ) : (
+            <Select onValueChange={(value) => handleChange('destination', value)} required>
+              <SelectTrigger className="h-12 border-2 border-gray-300 focus:border-[#003580]">
+                <SelectValue placeholder={isArabic ? 'اختر الوجهة' : 'Select destination'} />
+              </SelectTrigger>
+              <SelectContent>
+                {destinations.map((dest) => (
+                  <SelectItem key={dest.value} value={dest.value}>
+                    {dest.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -95,9 +112,19 @@ const TripDetailsSection = ({ formData, handleChange }: TripDetailsSectionProps)
             type="date"
             value={formData.departure_date}
             onChange={(e) => handleChange('departure_date', e.target.value)}
-            className="h-12 border-2 border-gray-300 focus:border-[#003580] rounded-md"
+            className={`h-12 border-2 rounded-md ${
+              hotelBookingData 
+                ? 'bg-gray-100 border-gray-300 text-gray-700' 
+                : 'border-gray-300 focus:border-[#003580]'
+            }`}
+            readOnly={!!hotelBookingData}
             required
           />
+          {hotelBookingData && (
+            <p className="text-xs text-gray-500">
+              {isArabic ? 'تاريخ تسجيل الوصول للفندق' : 'Hotel check-in date'}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -110,9 +137,19 @@ const TripDetailsSection = ({ formData, handleChange }: TripDetailsSectionProps)
             type="date"
             value={formData.return_date}
             onChange={(e) => handleChange('return_date', e.target.value)}
-            className="h-12 border-2 border-gray-300 focus:border-[#003580] rounded-md"
+            className={`h-12 border-2 rounded-md ${
+              hotelBookingData 
+                ? 'bg-gray-100 border-gray-300 text-gray-700' 
+                : 'border-gray-300 focus:border-[#003580]'
+            }`}
+            readOnly={!!hotelBookingData}
             required
           />
+          {hotelBookingData && (
+            <p className="text-xs text-gray-500">
+              {isArabic ? 'تاريخ تسجيل المغادرة من الفندق' : 'Hotel check-out date'}
+            </p>
+          )}
         </div>
       </div>
     </div>
