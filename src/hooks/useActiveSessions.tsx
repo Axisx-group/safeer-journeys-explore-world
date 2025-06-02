@@ -7,11 +7,11 @@ interface ActiveSession {
   id: string;
   user_id: string;
   session_token: string;
-  ip_address?: string;
-  user_agent?: string;
+  ip_address?: string | null;
+  user_agent?: string | null;
   device_info?: any;
   last_activity: string;
-  expires_at?: string;
+  expires_at?: string | null;
   is_active: boolean;
   created_at: string;
 }
@@ -30,7 +30,16 @@ export const useActiveSessions = () => {
         .order('last_activity', { ascending: false });
 
       if (error) throw error;
-      setSessions(data || []);
+      
+      // تحويل البيانات لضمان التوافق مع النوع المحدد
+      const typedSessions: ActiveSession[] = (data || []).map(session => ({
+        ...session,
+        ip_address: session.ip_address as string | null,
+        user_agent: session.user_agent as string | null,
+        expires_at: session.expires_at as string | null
+      }));
+      
+      setSessions(typedSessions);
     } catch (error) {
       console.error('Error fetching active sessions:', error);
       toast({

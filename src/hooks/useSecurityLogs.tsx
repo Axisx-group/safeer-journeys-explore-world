@@ -5,13 +5,13 @@ import { useToast } from '@/hooks/use-toast';
 
 interface SecurityLog {
   id: string;
-  user_id?: string;
+  user_id?: string | null;
   action: string;
-  resource?: string;
-  ip_address?: string;
-  user_agent?: string;
+  resource?: string | null;
+  ip_address?: string | null;
+  user_agent?: string | null;
   success: boolean;
-  failure_reason?: string;
+  failure_reason?: string | null;
   metadata?: any;
   created_at: string;
 }
@@ -31,7 +31,18 @@ export const useSecurityLogs = () => {
         .limit(limit);
 
       if (error) throw error;
-      setLogs(data || []);
+      
+      // تحويل البيانات لضمان التوافق مع النوع المحدد
+      const typedLogs: SecurityLog[] = (data || []).map(log => ({
+        ...log,
+        user_id: log.user_id as string | null,
+        resource: log.resource as string | null,
+        ip_address: log.ip_address as string | null,
+        user_agent: log.user_agent as string | null,
+        failure_reason: log.failure_reason as string | null
+      }));
+      
+      setLogs(typedLogs);
     } catch (error) {
       console.error('Error fetching security logs:', error);
       toast({

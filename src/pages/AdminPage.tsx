@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -7,18 +8,20 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import UsersPage from './admin/UsersPage';
-import BookingsPage from './admin/BookingsPage';
-import MessagesPage from './admin/MessagesPage';
-import PackagesPage from './admin/PackagesPage';
-import ServicesPage from './admin/ServicesPage';
-import GalleryPage from './admin/GalleryPage';
-import AnalyticsPage from './admin/AnalyticsPage';
-import SettingsPage from './admin/SettingsPage';
-import PaymentsPage from './admin/PaymentsPage';
-import TextsPage from './admin/TextsPage';
 import AdminDashboard from '@/components/admin/AdminDashboard';
 import SecurityDashboard from '@/components/admin/security/SecurityDashboard';
+
+// استيراد المكونات من المجلد الصحيح
+import { AdminUsers } from '@/components/admin/AdminUsers';
+import { AdminBookings } from '@/components/admin/AdminBookings';
+import { AdminMessages } from '@/components/admin/AdminMessages';
+import { AdminPackages } from '@/components/admin/AdminPackages';
+import { AdminServices } from '@/components/admin/AdminServices';
+import { AdminGallery } from '@/components/admin/AdminGallery';
+import { AdminAnalytics } from '@/components/admin/AdminAnalytics';
+import { AdminSettings } from '@/components/admin/AdminSettings';
+import { AdminPayments } from '@/components/admin/AdminPayments';
+import { AdminTexts } from '@/components/admin/AdminTexts';
 
 const AdminPage = () => {
   const { language } = useLanguage();
@@ -38,25 +41,25 @@ const AdminPage = () => {
       case 'dashboard':
         return <AdminDashboard />;
       case 'users':
-        return <UsersPage />;
+        return <AdminUsers />;
       case 'bookings':
-        return <BookingsPage />;
+        return <AdminBookings />;
       case 'messages':
-        return <MessagesPage />;
+        return <AdminMessages />;
       case 'packages':
-        return <PackagesPage />;
+        return <AdminPackages />;
       case 'services':
-        return <ServicesPage />;
+        return <AdminServices />;
       case 'gallery':
-        return <GalleryPage />;
+        return <AdminGallery />;
       case 'analytics':
-        return <AnalyticsPage />;
+        return <AdminAnalytics />;
       case 'settings':
-        return <SettingsPage />;
+        return <AdminSettings />;
       case 'payments':
-        return <PaymentsPage />;
+        return <AdminPayments />;
       case 'texts':
-        return <TextsPage />;
+        return <AdminTexts />;
       case 'security':
         return <SecurityDashboard />;
       default:
