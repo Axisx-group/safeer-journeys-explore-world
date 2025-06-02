@@ -2,9 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const { t, language } = useLanguage();
+  const navigate = useNavigate();
+
+  const handleStartJourney = () => {
+    navigate('/booking');
+  };
+
+  const handleDiscoverOffers = () => {
+    navigate('/offers');
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -35,6 +45,7 @@ const Hero = () => {
           <Button 
             size="lg" 
             className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white px-8 py-3 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+            onClick={handleStartJourney}
           >
             {t('startJourney')}
             <ArrowRight className={`h-5 w-5 ${language === 'ar' ? 'mr-2' : 'ml-2'}`} />
@@ -44,6 +55,7 @@ const Hero = () => {
             variant="outline" 
             size="lg"
             className="border-2 border-white text-white hover:bg-white hover:text-blue-900 px-8 py-3 text-lg font-semibold backdrop-blur-sm bg-white/10"
+            onClick={handleDiscoverOffers}
           >
             {t('discoverOffers')}
           </Button>
