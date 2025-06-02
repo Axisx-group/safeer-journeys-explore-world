@@ -7,21 +7,37 @@ import { Loader2 } from 'lucide-react';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requireAdmin?: boolean;
+  requiredRole?: string;
+  requiredPermission?: string;
 }
 
-const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps) => {
-  const { user, isLoading, isAdmin } = useAuth();
+const ProtectedRoute = ({ 
+  children, 
+  requireAdmin = false, 
+  requiredRole,
+  requiredPermission 
+}: ProtectedRouteProps) => {
+  const { user, isLoading, canAccessAdminPanel, hasRole } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoading) {
       if (!user) {
         navigate('/auth');
-      } else if (requireAdmin && !isAdmin) {
+        return;
+      }
+
+      if (requireAdmin && !canAccessAdminPanel) {
         navigate('/');
+        return;
+      }
+
+      if (requiredRole && !hasRole(requiredRole)) {
+        navigate('/');
+        return;
       }
     }
-  }, [user, isLoading, isAdmin, requireAdmin, navigate]);
+  }, [user, isLoading, canAccessAdminPanel, hasRole, requireAdmin, requiredRole, navigate]);
 
   if (isLoading) {
     return (
@@ -31,7 +47,15 @@ const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps)
     );
   }
 
-  if (!user || (requireAdmin && !isAdmin)) {
+  if (!user) {
+    return null;
+  }
+
+  if (requireAdmin && !canAccessAdminPanel) {
+    return null;
+  }
+
+  if (requiredRole && !hasRole(requiredRole)) {
     return null;
   }
 

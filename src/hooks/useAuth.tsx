@@ -10,6 +10,9 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   isAdmin: boolean;
   userProfile: any;
+  userRoles: string[];
+  hasRole: (role: string) => boolean;
+  canAccessAdminPanel: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [userRoles, setUserRoles] = useState<string[]>([]);
 
   useEffect(() => {
     // Set up auth state listener
@@ -32,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           // Fetch user profile using setTimeout to avoid recursion
           setTimeout(async () => {
             try {
+              // جلب الملف الشخصي
               const { data: profile } = await supabase
                 .from('user_profiles')
                 .select('*')
@@ -40,9 +45,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               
               setUserProfile(profile);
 
-              // Check if user email is the admin email
-              const isUserAdmin = session.user.email === 'admin@urtrvl.com';
+              // جلب أدوار المستخدم
+              const { data: roles } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', session.user.id)
+                .eq('is_active', true);
+
+              const rolesList = roles?.map(r => r.role) || [];
+              setUserRoles(rolesList);
+
+              // التحقق من صلاحيات الإدارة
+              const isUserAdmin = session.user.email === 'admin@urtrvl.com' || 
+                                 rolesList.includes('super_admin') || 
+                                 rolesList.includes('admin');
               setIsAdmin(isUserAdmin);
+
             } catch (error) {
               console.error('Error fetching user data:', error);
               // If profile doesn't exist, create one
@@ -67,6 +85,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
           setUserProfile(null);
           setIsAdmin(false);
+          setUserRoles([]);
         }
         
         setIsLoading(false);
@@ -87,6 +106,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
   };
 
+  const hasRole = (role: string): boolean => {
+    return userRoles.includes(role);
+  };
+
+  const canAccessAdminPanel = 
+    isAdmin || 
+    hasRole('super_admin') || 
+    hasRole('admin') || 
+    hasRole('moderator') || 
+    hasRole('support');
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -94,7 +124,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       isLoading,
       signOut,
       isAdmin,
-      userProfile
+      userProfile,
+      userRoles,
+      hasRole,
+      canAccessAdminPanel
     }}>
       {children}
     </AuthContext.Provider>

@@ -1,131 +1,74 @@
-import { 
-  LayoutDashboard, 
-  Calendar, 
-  MessageSquare, 
-  Package, 
-  Settings, 
-  Users,
-  Images,
-  BarChart3,
-  Type,
-  CreditCard,
-  UserCheck,
-  Activity,
-  Download
-} from "lucide-react";
-
-import AdminDashboard from "@/components/admin/AdminDashboard";
-import AdminBookings from "@/components/admin/AdminBookings";
-import AdminUsers from "@/components/admin/AdminUsers";
-import AdminCustomers from "@/components/admin/AdminCustomers";
-import AdminPackages from "@/components/admin/AdminPackages";
-import AdminGallery from "@/components/admin/AdminGallery";
-import AdminServices from "@/components/admin/AdminServices";
-import AdminMessages from "@/components/admin/AdminMessages";
-import AdminPayments from "@/components/admin/AdminPayments";
-import AdminAnalytics from "@/components/admin/AdminAnalytics";
-import AdminTexts from "@/components/admin/AdminTexts";
-import AdminSystemMonitor from "@/components/admin/AdminSystemMonitor";
-import AdminSettings from "@/components/admin/AdminSettings";
-import AdminCustomerExport from "@/components/admin/AdminCustomerExport";
-
 export const adminTabs = [
   {
-    id: "dashboard",
-    label: "Dashboard", 
-    label_ar: "لوحة التحكم",
-    icon: LayoutDashboard,
-    component: AdminDashboard
+    id: 'dashboard',
+    label: 'لوحة التحكم',
+    labelEn: 'Dashboard',
+    icon: 'BarChart3'
   },
   {
-    id: "bookings",
-    label: "Bookings",
-    label_ar: "الحجوزات", 
-    icon: Calendar,
-    component: AdminBookings
+    id: 'users',
+    label: 'المستخدمين',
+    labelEn: 'Users',
+    icon: 'Users'
   },
   {
-    id: "users",
-    label: "Users",
-    label_ar: "المستخدمين",
-    icon: Users,
-    component: AdminUsers
+    id: 'bookings',
+    label: 'الحجوزات',
+    labelEn: 'Bookings',
+    icon: 'Calendar'
   },
   {
-    id: "customers",
-    label: "Customers",
-    label_ar: "العملاء",
-    icon: UserCheck,
-    component: AdminCustomers
+    id: 'messages',
+    label: 'الرسائل',
+    labelEn: 'Messages',
+    icon: 'MessageSquare'
   },
   {
-    id: "export",
-    label: "Export Data",
-    label_ar: "تصدير البيانات",
-    icon: Download,
-    component: AdminCustomerExport
+    id: 'packages',
+    label: 'الباقات',
+    labelEn: 'Packages',
+    icon: 'Package'
   },
   {
-    id: "packages", 
-    label: "Packages",
-    label_ar: "الباقات",
-    icon: Package,
-    component: AdminPackages
+    id: 'services',
+    label: 'الخدمات',
+    labelEn: 'Services',
+    icon: 'Settings'
   },
   {
-    id: "gallery",
-    label: "Gallery",
-    label_ar: "المعرض",
-    icon: Images,
-    component: AdminGallery
+    id: 'gallery',
+    label: 'المعرض',
+    labelEn: 'Gallery',
+    icon: 'Image'
   },
   {
-    id: "services",
-    label: "Services", 
-    label_ar: "الخدمات",
-    icon: Activity,
-    component: AdminServices
+    id: 'analytics',
+    label: 'التحليلات',
+    labelEn: 'Analytics',
+    icon: 'TrendingUp'
   },
   {
-    id: "messages",
-    label: "Messages",
-    label_ar: "الرسائل",
-    icon: MessageSquare,
-    component: AdminMessages
+    id: 'security',
+    label: 'الأمان',
+    labelEn: 'Security',
+    icon: 'Shield'
   },
   {
-    id: "payments",
-    label: "Payments",
-    label_ar: "المدفوعات", 
-    icon: CreditCard,
-    component: AdminPayments
+    id: 'payments',
+    label: 'المدفوعات',
+    labelEn: 'Payments',
+    icon: 'CreditCard'
   },
   {
-    id: "analytics",
-    label: "Analytics",
-    label_ar: "التحليلات",
-    icon: BarChart3,
-    component: AdminAnalytics
+    id: 'texts',
+    label: 'النصوص',
+    labelEn: 'Texts',
+    icon: 'FileText'
   },
   {
-    id: "texts",
-    label: "Content",
-    label_ar: "المحتوى",
-    icon: Type,
-    component: AdminTexts
-  },
-  {
-    id: "system",
-    label: "System",
-    label_ar: "النظام",
-    icon: Activity,
-    component: AdminSystemMonitor
-  },
-  {
-    id: "settings",
-    label: "Settings",
-    label_ar: "الإعدادات",
-    icon: Settings,
-    component: AdminSettings
+    id: 'settings',
+    label: 'الإعدادات',
+    labelEn: 'Settings',
+    icon: 'Settings'
   }
 ];
