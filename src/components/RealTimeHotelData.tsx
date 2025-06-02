@@ -17,7 +17,7 @@ const RealTimeHotelData = () => {
   const isArabic = language === 'ar';
   
   const [searchParams, setSearchParams] = useState({
-    city: 'Madrid',
+    city: 'مدريد', // Use Arabic city name since API returns Arabic names
     check_in_date: '2025-06-15',
     check_out_date: '2025-06-18',
     currency: 'EUR',
@@ -29,7 +29,13 @@ const RealTimeHotelData = () => {
 
   console.log('Current search params:', searchParams);
 
-  const { data: hotelResponse, isLoading, refetch, error } = useHotels(searchParams);
+  // Remove city filter since API returns all European cities
+  const { data: hotelResponse, isLoading, refetch, error } = useHotels({
+    check_in_date: searchParams.check_in_date,
+    check_out_date: searchParams.check_out_date,
+    page: searchParams.page,
+    limit: searchParams.limit
+  });
   const { refetch: fetchNewHotels, isLoading: isFetching, error: fetchError } = useHotelSearch(searchParams);
 
   // Auto-fetch hotels on component mount
@@ -68,10 +74,20 @@ const RealTimeHotelData = () => {
   };
 
   const hotels = hotelResponse?.hotels || [];
+  
+  // Filter hotels by city on frontend since we get all European cities
+  const filteredHotels = hotels.filter(hotel => {
+    if (searchParams.city === 'مدريد') {
+      return hotel.city === 'مدريد' || hotel.city === 'Madrid';
+    }
+    return hotel.city.toLowerCase().includes(searchParams.city.toLowerCase());
+  });
+  
   const totalPages = Math.ceil((hotelResponse?.total || 0) / searchParams.limit);
 
   console.log('Current component state:', {
     hotels: hotels.length,
+    filteredHotels: filteredHotels.length,
     hotelResponse,
     isLoading,
     isFetching,
@@ -120,19 +136,19 @@ const RealTimeHotelData = () => {
             <LoadingState />
           ) : (
             <div className="space-y-6">
-              {hotels.length > 0 && (
+              {filteredHotels.length > 0 && (
                 <HotelStats
-                  currentCount={hotels.length}
+                  currentCount={filteredHotels.length}
                   totalCount={hotelResponse?.total || 0}
                   currentPage={searchParams.page}
                   totalPages={totalPages}
                 />
               )}
 
-              {hotels.length > 0 ? (
+              {filteredHotels.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {hotels.map((hotel) => (
+                    {filteredHotels.map((hotel) => (
                       <HotelCard 
                         key={hotel.id} 
                         hotel={hotel} 

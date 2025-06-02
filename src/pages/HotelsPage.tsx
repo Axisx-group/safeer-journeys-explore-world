@@ -18,15 +18,20 @@ const HotelsPage = () => {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   const [searchParams, setSearchParams] = useState({
-    city: 'Madrid',
+    city: 'مدريد', // Use Arabic city name
     check_in_date: '2025-06-15',
     check_out_date: '2025-06-18',
     page: 1,
     limit: 20
   });
 
-  // Fetch hotels from database
-  const { data: hotelResponse, isLoading, refetch } = useHotels(searchParams);
+  // Fetch hotels from database - remove city filter to get all hotels
+  const { data: hotelResponse, isLoading, refetch } = useHotels({
+    check_in_date: searchParams.check_in_date,
+    check_out_date: searchParams.check_out_date,
+    page: searchParams.page,
+    limit: searchParams.limit
+  });
   
   // Fetch new hotels from API
   const { refetch: fetchNewHotels, isLoading: isFetching } = useHotelSearch(searchParams);
@@ -85,8 +90,11 @@ const HotelsPage = () => {
 
   const hotels = hotelResponse?.hotels || [];
   
+  // Filter hotels by search term and show all European cities
   const filteredHotels = hotels.filter(hotel =>
-    hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
+    hotel.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    hotel.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    hotel.country.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const isLoadingState = isLoading || isFetching || isInitialLoad;
@@ -111,7 +119,7 @@ const HotelsPage = () => {
             <div className="max-w-md">
               <Input
                 type="text"
-                placeholder={language === 'ar' ? 'ابحث عن فندق...' : 'Search for hotels...'}
+                placeholder={language === 'ar' ? 'ابحث عن فندق أو مدينة...' : 'Search for hotels or cities...'}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
