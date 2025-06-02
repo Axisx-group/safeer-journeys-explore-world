@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import UnifiedSearchSection from "@/components/UnifiedSearchSection";
@@ -33,11 +34,11 @@ const Index = () => {
       {/* Unified Search Section */}
       <UnifiedSearchSection />
       
-      {/* AI Assistant Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
+      {/* AI Assistant Section - Mobile Optimized */}
+      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute top-10 left-10 w-20 sm:w-32 h-20 sm:h-32 bg-white/10 rounded-full animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-16 sm:w-24 h-16 sm:h-24 bg-white/10 rounded-full animate-pulse delay-1000"></div>
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative">
@@ -46,24 +47,24 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-6 sm:mb-8">
               <div className="relative">
                 <div className="absolute inset-0 bg-white rounded-full blur-lg opacity-30 animate-pulse"></div>
-                <div className="relative bg-white/20 backdrop-blur-sm p-6 rounded-full border border-white/30">
+                <div className="relative bg-white/20 backdrop-blur-sm p-4 sm:p-6 rounded-full border border-white/30">
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                   >
-                    <Sparkles className="h-12 w-12 text-white" />
+                    <Sparkles className="h-8 w-8 sm:h-12 sm:w-12 text-white" />
                   </motion.div>
                 </div>
               </div>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight px-2">
               {language === 'ar' ? 'جرب مساعد السفر الذكي' : 'Try Our AI Travel Assistant'}
             </h2>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl md:text-2xl text-blue-100 mb-6 sm:mb-8 leading-relaxed max-w-3xl mx-auto px-4">
               {language === 'ar' 
                 ? 'أخبرنا عن تفضيلاتك وسنجد لك أفضل الوجهات الأوروبية'
                 : 'Tell us your preferences and we\'ll find the best European destinations for you'
@@ -76,10 +77,10 @@ const Index = () => {
             >
               <Button 
                 size="lg" 
-                className="bg-white text-blue-600 hover:bg-gray-100 px-12 py-4 text-lg font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300"
+                className="bg-white text-blue-600 hover:bg-gray-100 px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 w-full sm:w-auto"
                 onClick={() => setShowAIAssistant(!showAIAssistant)}
               >
-                <Bot className="h-6 w-6 mr-3" />
+                <Bot className="h-5 w-5 sm:h-6 sm:w-6 mr-2 sm:mr-3" />
                 <span>
                   {showAIAssistant 
                     ? (language === 'ar' ? 'إخفاء المساعد' : 'Hide Assistant')
@@ -99,7 +100,7 @@ const Index = () => {
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.5 }}
-          className="py-12 bg-gradient-to-br from-gray-50 to-blue-50"
+          className="py-8 sm:py-12 bg-gradient-to-br from-gray-50 to-blue-50"
         >
           <AITravelAssistant />
         </motion.section>
