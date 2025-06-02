@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHotels, useHotelSearch } from '@/hooks/useHotels';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
@@ -17,7 +17,7 @@ const RealTimeHotelData = () => {
   const isArabic = language === 'ar';
   
   const [searchParams, setSearchParams] = useState({
-    city: 'مدريد', // Default to Madrid (European city)
+    city: 'Madrid', // Default to Madrid (European city)
     check_in_date: '2025-06-15',
     check_out_date: '2025-06-18',
     currency: 'EUR',
@@ -30,6 +30,11 @@ const RealTimeHotelData = () => {
   const { data: hotelResponse, isLoading, refetch, error } = useHotels(searchParams);
   const { refetch: fetchNewHotels, isLoading: isFetching, error: fetchError } = useHotelSearch(searchParams);
 
+  // Auto-fetch hotels on component mount
+  useEffect(() => {
+    handleFetchNewData();
+  }, []);
+
   const handleSearch = () => {
     console.log('Searching hotels with params:', searchParams);
     setSearchParams(prev => ({ ...prev, page: 1 }));
@@ -38,7 +43,7 @@ const RealTimeHotelData = () => {
 
   const handleFetchNewData = async () => {
     try {
-      console.log('Fetching new hotel data...');
+      console.log('Fetching new hotel data from Booking.com API...');
       const result = await fetchNewHotels();
       console.log('Fetch result:', result);
       
@@ -139,6 +144,23 @@ const RealTimeHotelData = () => {
               )}
             </div>
           )}
+
+          <div className="text-center mt-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-blue-800 font-medium">
+                {isArabic ? 
+                  "🚀 بيانات حية من Booking.com - يتم تحديث الفنادق تلقائياً" :
+                  "🚀 Live data from Booking.com - Hotels updated automatically"
+                }
+              </p>
+              <p className="text-sm text-blue-600 mt-1">
+                {isArabic ? 
+                  "استخدم زر 'تحديث البيانات' للحصول على أحدث العروض" :
+                  "Use 'Update Data' button to get latest offers"
+                }
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
