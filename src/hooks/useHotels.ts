@@ -1,3 +1,4 @@
+
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -65,22 +66,58 @@ export const useHotels = (searchParams?: HotelFilters) => {
         .select('*', { count: 'exact' })
         .order('guest_rating', { ascending: false });
 
-      // Enhanced global search functionality
+      // Enhanced search functionality for location (country or city)
       if (searchParams?.searchTerm) {
         const searchTerm = searchParams.searchTerm.toLowerCase();
         
-        // Search across multiple fields: name, city, country, amenities, description
-        query = query.or(`
-          name.ilike.%${searchParams.searchTerm}%,
-          city.ilike.%${searchParams.searchTerm}%,
-          country.ilike.%${searchParams.searchTerm}%,
-          description.ilike.%${searchParams.searchTerm}%,
-          amenities.cs.["${searchParams.searchTerm}"],
-          address.ilike.%${searchParams.searchTerm}%,
-          room_type.ilike.%${searchParams.searchTerm}%
-        `);
+        // Create a comprehensive search across multiple fields
+        const searchConditions = [
+          `name.ilike.%${searchParams.searchTerm}%`,
+          `city.ilike.%${searchParams.searchTerm}%`,
+          `country.ilike.%${searchParams.searchTerm}%`,
+          `description.ilike.%${searchParams.searchTerm}%`,
+          `address.ilike.%${searchParams.searchTerm}%`,
+          `room_type.ilike.%${searchParams.searchTerm}%`
+        ];
+
+        // Add country code mapping for better search
+        const countryMappings: { [key: string]: string[] } = {
+          'spain': ['spain', 'españa', 'es', 'إسبانيا'],
+          'españa': ['spain', 'españa', 'es', 'إسبانيا'],
+          'إسبانيا': ['spain', 'españa', 'es', 'إسبانيا'],
+          'france': ['france', 'francia', 'fr', 'فرنسا'],
+          'فرنسا': ['france', 'francia', 'fr', 'فرنسا'],
+          'italy': ['italy', 'italia', 'it', 'إيطاليا'],
+          'إيطاليا': ['italy', 'italia', 'it', 'إيطاليا'],
+          'germany': ['germany', 'deutschland', 'de', 'ألمانيا'],
+          'ألمانيا': ['germany', 'deutschland', 'de', 'ألمانيا'],
+          'rome': ['rome', 'roma', 'روما'],
+          'roma': ['rome', 'roma', 'روما'],
+          'روما': ['rome', 'roma', 'روما'],
+          'milan': ['milan', 'milano', 'ميلان'],
+          'milano': ['milan', 'milano', 'ميلان'],
+          'ميلان': ['milan', 'milano', 'ميلان'],
+          'madrid': ['madrid', 'مدريد'],
+          'مدريد': ['madrid', 'مدريد'],
+          'barcelona': ['barcelona', 'برشلونة'],
+          'برشلونة': ['barcelona', 'برشلونة'],
+          'paris': ['paris', 'باريس'],
+          'باريس': ['paris', 'باريس'],
+          'london': ['london', 'لندن'],
+          'لندن': ['london', 'لندن']
+        };
+
+        // Add mapped search terms
+        const mappedTerms = countryMappings[searchTerm] || [];
+        mappedTerms.forEach(term => {
+          searchConditions.push(`name.ilike.%${term}%`);
+          searchConditions.push(`city.ilike.%${term}%`);
+          searchConditions.push(`country.ilike.%${term}%`);
+        });
+
+        query = query.or(searchConditions.join(','));
         
-        // Additional amenity-based search for common terms
+        // Additional amenity-based search
         if (searchTerm.includes('wifi') || searchTerm.includes('internet')) {
           query = query.or('free_wifi.eq.true');
         }
@@ -123,7 +160,7 @@ export const useHotels = (searchParams?: HotelFilters) => {
       }
       
       if (searchParams?.city && searchParams.city !== 'all') {
-        // Handle city name variations (Rome/Roma, Milan/Milano, etc.)
+        // Handle city name variations
         const cityVariations: { [key: string]: string[] } = {
           'Rome': ['Rome', 'Roma', 'روما'],
           'Milan': ['Milan', 'Milano', 'ميلان'],
@@ -185,7 +222,7 @@ export const useHotels = (searchParams?: HotelFilters) => {
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: false,
-    retry: 1, // Reduced retry count for faster response
+    retry: 1,
     refetchOnMount: true,
   });
 };
@@ -230,6 +267,6 @@ export const useHotelSearch = (searchParams?: HotelFilters) => {
       return data;
     },
     enabled: false,
-    retry: 1, // Reduced retry count for faster response
+    retry: 1,
   });
 };
