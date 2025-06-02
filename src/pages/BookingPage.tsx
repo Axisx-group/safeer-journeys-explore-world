@@ -5,31 +5,39 @@ import BookingForm from "@/components/BookingForm";
 import SimpleAIAssistant from "@/components/SimpleAIAssistant";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
+import { Sparkles, Star, Shield } from "lucide-react";
 
 const BookingPage = () => {
   const { language } = useLanguage();
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       <Navbar />
       
-      <div className="container mx-auto px-4 py-12">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {language === 'ar' ? 'احجز رحلتك الآن' : 'Book Your Dream Trip'}
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Sparkles className="h-8 w-8 text-purple-600" />
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              {language === 'ar' ? 'احجز رحلة أحلامك' : 'Book Your Dream Journey'}
+            </h1>
+            <Star className="h-8 w-8 text-indigo-600" />
+          </div>
+          
+          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-6">
             {language === 'ar' 
-              ? 'خطط لرحلتك المثالية معنا - خدمة احترافية وأسعار تنافسية'
-              : 'Plan your perfect trip with us - professional service and competitive prices'
+              ? 'اكتشف العالم معنا - تجربة سفر استثنائية مع أفضل الخدمات وأسعار لا تُقاوم'
+              : 'Discover the world with us - exceptional travel experiences with premium services and unbeatable prices'
             }
           </p>
           
           {user && (
-            <div className="mt-6 inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-              {language === 'ar' ? 'مسجل الدخول كـ' : 'Logged in as'} {user.email}
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 px-6 py-3 rounded-full text-sm font-medium shadow-lg">
+              <Shield className="w-5 h-5 text-green-600" />
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              {language === 'ar' ? 'مرحباً' : 'Welcome'} {user.email}
+              <span className="text-green-600">✓</span>
             </div>
           )}
         </div>

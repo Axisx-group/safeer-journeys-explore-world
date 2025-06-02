@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useCreateBooking } from "@/hooks/useBooking";
-import { Shield, User } from "lucide-react";
+import { User, MapPin, Calendar, Gift } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import BookingHeader from "./booking/BookingHeader";
@@ -41,14 +41,8 @@ const BookingForm = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [hotelBookingData, setHotelBookingData] = useState(null);
 
-  // Redirect to login if not authenticated
+  // Pre-fill form with user data if logged in
   useEffect(() => {
-    if (!user) {
-      navigate('/auth?redirect=/booking');
-      return;
-    }
-    
-    // Pre-fill form with user data
     if (user && userProfile) {
       setFormData(prev => ({
         ...prev,
@@ -60,7 +54,7 @@ const BookingForm = () => {
         user_id: user.id
       }));
     }
-  }, [user, userProfile, navigate]);
+  }, [user, userProfile]);
 
   // Handle hotel booking data from navigation state
   useEffect(() => {
@@ -76,20 +70,13 @@ const BookingForm = () => {
       checkOutDate?: string;
     };
     
-    console.log('Navigation state:', state);
-    
     if (state?.bookingType === 'hotel' && state?.hotelId) {
-      console.log('Setting hotel booking data:', state);
-      
-      // Store hotel booking data for display
       setHotelBookingData(state);
       
-      // Pre-populate destination with hotel location
       const destination = state.hotelCity && state.hotelCountry 
         ? `${state.hotelCity}, ${state.hotelCountry}` 
         : '';
         
-      // Pre-populate hotel preference with hotel name
       const hotelPreference = state.hotelName || `Hotel ID: ${state.hotelId}`;
       
       setFormData(prev => ({
@@ -118,78 +105,147 @@ const BookingForm = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <Shield className="h-16 w-16 text-blue-600 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold mb-2">
-            {isArabic ? 'تسجيل الدخول مطلوب' : 'Login Required'}
-          </h3>
-          <p className="text-gray-600 mb-4">
-            {isArabic ? 'يرجى تسجيل الدخول للمتابعة مع الحجز' : 'Please login to continue with booking'}
-          </p>
-          <Button onClick={() => navigate('/auth')}>
-            {isArabic ? 'تسجيل الدخول' : 'Login'}
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const handleLoginRedirect = () => {
+    navigate('/auth?redirect=/booking', { state: location.state });
+  };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
-      <BookingHeader />
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
+      <div className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+        <BookingHeader />
 
-      {/* Hotel Details Card - Show only if booking a hotel */}
-      {hotelBookingData && (
-        <HotelDetailsCard hotelData={hotelBookingData} />
-      )}
+        {/* Login suggestion banner for non-authenticated users */}
+        {!user && (
+          <Card className="border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-yellow-50 shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="bg-amber-500 p-3 rounded-full">
+                    <Gift className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-amber-800">
+                      {isArabic ? 'احصل على مزايا إضافية!' : 'Get Extra Benefits!'}
+                    </h3>
+                    <p className="text-amber-700">
+                      {isArabic 
+                        ? 'سجل دخولك لحفظ بياناتك وتتبع حجوزاتك والحصول على عروض خاصة'
+                        : 'Login to save your details, track bookings, and get special offers'
+                      }
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  onClick={handleLoginRedirect}
+                  className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2"
+                >
+                  {isArabic ? 'تسجيل الدخول' : 'Login'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-      {/* Main Booking Form */}
-      <Card className="shadow-lg border-0">
-        <CardHeader className="bg-gray-50 border-b">
-          <CardTitle className="text-2xl text-[#003580] flex items-center gap-3">
-            <div className="bg-[#003580] p-2 rounded-lg">
-              <User className="h-6 w-6 text-white" />
-            </div>
-            {isArabic ? 'تفاصيل الحجز' : 'Booking Details'}
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="p-8">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <GuestInformationSection 
-              formData={formData} 
-              handleChange={handleChange}
-              isReadOnly={true}
-            />
+        {/* Hotel Details Card - Show only if booking a hotel */}
+        {hotelBookingData && (
+          <HotelDetailsCard hotelData={hotelBookingData} />
+        )}
 
-            <Separator className="my-8" />
+        {/* Main Booking Form */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+              <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-t-lg">
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <div className="bg-white/20 p-2 rounded-lg">
+                    <User className="h-6 w-6" />
+                  </div>
+                  {isArabic ? 'تفاصيل الحجز' : 'Booking Details'}
+                </CardTitle>
+              </CardHeader>
+              
+              <CardContent className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  <GuestInformationSection 
+                    formData={formData} 
+                    handleChange={handleChange}
+                    isReadOnly={false}
+                    isLoggedIn={!!user}
+                  />
 
-            <TripDetailsSection 
-              formData={formData} 
-              handleChange={handleChange}
-              hotelBookingData={hotelBookingData}
-            />
+                  <Separator className="my-8 bg-gradient-to-r from-transparent via-gray-300 to-transparent h-px" />
 
-            <Separator className="my-8" />
+                  <TripDetailsSection 
+                    formData={formData} 
+                    handleChange={handleChange}
+                    hotelBookingData={hotelBookingData}
+                    allowDateChanges={true}
+                  />
 
-            <PreferencesSection 
-              formData={formData} 
-              handleChange={handleChange} 
-            />
+                  <Separator className="my-8 bg-gradient-to-r from-transparent via-gray-300 to-transparent h-px" />
 
-            <TermsAndSubmitSection 
-              acceptedTerms={acceptedTerms}
-              setAcceptedTerms={setAcceptedTerms}
-              isSubmitting={createBooking.isPending}
-            />
-          </form>
-        </CardContent>
-      </Card>
+                  <PreferencesSection 
+                    formData={formData} 
+                    handleChange={handleChange} 
+                  />
 
-      <SupportInformation />
+                  <TermsAndSubmitSection 
+                    acceptedTerms={acceptedTerms}
+                    setAcceptedTerms={setAcceptedTerms}
+                    isSubmitting={createBooking.isPending}
+                  />
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar with booking summary and support */}
+          <div className="space-y-6">
+            {/* Booking Summary Card */}
+            <Card className="shadow-lg border-0 bg-gradient-to-br from-green-50 to-emerald-50">
+              <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-t-lg">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <MapPin className="h-5 w-5" />
+                  {isArabic ? 'ملخص الرحلة' : 'Trip Summary'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  {formData.destination && (
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium">
+                        {isArabic ? 'الوجهة' : 'Destination'}
+                      </p>
+                      <p className="text-lg font-semibold text-gray-900">{formData.destination}</p>
+                    </div>
+                  )}
+                  {formData.departure_date && formData.return_date && (
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium">
+                        {isArabic ? 'التواريخ' : 'Dates'}
+                      </p>
+                      <div className="flex items-center gap-2 text-gray-900">
+                        <Calendar className="h-4 w-4" />
+                        <span className="text-sm">
+                          {new Date(formData.departure_date).toLocaleDateString()} - {new Date(formData.return_date).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm text-gray-600 font-medium">
+                      {isArabic ? 'عدد المسافرين' : 'Travelers'}
+                    </p>
+                    <p className="text-lg font-semibold text-gray-900">{formData.passengers}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <SupportInformation />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
