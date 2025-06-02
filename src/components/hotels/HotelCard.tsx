@@ -60,6 +60,22 @@ const HotelCard = ({ hotel, currency }: HotelCardProps) => {
     return `${symbol}${Math.round(price)}`;
   };
 
+  // Generate different fallback images based on hotel ID for variety
+  const getFallbackImage = (hotelId: string) => {
+    const fallbackImages = [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800', // Hotel lobby
+      'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800', // Hotel room
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800', // Hotel exterior
+      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800', // Hotel pool
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800', // Hotel restaurant
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800', // Hotel suite
+    ];
+    
+    // Use hotel ID to consistently select the same image for the same hotel
+    const index = hotelId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % fallbackImages.length;
+    return fallbackImages[index];
+  };
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow bg-white">
       <div className="relative h-48">
@@ -69,13 +85,15 @@ const HotelCard = ({ hotel, currency }: HotelCardProps) => {
             alt={hotel.name}
             className="w-full h-full object-cover"
             onError={(e) => {
-              e.currentTarget.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800';
+              e.currentTarget.src = getFallbackImage(hotel.id);
             }}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-            <MapPin className="h-12 w-12 text-blue-400" />
-          </div>
+          <img 
+            src={getFallbackImage(hotel.id)}
+            alt={hotel.name}
+            className="w-full h-full object-cover"
+          />
         )}
         <div className="absolute bottom-2 left-2">
           <div className="flex items-center bg-white px-2 py-1 rounded shadow-md">

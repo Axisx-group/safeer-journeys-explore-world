@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,13 +15,15 @@ const HotelsPage = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const hotelsPerPage = 12;
   
   const [searchParams, setSearchParams] = useState({
     city: 'مدريد', // Use Arabic city name
     check_in_date: '2025-06-15',
     check_out_date: '2025-06-18',
     page: 1,
-    limit: 20
+    limit: 50 // Fetch more hotels to enable pagination
   });
 
   // Fetch hotels from database - remove city filter to get all hotels
@@ -88,6 +89,21 @@ const HotelsPage = () => {
     }
   };
 
+  // Generate different fallback images based on hotel ID
+  const getFallbackImage = (hotelId: string) => {
+    const fallbackImages = [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800',
+      'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800',
+      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800',
+      'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800',
+      'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800',
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800',
+    ];
+    
+    const index = hotelId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % fallbackImages.length;
+    return fallbackImages[index];
+  };
+
   const hotels = hotelResponse?.hotels || [];
   
   // Filter hotels by search term and show all European cities
@@ -96,6 +112,17 @@ const HotelsPage = () => {
     hotel.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
     hotel.country.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredHotels.length / hotelsPerPage);
+  const startIndex = (currentPage - 1) * hotelsPerPage;
+  const endIndex = startIndex + hotelsPerPage;
+  const currentHotels = filteredHotels.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const isLoadingState = isLoading || isFetching || isInitialLoad;
 
@@ -174,14 +201,14 @@ const HotelsPage = () => {
             <div className="mb-6 text-center">
               <p className="text-sm text-gray-600">
                 {language === 'ar' 
-                  ? `عرض ${filteredHotels.length} من ${hotels.length} فندق`
-                  : `Showing ${filteredHotels.length} of ${hotels.length} hotels`
+                  ? `عرض ${currentHotels.length} من ${filteredHotels.length} فندق - الصفحة ${currentPage} من ${totalPages}`
+                  : `Showing ${currentHotels.length} of ${filteredHotels.length} hotels - Page ${currentPage} of ${totalPages}`
                 }
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredHotels.map((hotel) => (
+              {currentHotels.map((hotel) => (
                 <Card key={hotel.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="relative h-48">
                     {hotel.image_urls && hotel.image_urls[0] ? (
@@ -190,13 +217,15 @@ const HotelsPage = () => {
                         alt={hotel.name}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          e.currentTarget.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800';
+                          e.currentTarget.src = getFallbackImage(hotel.id);
                         }}
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                        <MapPin className="h-12 w-12 text-blue-400" />
-                      </div>
+                      <img 
+                        src={getFallbackImage(hotel.id)}
+                        alt={hotel.name}
+                        className="w-full h-full object-cover"
+                      />
                     )}
                     <div className="absolute bottom-2 left-2">
                       <div className="flex items-center bg-white px-2 py-1 rounded">
@@ -265,6 +294,46 @@ const HotelsPage = () => {
                 </Card>
               ))}
             </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex justify-center">
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    {language === 'ar' ? 'السابق' : 'Previous'}
+                  </Button>
+                  
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    const pageNum = Math.max(1, currentPage - 2) + i;
+                    if (pageNum <= totalPages) {
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={pageNum === currentPage ? "default" : "outline"}
+                          onClick={() => handlePageChange(pageNum)}
+                          className="w-10 h-10"
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    }
+                    return null;
+                  })}
+                  
+                  <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    {language === 'ar' ? 'التالي' : 'Next'}
+                  </Button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
