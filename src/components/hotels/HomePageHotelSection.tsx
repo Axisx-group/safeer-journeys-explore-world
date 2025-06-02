@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -255,19 +256,14 @@ const HomePageHotelSection = () => {
                       )}
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex gap-2">
-                      <Button 
-                        className="flex-1" 
-                        size="sm"
-                        onClick={() => handleBookNow(hotel)}
-                      >
-                        {isArabic ? 'احجز الآن' : 'Book Now'}
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        {isArabic ? 'تفاصيل' : 'Details'}
-                      </Button>
-                    </div>
+                    {/* Actions - Only Book Now button */}
+                    <Button 
+                      className="w-full" 
+                      size="sm"
+                      onClick={() => handleBookNow(hotel)}
+                    >
+                      {isArabic ? 'احجز الآن' : 'Book Now'}
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>
