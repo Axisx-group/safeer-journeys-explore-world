@@ -33,10 +33,10 @@ const CurrencyDropdown: React.FC<CurrencyDropdownProps> = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-2">
+        <Button variant="outline" size="sm" className="flex items-center gap-2 bg-white border-gray-300 hover:bg-gray-50">
           <DollarSign className="h-4 w-4" />
           {selectedCurrencyData && (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs bg-white">
               {selectedCurrencyData.symbol} {selectedCurrencyData.code}
             </Badge>
           )}
@@ -44,20 +44,20 @@ const CurrencyDropdown: React.FC<CurrencyDropdownProps> = ({
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-64 max-h-80 overflow-y-auto z-50" 
+        className="w-64 max-h-80 overflow-y-auto z-[9999] bg-white border border-gray-200 shadow-lg rounded-lg backdrop-blur-sm" 
         align={isArabic ? "start" : "end"}
       >
         {europeanCurrencies.map((currency) => (
           <DropdownMenuItem 
             key={currency.code} 
             onClick={() => handleCurrencyChange(currency.code)}
-            className="flex items-center space-x-3 cursor-pointer"
+            className="flex items-center space-x-3 cursor-pointer bg-white hover:bg-blue-50 transition-colors duration-200 px-4 py-3"
           >
             <span className="text-lg font-bold text-blue-600 min-w-[30px]">
               {currency.symbol}
             </span>
             <div className="flex-1">
-              <div className="font-medium">
+              <div className="font-medium text-gray-900">
                 {isArabic ? currency.nameAr : currency.name}
               </div>
               <div className="text-sm text-gray-500">
