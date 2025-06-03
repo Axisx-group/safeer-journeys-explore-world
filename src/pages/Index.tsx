@@ -13,35 +13,47 @@ const Index = () => {
   const [showAIAssistant, setShowAIAssistant] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white w-full overflow-x-hidden">
       <Navbar />
       
-      {/* Main content with proper top spacing */}
-      <div className="w-full">
-        <Hero />
+      {/* Main content with proper responsive layout */}
+      <div className="w-full max-w-full">
+        <div className="w-full overflow-x-hidden">
+          <Hero />
+        </div>
         
         {/* Unified Search Section */}
-        <div className="relative">
+        <div className="relative w-full overflow-x-hidden">
           <UnifiedSearchSection />
         </div>
         
-        <AIAssistantSection 
-          showAIAssistant={showAIAssistant}
-          setShowAIAssistant={setShowAIAssistant}
-        />
+        <div className="w-full overflow-x-hidden">
+          <AIAssistantSection 
+            showAIAssistant={showAIAssistant}
+            setShowAIAssistant={setShowAIAssistant}
+          />
+        </div>
 
-        <TravelOffersSections />
+        <div className="w-full overflow-x-hidden">
+          <TravelOffersSections />
+        </div>
 
         {/* Advanced Features with proper spacing */}
-        <div className="space-y-0 bg-gray-50">
+        <div className="space-y-0 bg-gray-50 w-full overflow-x-hidden">
           
         </div>
 
-        <MainContentSections />
+        <div className="w-full overflow-x-hidden">
+          <MainContentSections />
+        </div>
 
-        <Footer />
+        <div className="w-full overflow-x-hidden">
+          <Footer />
+        </div>
         
-        <ChatInterfaces />
+        <div className="w-full overflow-x-hidden">
+          <ChatInterfaces />
+        </div>
       </div>
     </div>
   );

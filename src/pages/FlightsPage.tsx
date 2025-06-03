@@ -128,27 +128,28 @@ const FlightsPage = () => {
   console.log('Filtered flights count:', filteredFlights.length);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50 w-full overflow-x-hidden">
       <Navbar />
       
-      {/* Hero Section - adjusted spacing */}
-      <section className="relative pt-8 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Hero Section - responsive spacing and layout */}
+      <section className="relative pt-4 sm:pt-6 lg:pt-8 pb-8 sm:pb-12 lg:pb-16 px-2 sm:px-4 lg:px-6 xl:px-8 w-full overflow-x-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-sky-600/5"></div>
-        <div className="relative max-w-7xl mx-auto text-center">
+        <div className="relative w-full max-w-7xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="w-full"
           >
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="p-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full shadow-xl">
-                <Plane className="h-12 w-12 text-white" />
+            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+              <div className="p-2 sm:p-3 lg:p-4 bg-gradient-to-r from-blue-600 to-sky-600 rounded-full shadow-xl">
+                <Plane className="h-6 w-6 sm:h-8 sm:w-8 lg:h-12 lg:w-12 text-white" />
               </div>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 px-2">
               {isArabic ? 'رحلات الطيران العالمية' : 'Global Flight Search'}
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto mb-4 sm:mb-6 lg:mb-8 px-2">
               {isArabic 
                 ? 'اكتشف أفضل العروض إلى مصر والكويت وجميع أنحاء العالم'
                 : 'Discover the best deals to Egypt, Kuwait, and destinations worldwide'
@@ -158,9 +159,9 @@ const FlightsPage = () => {
         </div>
       </section>
 
-      {/* Search Section */}
-      <section className="px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
-        <div className="max-w-7xl mx-auto">
+      {/* Search Section - responsive layout */}
+      <section className="px-2 sm:px-4 lg:px-6 xl:px-8 -mt-4 sm:-mt-6 lg:-mt-8 relative z-10 w-full overflow-x-hidden">
+        <div className="w-full max-w-7xl mx-auto">
           <FlightSearchForm
             searchParams={searchParams}
             onSearchParamsChange={setSearchParams}
@@ -172,25 +173,25 @@ const FlightsPage = () => {
         </div>
       </section>
 
-      {/* Results Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Filters Sidebar */}
-            <div className="lg:w-80 space-y-6">
+      {/* Results Section - responsive layout */}
+      <section className="py-8 sm:py-12 lg:py-16 px-2 sm:px-4 lg:px-6 xl:px-8 w-full overflow-x-hidden">
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8">
+            {/* Filters Sidebar - responsive */}
+            <div className="w-full lg:w-80 xl:w-96 space-y-4 sm:space-y-6">
               <div className="flex items-center justify-between lg:justify-start gap-3">
-                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                  <Filter className="h-5 w-5" />
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <Filter className="h-4 w-4 sm:h-5 sm:w-5" />
                   {isArabic ? 'المرشحات' : 'Filters'}
                 </h3>
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="lg:hidden p-2 bg-blue-600 text-white rounded-lg"
+                  className="lg:hidden p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   <Filter className="h-4 w-4" />
                 </button>
               </div>
-              <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
+              <div className={`${showFilters ? 'block' : 'hidden'} lg:block w-full`}>
                 <FlightFilters
                   filters={filters}
                   onFiltersChange={setFilters}
@@ -199,8 +200,8 @@ const FlightsPage = () => {
               </div>
             </div>
 
-            {/* Flight Results */}
-            <div className="flex-1">
+            {/* Flight Results - responsive */}
+            <div className="flex-1 min-w-0 w-full overflow-x-hidden">
               <FlightGrid
                 flights={flights}
                 isLoading={isLoading}
@@ -211,7 +212,9 @@ const FlightsPage = () => {
         </div>
       </section>
 
-      <Footer />
+      <div className="w-full overflow-x-hidden">
+        <Footer />
+      </div>
     </div>
   );
 };
