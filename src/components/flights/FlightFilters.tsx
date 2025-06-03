@@ -15,6 +15,8 @@ interface FlightFiltersProps {
     airline: string;
     stops: string;
     sortBy: string;
+    region?: string;
+    country?: string;
   };
   onFiltersChange: (filters: any) => void;
   flightCount: number;
@@ -33,9 +35,40 @@ const FlightFilters = ({ filters, onFiltersChange, flightCount }: FlightFiltersP
       maxPrice: 5000,
       airline: '',
       stops: 'all',
-      sortBy: 'price'
+      sortBy: 'price',
+      region: '',
+      country: ''
     });
   };
+
+  const regions = [
+    { value: '', label: isArabic ? 'جميع المناطق' : 'All Regions' },
+    { value: 'middle-east', label: isArabic ? 'الشرق الأوسط' : 'Middle East' },
+    { value: 'gcc', label: isArabic ? 'دول الخليج' : 'GCC Countries' },
+    { value: 'europe', label: isArabic ? 'أوروبا' : 'Europe' },
+    { value: 'asia', label: isArabic ? 'آسيا' : 'Asia' },
+    { value: 'africa', label: isArabic ? 'أفريقيا' : 'Africa' },
+    { value: 'north-america', label: isArabic ? 'أمريكا الشمالية' : 'North America' },
+    { value: 'oceania', label: isArabic ? 'أوقيانوسيا' : 'Oceania' }
+  ];
+
+  const popularCountries = [
+    { value: '', label: isArabic ? 'جميع البلدان' : 'All Countries' },
+    { value: 'Egypt', label: isArabic ? 'مصر' : 'Egypt' },
+    { value: 'Kuwait', label: isArabic ? 'الكويت' : 'Kuwait' },
+    { value: 'UAE', label: isArabic ? 'الإمارات' : 'UAE' },
+    { value: 'Qatar', label: isArabic ? 'قطر' : 'Qatar' },
+    { value: 'Turkey', label: isArabic ? 'تركيا' : 'Turkey' },
+    { value: 'UK', label: isArabic ? 'بريطانيا' : 'UK' },
+    { value: 'France', label: isArabic ? 'فرنسا' : 'France' },
+    { value: 'Germany', label: isArabic ? 'ألمانيا' : 'Germany' },
+    { value: 'Spain', label: isArabic ? 'إسبانيا' : 'Spain' },
+    { value: 'Italy', label: isArabic ? 'إيطاليا' : 'Italy' },
+    { value: 'USA', label: isArabic ? 'أمريكا' : 'USA' },
+    { value: 'India', label: isArabic ? 'الهند' : 'India' },
+    { value: 'China', label: isArabic ? 'الصين' : 'China' },
+    { value: 'Japan', label: isArabic ? 'اليابان' : 'Japan' }
+  ];
 
   return (
     <Card className="sticky top-4">
@@ -78,6 +111,44 @@ const FlightFilters = ({ filters, onFiltersChange, flightCount }: FlightFiltersP
           <div className="text-center text-sm text-gray-600">
             €{filters.maxPrice}
           </div>
+        </div>
+
+        {/* Region Filter */}
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">
+            {isArabic ? 'المنطقة' : 'Region'}
+          </Label>
+          <Select value={filters.region || ''} onValueChange={(value) => handleFilterChange('region', value)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {regions.map((region) => (
+                <SelectItem key={region.value} value={region.value}>
+                  {region.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Country Filter */}
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">
+            {isArabic ? 'البلد' : 'Country'}
+          </Label>
+          <Select value={filters.country || ''} onValueChange={(value) => handleFilterChange('country', value)}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {popularCountries.map((country) => (
+                <SelectItem key={country.value} value={country.value}>
+                  {country.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Sort By */}

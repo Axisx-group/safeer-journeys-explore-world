@@ -24,7 +24,9 @@ const FlightsPage = () => {
     maxPrice: 5000,
     airline: '',
     stops: 'all',
-    sortBy: 'price'
+    sortBy: 'price',
+    region: '',
+    country: ''
   });
 
   const [showFilters, setShowFilters] = useState(false);
@@ -51,6 +53,38 @@ const FlightsPage = () => {
     if (filters.maxPrice && flight.price.amount > filters.maxPrice) return false;
     if (filters.airline && !flight.segments[0]?.marketingCarrier.name.toLowerCase().includes(filters.airline.toLowerCase())) return false;
     if (filters.stops === 'direct' && flight.segments[0]?.durationInMinutes > 480) return false;
+    
+    // Filter by country if selected
+    if (filters.country) {
+      const destinationCode = flight.segments[0]?.destination?.displayCode || '';
+      const destinationAirport = require('@/constants/worldAirports').worldAirports.find(
+        airport => airport.code === destinationCode
+      );
+      if (destinationAirport && destinationAirport.country !== filters.country) return false;
+    }
+
+    // Filter by region if selected
+    if (filters.region) {
+      const destinationCode = flight.segments[0]?.destination?.displayCode || '';
+      const destinationAirport = require('@/constants/worldAirports').worldAirports.find(
+        airport => airport.code === destinationCode
+      );
+      if (destinationAirport) {
+        const regionMapping = {
+          'middle-east': ['Egypt', 'Jordan', 'Lebanon', 'Syria', 'Iraq', 'Turkey', 'Iran'],
+          'gcc': ['UAE', 'Qatar', 'Kuwait', 'Bahrain', 'Oman'],
+          'europe': ['UK', 'France', 'Germany', 'Spain', 'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Austria', 'Czech Republic', 'Hungary', 'Poland', 'Greece', 'Portugal', 'Sweden', 'Denmark', 'Norway', 'Finland', 'Iceland', 'Russia', 'Ukraine', 'Romania', 'Bulgaria'],
+          'asia': ['Japan', 'South Korea', 'China', 'Hong Kong', 'Singapore', 'Malaysia', 'Thailand', 'Indonesia', 'Philippines', 'India', 'Pakistan', 'Bangladesh', 'Sri Lanka'],
+          'africa': ['Morocco', 'Tunisia', 'Algeria', 'Libya', 'Sudan', 'Ethiopia', 'Kenya', 'Tanzania', 'South Africa', 'Nigeria', 'Ghana'],
+          'north-america': ['USA', 'Canada'],
+          'oceania': ['Australia', 'New Zealand']
+        };
+        
+        const regionCountries = regionMapping[filters.region] || [];
+        if (!regionCountries.includes(destinationAirport.country)) return false;
+      }
+    }
+
     return true;
   }).sort((a, b) => {
     if (filters.sortBy === 'price') return a.price.amount - b.price.amount;
@@ -77,12 +111,12 @@ const FlightsPage = () => {
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              {isArabic ? 'رحلات الطيران' : 'Flight Search'}
+              {isArabic ? 'رحلات الطيران العالمية' : 'Global Flight Search'}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               {isArabic 
-                ? 'اكتشف أفضل العروض واحجز رحلتك القادمة بأفضل الأسعار'
-                : 'Discover the best deals and book your next flight at the best prices'
+                ? 'اكتشف أفضل العروض إلى مصر والكويت وجميع أنحاء العالم'
+                : 'Discover the best deals to Egypt, Kuwait, and destinations worldwide'
               }
             </p>
           </motion.div>
