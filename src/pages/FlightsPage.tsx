@@ -128,11 +128,11 @@ const FlightsPage = () => {
   console.log('Filtered flights count:', filteredFlights.length);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50 overflow-x-hidden">
       <Navbar />
       
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Hero Section - adjusted spacing */}
+      <section className="relative pt-8 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-sky-600/5"></div>
         <div className="relative max-w-7xl mx-auto text-center">
           <motion.div
@@ -194,7 +194,7 @@ const FlightsPage = () => {
                 <FlightFilters
                   filters={filters}
                   onFiltersChange={setFilters}
-                  flightCount={filteredFlights.length}
+                  flightCount={flights.length}
                 />
               </div>
             </div>
@@ -202,7 +202,7 @@ const FlightsPage = () => {
             {/* Flight Results */}
             <div className="flex-1">
               <FlightGrid
-                flights={filteredFlights}
+                flights={flights}
                 isLoading={isLoading}
                 searchParams={apiParams}
               />

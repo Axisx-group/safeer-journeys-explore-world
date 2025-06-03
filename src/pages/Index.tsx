@@ -13,32 +13,36 @@ const Index = () => {
   const [showAIAssistant, setShowAIAssistant] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Navbar />
-      <Hero />
       
-      {/* Unified Search Section - Fixed spacing */}
-      <div className="relative">
-        <UnifiedSearchSection />
-      </div>
-      
-      <AIAssistantSection 
-        showAIAssistant={showAIAssistant}
-        setShowAIAssistant={setShowAIAssistant}
-      />
-
-      <TravelOffersSections />
-
-      {/* Advanced Features with proper spacing */}
-      <div className="space-y-0 bg-gray-50">
+      {/* Main content with proper top spacing */}
+      <div className="w-full">
+        <Hero />
         
+        {/* Unified Search Section */}
+        <div className="relative">
+          <UnifiedSearchSection />
+        </div>
+        
+        <AIAssistantSection 
+          showAIAssistant={showAIAssistant}
+          setShowAIAssistant={setShowAIAssistant}
+        />
+
+        <TravelOffersSections />
+
+        {/* Advanced Features with proper spacing */}
+        <div className="space-y-0 bg-gray-50">
+          
+        </div>
+
+        <MainContentSections />
+
+        <Footer />
+        
+        <ChatInterfaces />
       </div>
-
-      <MainContentSections />
-
-      <Footer />
-      
-      <ChatInterfaces />
     </div>
   );
 };
