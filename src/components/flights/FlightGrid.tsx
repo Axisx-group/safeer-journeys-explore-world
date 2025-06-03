@@ -16,6 +16,9 @@ const FlightGrid = ({ flights, isLoading, searchParams }: FlightGridProps) => {
   const { language } = useLanguage();
   const isArabic = language === 'ar';
 
+  console.log('FlightGrid received flights:', flights);
+  console.log('FlightGrid isLoading:', isLoading);
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -33,7 +36,8 @@ const FlightGrid = ({ flights, isLoading, searchParams }: FlightGridProps) => {
     );
   }
 
-  if (flights.length === 0) {
+  // Show debug info if no flights
+  if (!flights || flights.length === 0) {
     return (
       <div className="text-center py-12">
         <div className="max-w-md mx-auto">
@@ -41,20 +45,26 @@ const FlightGrid = ({ flights, isLoading, searchParams }: FlightGridProps) => {
           <h3 className="text-xl font-semibold text-gray-700 mb-2">
             {isArabic ? 'لا توجد رحلات' : 'No Flights Found'}
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 mb-4">
             {isArabic 
               ? 'جرب تغيير معايير البحث أو المرشحات'
               : 'Try adjusting your search criteria or filters'
             }
           </p>
+          <div className="text-xs text-gray-400 mt-4 p-3 bg-gray-50 rounded">
+            <p>Debug: Flights array length: {flights?.length || 0}</p>
+            <p>Loading state: {isLoading ? 'true' : 'false'}</p>
+          </div>
         </div>
       </div>
     );
   }
 
   const handleBookFlight = (flight: any) => {
-    if (flight.deeplink) {
+    if (flight.deeplink && flight.deeplink !== '#') {
       window.open(flight.deeplink, '_blank');
+    } else {
+      console.log('No booking link available for this flight');
     }
   };
 
@@ -74,7 +84,7 @@ const FlightGrid = ({ flights, isLoading, searchParams }: FlightGridProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {flights.map((flight, index) => (
           <motion.div
-            key={flight.id || index}
+            key={flight.id || `flight-${index}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}

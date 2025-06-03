@@ -42,37 +42,54 @@ const FlightsPage = () => {
 
   const { data: flights = [], isLoading, isFetching } = useSkyscannerFlights(apiParams);
 
+  console.log('Flights data received:', flights);
+  console.log('Is loading:', isLoading);
+  console.log('Is fetching:', isFetching);
+
   const handleSearch = () => {
     console.log('Searching with params:', searchParams);
     console.log('API params:', apiParams);
     // The query will automatically refetch when searchParams change
   };
 
-  // Apply filters to flights
+  // Apply filters to flights with more lenient filtering
   const filteredFlights = flights.filter(flight => {
-    if (filters.maxPrice && flight.price.amount > filters.maxPrice) return false;
-    if (filters.airline && !flight.segments[0]?.marketingCarrier.name.toLowerCase().includes(filters.airline.toLowerCase())) return false;
-    if (filters.stops === 'direct' && flight.segments[0]?.durationInMinutes > 480) return false;
+    // Price filter
+    if (filters.maxPrice && flight.price?.amount > filters.maxPrice) return false;
     
-    // Filter by country if selected
+    // Airline filter
+    if (filters.airline) {
+      const airlineName = flight.segments?.[0]?.marketingCarrier?.name || '';
+      if (!airlineName.toLowerCase().includes(filters.airline.toLowerCase())) return false;
+    }
+    
+    // Stops filter - simplified logic
+    if (filters.stops === 'direct') {
+      const duration = flight.segments?.[0]?.durationInMinutes || 0;
+      if (duration > 600) return false; // More than 10 hours is likely not direct
+    }
+    
+    // Country filter - simplified logic
     if (filters.country) {
-      const destinationCode = flight.segments[0]?.destination?.displayCode || '';
-      const destinationAirport = require('@/constants/worldAirports').worldAirports.find(
+      const destinationCode = flight.segments?.[0]?.destination?.displayCode || searchParams.arrival_city;
+      const { worldAirports } = require('@/constants/worldAirports');
+      const destinationAirport = worldAirports.find(
         airport => airport.code === destinationCode
       );
       if (destinationAirport && destinationAirport.country !== filters.country) return false;
     }
 
-    // Filter by region if selected
+    // Region filter - simplified logic
     if (filters.region) {
-      const destinationCode = flight.segments[0]?.destination?.displayCode || '';
-      const destinationAirport = require('@/constants/worldAirports').worldAirports.find(
+      const destinationCode = flight.segments?.[0]?.destination?.displayCode || searchParams.arrival_city;
+      const { worldAirports } = require('@/constants/worldAirports');
+      const destinationAirport = worldAirports.find(
         airport => airport.code === destinationCode
       );
       if (destinationAirport) {
         const regionMapping = {
           'middle-east': ['Egypt', 'Jordan', 'Lebanon', 'Syria', 'Iraq', 'Turkey', 'Iran'],
-          'gcc': ['UAE', 'Qatar', 'Kuwait', 'Bahrain', 'Oman'],
+          'gcc': ['UAE', 'Qatar', 'Kuwait', 'Bahrain', 'Oman', 'Saudi Arabia'],
           'europe': ['UK', 'France', 'Germany', 'Spain', 'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Austria', 'Czech Republic', 'Hungary', 'Poland', 'Greece', 'Portugal', 'Sweden', 'Denmark', 'Norway', 'Finland', 'Iceland', 'Russia', 'Ukraine', 'Romania', 'Bulgaria'],
           'asia': ['Japan', 'South Korea', 'China', 'Hong Kong', 'Singapore', 'Malaysia', 'Thailand', 'Indonesia', 'Philippines', 'India', 'Pakistan', 'Bangladesh', 'Sri Lanka'],
           'africa': ['Morocco', 'Tunisia', 'Algeria', 'Libya', 'Sudan', 'Ethiopia', 'Kenya', 'Tanzania', 'South Africa', 'Nigeria', 'Ghana'],
@@ -87,10 +104,20 @@ const FlightsPage = () => {
 
     return true;
   }).sort((a, b) => {
-    if (filters.sortBy === 'price') return a.price.amount - b.price.amount;
-    if (filters.sortBy === 'duration') return (a.segments[0]?.durationInMinutes || 0) - (b.segments[0]?.durationInMinutes || 0);
+    if (filters.sortBy === 'price') {
+      const priceA = a.price?.amount || 0;
+      const priceB = b.price?.amount || 0;
+      return priceA - priceB;
+    }
+    if (filters.sortBy === 'duration') {
+      const durationA = a.segments?.[0]?.durationInMinutes || 0;
+      const durationB = b.segments?.[0]?.durationInMinutes || 0;
+      return durationA - durationB;
+    }
     return 0;
   });
+
+  console.log('Filtered flights count:', filteredFlights.length);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-sky-50">
