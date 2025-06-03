@@ -36,13 +36,13 @@ const FlightFilters = ({ filters, onFiltersChange, flightCount }: FlightFiltersP
       airline: '',
       stops: 'all',
       sortBy: 'price',
-      region: '',
-      country: ''
+      region: 'all',
+      country: 'all'
     });
   };
 
   const regions = [
-    { value: '', label: isArabic ? 'جميع المناطق' : 'All Regions' },
+    { value: 'all', label: isArabic ? 'جميع المناطق' : 'All Regions' },
     { value: 'middle-east', label: isArabic ? 'الشرق الأوسط' : 'Middle East' },
     { value: 'gcc', label: isArabic ? 'دول الخليج' : 'GCC Countries' },
     { value: 'europe', label: isArabic ? 'أوروبا' : 'Europe' },
@@ -53,7 +53,7 @@ const FlightFilters = ({ filters, onFiltersChange, flightCount }: FlightFiltersP
   ];
 
   const popularCountries = [
-    { value: '', label: isArabic ? 'جميع البلدان' : 'All Countries' },
+    { value: 'all', label: isArabic ? 'جميع البلدان' : 'All Countries' },
     { value: 'Egypt', label: isArabic ? 'مصر' : 'Egypt' },
     { value: 'Kuwait', label: isArabic ? 'الكويت' : 'Kuwait' },
     { value: 'UAE', label: isArabic ? 'الإمارات' : 'UAE' },
@@ -118,7 +118,7 @@ const FlightFilters = ({ filters, onFiltersChange, flightCount }: FlightFiltersP
           <Label className="text-sm font-medium">
             {isArabic ? 'المنطقة' : 'Region'}
           </Label>
-          <Select value={filters.region || ''} onValueChange={(value) => handleFilterChange('region', value)}>
+          <Select value={filters.region || 'all'} onValueChange={(value) => handleFilterChange('region', value === 'all' ? '' : value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -137,7 +137,7 @@ const FlightFilters = ({ filters, onFiltersChange, flightCount }: FlightFiltersP
           <Label className="text-sm font-medium">
             {isArabic ? 'البلد' : 'Country'}
           </Label>
-          <Select value={filters.country || ''} onValueChange={(value) => handleFilterChange('country', value)}>
+          <Select value={filters.country || 'all'} onValueChange={(value) => handleFilterChange('country', value === 'all' ? '' : value)}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>

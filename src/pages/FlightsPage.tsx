@@ -25,8 +25,8 @@ const FlightsPage = () => {
     airline: '',
     stops: 'all',
     sortBy: 'price',
-    region: '',
-    country: ''
+    region: 'all',
+    country: 'all'
   });
 
   const [showFilters, setShowFilters] = useState(false);
@@ -52,7 +52,7 @@ const FlightsPage = () => {
     // The query will automatically refetch when searchParams change
   };
 
-  // Apply filters to flights with more lenient filtering
+  // Apply filters to flights
   const filteredFlights = flights.filter(flight => {
     // Price filter
     if (filters.maxPrice && flight.price?.amount > filters.maxPrice) return false;
@@ -70,35 +70,43 @@ const FlightsPage = () => {
     }
     
     // Country filter - simplified logic
-    if (filters.country) {
-      const destinationCode = flight.segments?.[0]?.destination?.displayCode || searchParams.arrival_city;
-      const { worldAirports } = require('@/constants/worldAirports');
-      const destinationAirport = worldAirports.find(
-        airport => airport.code === destinationCode
-      );
-      if (destinationAirport && destinationAirport.country !== filters.country) return false;
+    if (filters.country && filters.country !== 'all') {
+      try {
+        const destinationCode = flight.segments?.[0]?.destination?.displayCode || searchParams.arrival_city;
+        const { worldAirports } = require('@/constants/worldAirports');
+        const destinationAirport = worldAirports.find(
+          airport => airport.code === destinationCode
+        );
+        if (destinationAirport && destinationAirport.country !== filters.country) return false;
+      } catch (error) {
+        console.log('Error filtering by country:', error);
+      }
     }
 
     // Region filter - simplified logic
-    if (filters.region) {
-      const destinationCode = flight.segments?.[0]?.destination?.displayCode || searchParams.arrival_city;
-      const { worldAirports } = require('@/constants/worldAirports');
-      const destinationAirport = worldAirports.find(
-        airport => airport.code === destinationCode
-      );
-      if (destinationAirport) {
-        const regionMapping = {
-          'middle-east': ['Egypt', 'Jordan', 'Lebanon', 'Syria', 'Iraq', 'Turkey', 'Iran'],
-          'gcc': ['UAE', 'Qatar', 'Kuwait', 'Bahrain', 'Oman', 'Saudi Arabia'],
-          'europe': ['UK', 'France', 'Germany', 'Spain', 'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Austria', 'Czech Republic', 'Hungary', 'Poland', 'Greece', 'Portugal', 'Sweden', 'Denmark', 'Norway', 'Finland', 'Iceland', 'Russia', 'Ukraine', 'Romania', 'Bulgaria'],
-          'asia': ['Japan', 'South Korea', 'China', 'Hong Kong', 'Singapore', 'Malaysia', 'Thailand', 'Indonesia', 'Philippines', 'India', 'Pakistan', 'Bangladesh', 'Sri Lanka'],
-          'africa': ['Morocco', 'Tunisia', 'Algeria', 'Libya', 'Sudan', 'Ethiopia', 'Kenya', 'Tanzania', 'South Africa', 'Nigeria', 'Ghana'],
-          'north-america': ['USA', 'Canada'],
-          'oceania': ['Australia', 'New Zealand']
-        };
-        
-        const regionCountries = regionMapping[filters.region] || [];
-        if (!regionCountries.includes(destinationAirport.country)) return false;
+    if (filters.region && filters.region !== 'all') {
+      try {
+        const destinationCode = flight.segments?.[0]?.destination?.displayCode || searchParams.arrival_city;
+        const { worldAirports } = require('@/constants/worldAirports');
+        const destinationAirport = worldAirports.find(
+          airport => airport.code === destinationCode
+        );
+        if (destinationAirport) {
+          const regionMapping = {
+            'middle-east': ['Egypt', 'Jordan', 'Lebanon', 'Syria', 'Iraq', 'Turkey', 'Iran'],
+            'gcc': ['UAE', 'Qatar', 'Kuwait', 'Bahrain', 'Oman', 'Saudi Arabia'],
+            'europe': ['UK', 'France', 'Germany', 'Spain', 'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Austria', 'Czech Republic', 'Hungary', 'Poland', 'Greece', 'Portugal', 'Sweden', 'Denmark', 'Norway', 'Finland', 'Iceland', 'Russia', 'Ukraine', 'Romania', 'Bulgaria'],
+            'asia': ['Japan', 'South Korea', 'China', 'Hong Kong', 'Singapore', 'Malaysia', 'Thailand', 'Indonesia', 'Philippines', 'India', 'Pakistan', 'Bangladesh', 'Sri Lanka'],
+            'africa': ['Morocco', 'Tunisia', 'Algeria', 'Libya', 'Sudan', 'Ethiopia', 'Kenya', 'Tanzania', 'South Africa', 'Nigeria', 'Ghana'],
+            'north-america': ['USA', 'Canada'],
+            'oceania': ['Australia', 'New Zealand']
+          };
+          
+          const regionCountries = regionMapping[filters.region] || [];
+          if (!regionCountries.includes(destinationAirport.country)) return false;
+        }
+      } catch (error) {
+        console.log('Error filtering by region:', error);
       }
     }
 
