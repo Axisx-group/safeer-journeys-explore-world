@@ -44,14 +44,14 @@ const CurrencyDropdown: React.FC<CurrencyDropdownProps> = ({
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-64 max-h-80 overflow-y-auto z-[9999] bg-white border border-gray-200 shadow-lg rounded-lg backdrop-blur-sm" 
+        className="w-64 max-h-80 overflow-y-auto z-[9999] bg-white border border-gray-200 shadow-xl rounded-lg" 
         align={isArabic ? "start" : "end"}
       >
         {europeanCurrencies.map((currency) => (
           <DropdownMenuItem 
             key={currency.code} 
             onClick={() => handleCurrencyChange(currency.code)}
-            className="flex items-center space-x-3 cursor-pointer bg-white hover:bg-blue-50 transition-colors duration-200 px-4 py-3"
+            className="flex items-center space-x-3 cursor-pointer bg-white hover:bg-blue-50 transition-colors duration-200 px-4 py-3 border-b border-gray-100 last:border-b-0"
           >
             <span className="text-lg font-bold text-blue-600 min-w-[30px]">
               {currency.symbol}
