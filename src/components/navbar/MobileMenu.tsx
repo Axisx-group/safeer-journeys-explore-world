@@ -28,8 +28,8 @@ const MobileMenu = ({ isOpen, navigationItems, onLinkClick }: MobileMenuProps) =
   if (!isOpen) return null;
 
   return (
-    <div className="xl:hidden bg-white/98 backdrop-blur-lg border-t border-gray-200/50 shadow-lg w-full absolute top-full left-0 right-0 z-40">
-      <div className="px-2 sm:px-4 pt-2 pb-4 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
+    <div className="xl:hidden bg-white border-t border-gray-200 shadow-lg w-full absolute top-full left-0 right-0 z-[9999]">
+      <div className="px-2 sm:px-4 pt-2 pb-4 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto bg-white">
         {/* Mobile Navigation Links */}
         {navigationItems.map((item) => {
           const isActive = location.pathname === item.href;
@@ -37,7 +37,7 @@ const MobileMenu = ({ isOpen, navigationItems, onLinkClick }: MobileMenuProps) =
             <Link
               key={item.href}
               to={item.href}
-              className={`flex items-center px-3 py-3 rounded-lg text-base font-medium transition-all duration-300 w-full ${
+              className={`flex items-center px-3 py-3 rounded-lg text-base font-medium transition-all duration-300 w-full bg-white ${
                 isActive 
                   ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200' 
                   : 'text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50'
@@ -53,9 +53,9 @@ const MobileMenu = ({ isOpen, navigationItems, onLinkClick }: MobileMenuProps) =
         })}
         
         {/* Mobile Controls Section */}
-        <div className="pt-4 border-t border-gray-200 mt-4 space-y-3">
+        <div className="pt-4 border-t border-gray-200 mt-4 space-y-3 bg-white">
           {/* Mobile Currency and Language */}
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-4 bg-white">
             <CurrencyDropdown />
             <LanguageToggle />
           </div>
