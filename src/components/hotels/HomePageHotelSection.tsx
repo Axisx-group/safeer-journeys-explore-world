@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Star, Users, Calendar, Euro } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useHotels } from "@/hooks/useHotels";
+import { useHotels, useHotelSearch } from "@/hooks/useHotels";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ const HomePageHotelSection = () => {
   const navigate = useNavigate();
   
   const [selectedCountry, setSelectedCountry] = useState('all');
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   // European countries for filtering
   const countries = [
@@ -37,7 +38,38 @@ const HomePageHotelSection = () => {
     limit: 6
   };
 
-  const { data: hotelResponse, isLoading } = useHotels(apiFilters);
+  const { data: hotelResponse, isLoading, refetch } = useHotels(apiFilters);
+  const { refetch: fetchNewHotels } = useHotelSearch({
+    city: 'مدريد',
+    check_in_date: apiFilters.check_in_date,
+    check_out_date: apiFilters.check_out_date,
+    page: 1,
+    limit: 50
+  });
+
+  // Auto-fetch hotels on component mount if no data
+  useEffect(() => {
+    const hotels = hotelResponse?.hotels || [];
+    if (isInitialLoad && hotels.length === 0) {
+      console.log('No hotels found, fetching from API...');
+      handleFetchNewData();
+      setIsInitialLoad(false);
+    }
+  }, [hotelResponse, isInitialLoad]);
+
+  const handleFetchNewData = async () => {
+    try {
+      console.log('Fetching new hotel data...');
+      await fetchNewHotels();
+      // Wait for data to be saved then refetch
+      setTimeout(() => {
+        refetch();
+      }, 2000);
+    } catch (error) {
+      console.error('Error fetching hotels:', error);
+    }
+  };
+
   const hotels = hotelResponse?.hotels || [];
 
   const handleCountryFilter = (countryCode: string) => {
@@ -141,6 +173,22 @@ const HomePageHotelSection = () => {
               </Card>
             ))}
           </div>
+        ) : hotels.length === 0 ? (
+          // Empty state with action to fetch data
+          <div className="text-center py-12">
+            <div className="text-gray-500 mb-6">
+              <MapPin className="h-16 w-16 mx-auto mb-4 text-gray-300" />
+              <h3 className="text-lg font-semibold mb-2">
+                {isArabic ? "لا توجد فنادق متاحة حالياً" : "No hotels available currently"}
+              </h3>
+              <p className="text-sm mb-6">
+                {isArabic ? "اضغط على الزر أدناه لجلب أحدث عروض الفنادق من Booking.com" : "Click the button below to fetch latest hotel offers from Booking.com"}
+              </p>
+            </div>
+            <Button onClick={handleFetchNewData} size="lg" className="bg-blue-600 hover:bg-blue-700">
+              {isArabic ? "جلب الفنادق" : "Fetch Hotels"}
+            </Button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {hotels.map((hotel, index) => (
@@ -154,7 +202,7 @@ const HomePageHotelSection = () => {
                 <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border-0 bg-white">
                   <div className="relative">
                     <img 
-                      src={getValidImageUrl(hotel.image_urls, hotel.id, index)} 
+                      src={getValidImageUrl(hotel.image_urls, hotel.id, index)}
                       alt={hotel.name}
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                       onError={(e) => {
@@ -273,6 +321,19 @@ const HomePageHotelSection = () => {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        )}
+
+        {/* Call to action */}
+        {hotels.length > 0 && (
+          <div className="text-center mt-12">
+            <Button 
+              onClick={() => navigate('/hotels')} 
+              size="lg" 
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 text-white px-8 py-3"
+            >
+              {isArabic ? 'عرض جميع الفنادق' : 'View All Hotels'}
+            </Button>
           </div>
         )}
       </div>
